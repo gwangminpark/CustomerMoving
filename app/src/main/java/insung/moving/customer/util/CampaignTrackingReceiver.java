@@ -1,4 +1,4 @@
-package insung.moving.customer;
+package insung.moving.customer.util;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

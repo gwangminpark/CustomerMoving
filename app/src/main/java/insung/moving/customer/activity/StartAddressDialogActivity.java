@@ -517,15 +517,11 @@ public class StartAddressDialogActivity extends BaseActivity {
         startAddressItem.setSidoName(prefs.getString( "SidoName", "" ));
         startAddressItem.setSidoCode(prefs.getString( "SidoCode", "" ));
 
-/*        startAddressItem.setGunguName("수성구");
-        startAddressItem.setGunguCode("2726000000");
-        startAddressItem.setSidoName("대구");
-        startAddressItem.setSidoCode("2700000000");*/
+
         sendPacket = GET_MAP_ADDR_SEND(ADDRESS_DONG_TYPE, startAddressItem.getGunguCode());
         //   initRecyclerView(gunguArrayItem.getGunguItems());
         // initRecyclerView(myApplication.sidoArrayItem.getSidoItems());
-        Log.i("늦음","-1");
-        Log.i("늦음", String.valueOf( sendPacket ) );
+
 
         networkPresenter.GetMapAddr(sendPacket, new GetMapAddrInterface() {
             @Override

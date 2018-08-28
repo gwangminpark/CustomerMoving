@@ -222,26 +222,4 @@ public class SplashActivity extends BaseActivity {
     }
 
 
-
-
-}
- class CampaignTrackingReceiver extends BroadcastReceiver {
-
-    private static String referrer = "";
-
-
-
-    @Override
-
-    public void onReceive(Context context, Intent intent) {
-
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            referrer = extras.getString("referrer");
-        }
-
-        Log.i("TESTAAA", "referrer is : " + referrer);
-
-    }
-
 }

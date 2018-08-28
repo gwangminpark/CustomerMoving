@@ -485,7 +485,7 @@ public class MainActivity extends BaseActivity {
                     startActivity( intent );
                     break;
                 case R.id.infoPolicy:
-                    //약관클릭시
+                    //개인정보처리 방침 클릭시//
                     intent = new Intent( MainActivity.this,PrivacyActivity.class );
                     //액티비티 시작!
                     startActivity( intent );
@@ -641,51 +641,6 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    public SendPacket INSERT_DORDER_FOR_CUST_C_SEND(String movingtype_data, String movingday_data, String movingname_data, String movingphone_data, ArrayList movingstart_data, ArrayList movingfinish_data) {
-        // 고객 오더 정보 등록
-        SendPacket sPacket = new SendPacket();
-        try {
-            sPacket.AddType( PROTOCOL.PT_REQUEST, PROTOCOL.INSERT_DORDER_FOR_CUST_C );
-            sPacket.AddMessageType(PROTOCOL.INSERT_DORDER_FOR_CUST_C);
-            sPacket.AddString( "TEST" );
-            sPacket.AddString( "7" );
-            sPacket.AddString( "35" );   //콜센타 코드 CCODE
-            sPacket.AddString( "0" );   //소속업체코드 (1차)
-            sPacket.AddString( "0" );    //
-            sPacket.AddString( "14" );       //오더구분
-            sPacket.AddString( movingtype_data );    //이사타입
-            sPacket.AddString( "1" );         //이사종류 구분 설명
-            sPacket.AddString( movingday_data );      //이사날짜
-            sPacket.AddString( movingname_data );      //이름
-            sPacket.AddString( movingphone_data );     //휴대폰번호
-            sPacket.AddString( (String) movingstart_data.get( 0 ) );      //시도
-            sPacket.AddString( (String) movingstart_data.get( 1 ) );        //군구
-            sPacket.AddString( (String) movingstart_data.get( 2 ) );        //동
-            sPacket.AddString( "1" );
-            sPacket.AddString( "" );
-            sPacket.AddString( "" );
-            sPacket.AddString( "" );
-            sPacket.AddString( (String) movingfinish_data.get( 0 ) );        //시도
-            sPacket.AddString( (String) movingfinish_data.get( 1 ) );          //군구
-            sPacket.AddString( (String) movingfinish_data.get( 2 ) );          //동
-            sPacket.AddString( "1" );
-            sPacket.AddString( "" );
-            sPacket.AddString( "" );
-            sPacket.AddString( "내일전화좀줘" );
-            sPacket.AddRowDelimiter();
-            sPacket.Commit();
-            MainActivity.this.recreate();
-            dismissProgressDialog();
-            showToast( "신청완료" );
-            MAIN_INPUT_CHECK = 0;
-            onRestart();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return sPacket;
-    }
-
-
     //자동차 이동 애니메이션
     //각각 시작좌표,끝좌표가 다름
     public void animate() {
@@ -725,7 +680,6 @@ public class MainActivity extends BaseActivity {
                         R.anim.translate_anim4 );   // 에니메이션 설정 파일
         ImageView car = (ImageView) findViewById( R.id.car );
         car.startAnimation( anim );
-
     }
 
     @Override
@@ -735,24 +689,5 @@ public class MainActivity extends BaseActivity {
         binding.drawerLayout.closeDrawer( GravityCompat.START );
     }
 
-    @SuppressLint("MissingPermission")
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        switch (requestCode) {
 
-            case 1: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //권한체크 허용도
-
-
-                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "01094287874"));
-                    startActivity(intent);
-                } else {
-                    //권한체크 거부시 강제종료
-                    Toast.makeText(this, "전화걸기 사용 이 불가합니다. 권한을 허가해주세요 ", Toast.LENGTH_SHORT).show();
-
-                }
-            }
-        }
-    }
 }

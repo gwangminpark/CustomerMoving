@@ -117,7 +117,6 @@ public class MovingDayDialogActivity extends BaseActivity implements OnDateSelec
                 int Day = date.getDay();
 
                 if(Day<13){
-                    Log.i("Year test", "sdfsesfse");
                     Toast.makeText(MovingDayDialogActivity.this, "현재날짜보다 더큰날짜입력", Toast.LENGTH_SHORT);
                 }
 

@@ -84,12 +84,10 @@ public class FinishAddressDialogActivity extends BaseActivity {
             service = binder.getService();
             bound = true;
             networkPresenter.service = service;
-            Log.i("늦음","ss");
             address_change();
         }
 
         public void onServiceDisconnected(ComponentName className) {
-            Log.i("늦음","nn");
             service = null;
             bound = false;
         }

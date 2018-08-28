@@ -4,9 +4,9 @@
     <translate xmlns:android="http://schemas.android.com/apk/res/android"
         android:duration="1500"
         android:fromXDelta="0"
-        android:fromYDelta="680"
+        android:fromYDelta="440%"
         android:toXDelta="0"
-        android:toYDelta="1050"
+        android:toYDelta="680%"
 
         >
     </translate>
