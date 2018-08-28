@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="330dp"
+
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+
+    <LinearLayout
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="480dp"
+        android:orientation="vertical"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="22sp"
+                android:text="이사 종류 선택 "
+                android:textColor="#00aCe9"
+                android:textSize="25dp"
+                android:id="@+id/textView3" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView3"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="2dp"
+                android:text="고객님에게 맞는 이사 종류를 선택해 주세요." />
+
+        </RelativeLayout>
+
+        <LinearLayout
+
+            android:layout_width="278dp"
+            android:layout_height="140dp"
+            android:orientation="horizontal"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            >
+            <RelativeLayout
+                android:id="@+id/click1"
+                android:layout_width="50dp"
+                android:layout_weight="1"
+                android:layout_height="130dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/layer">
+
+                <RelativeLayout
+
+                    android:id="@+id/checkview1"
+                    android:layout_width="50dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/house_01_1">
+
+
+                    <ImageView
+                        android:visibility="gone"
+                        android:id="@+id/checkview1_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/house_01_1" />
+
+
+
+                </RelativeLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="15dp"
+                    android:text="가정이사"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/click2"
+                android:layout_width="50dp"
+                android:layout_weight="1"
+                android:layout_height="130dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/layer">
+
+                <RelativeLayout
+                    android:id="@+id/checkview2"
+                    android:layout_width="50dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/house_02"
+                    >
+                    <ImageView
+                        android:visibility="gone"
+                        android:id="@+id/checkview2_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/house_02_1" />
+
+                </RelativeLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="15dp"
+                    android:text="사무실이사"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/click3"
+
+                android:layout_width="50dp"
+                android:layout_weight="1"
+                android:layout_height="130dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/layer">
+
+                <RelativeLayout
+                    android:id="@+id/checkview3"
+                    android:layout_width="50dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/house_03"
+                    >
+                    <ImageView
+                        android:visibility="gone"
+                        android:id="@+id/checkview3_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/house_03_1" />
+
+                </RelativeLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="15dp"
+                    android:text="원룸이사"
+                    />
+
+            </RelativeLayout>
+
+
+
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/click_bt2"
+            android:layout_width="278dp"
+            android:layout_height="140dp"
+            android:orientation="horizontal"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            >
+            <RelativeLayout
+                android:id="@+id/click4"
+                android:layout_width="50dp"
+                android:layout_weight="1"
+                android:layout_height="130dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/layer">
+
+                <RelativeLayout
+                    android:id="@+id/checkview4"
+                    android:layout_width="50dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/house_04"
+                    >
+                    <ImageView
+                        android:visibility="gone"
+                        android:id="@+id/checkview4_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/house_04_1" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="15dp"
+                    android:text="공장이사"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/click5"
+                android:layout_width="50dp"
+                android:layout_weight="1"
+                android:layout_height="130dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/layer">
+
+                <RelativeLayout
+                    android:id="@+id/checkview5"
+                    android:layout_width="50dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/house_05"
+                    >
+                    <ImageView
+                        android:visibility="gone"
+                        android:id="@+id/checkview5_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/house_05_1" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="15dp"
+                    android:text="제주도이사"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/click6"
+                android:layout_width="50dp"
+                android:layout_weight="1"
+                android:layout_height="130dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/layer">
+
+                <RelativeLayout
+                    android:id="@+id/checkview6"
+                    android:layout_width="50dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/house_06"
+                    >
+                    <ImageView
+                        android:visibility="gone"
+                        android:id="@+id/checkview6_6"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/house_06_1" />
+
+                </RelativeLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="15dp"
+                    android:text="해외이사"
+                    />
+
+            </RelativeLayout>
+
+
+
+
+
+
+        </LinearLayout>
+
+
+
+
+
+        <LinearLayout
+
+
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+
+
+            <Button
+                android:id="@+id/cancelButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="닫기"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:background="#656b71"/>
+
+
+
+
+            <Button
+                android:id="@+id/okButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="확인"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="20dp"
+                android:background="#00a0e9"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    <EditText
+        android:visibility="gone"
+        android:id="@+id/mesgase"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:textSize="16dp"
+        android:hint="내용을 입력하세요."/>
+
+
+
+
+
+
+
+
+</LinearLayout>
+</layout>

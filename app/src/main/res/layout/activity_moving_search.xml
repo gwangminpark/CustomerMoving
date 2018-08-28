@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include
+            android:id="@+id/notittle_toolbar"
+            layout="@layout/notittle_toolbar" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:background="@drawable/calendar_sub"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+
+    </RelativeLayout>
+
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        app:mcv_selectionColor="#a9dbf0cb"
+        app:mcv_showOtherDates="defaults" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="손없는날"
+            android:textSize="17dp"
+
+            android:layout_centerInParent="true"
+            android:id="@+id/textView5" />
+
+        <RelativeLayout
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="5dp"
+            android:layout_toStartOf="@+id/textView5"
+            android:background="@color/green_light_70">
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>
+</layout>

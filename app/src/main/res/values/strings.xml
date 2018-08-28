@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">이사킹</string>
+    <!--네비게이션-->
+    <string name="navigation_drawer_open">네비게이션 열림</string>
+    <string name="navigation_drawer_close">네비게이션 닫힘</string>
+
+    <string name="ted_permission_go_to_setting_button_text">설정</string>
+    <string name="ted_permission_denied_message">권한이 승인되지 않아 서비스를 실행할 수 없습니다.\n권한설정은 [설정] > [권한]에서 변경하실 수 있습니다.</string>
+    <string name="permission_not_agree">권한이 허용되지 않아 전화걸기를 실행할수 없습니다.</string>
+    <string name="appAgreement">※ 접근권한 안내\n
+인성연합물류 서비스 제공을 위해 다음과 같은 접근권한을 필요로 합니다.\n
+선택적 접근권한의 허용에 동의하지 않아도 서비스 기본기능을 이용할 수 있습니다.\n\n
+[필수 접근권한]\n
+- 전화: 사용자 확인 및 유저간 발신을 위한 권한\n
+- 주소록: 유저의 계정 정보 확인을 위한 권한\n\n
+[선택 접근권한]\n
+- 위치 : 콜수행시 거리 산정을 위해 필요한 권한 \n
+- 저장공간 : 개인 환경설정 저장을 위해 필요한 권한\n\n
+
+[안드로이드 운영체제 6.0 미만 단말기 이용자 안내]
+안드로이드 운영체제 6.0 미만의 단말기를 이용하는 경우, 선택 접류권한에 대한 개별 선택이 불가하므로 앱 설치 전에 해당 내용을 충분히 검토하시기 바랍니다. 가급적 접근권한에 대한 개별 선택이 가능하도록 단말기 제조사를 통해 운영체제를 6.0 이상으로 업그레이드하시고, 업그레이드가 되더라도 기존 앱에서 동의한 접근권한은 바뀌지 않으므로 접근권한을 재설정하기 위해서는 앱을 삭제 후 재설치하여 주시기 바랍니다.</string>
+</resources>

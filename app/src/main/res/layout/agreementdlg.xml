@@ -1,0 +1,301 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="290dp"
+    android:layout_height="500dp"
+    android:background="#AA000000"
+    android:orientation="horizontal" >
+
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="80"
+        android:orientation="vertical" >
+
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="80"
+
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="5dp"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="8"
+                    android:background="#000000"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:gravity="center"
+                        android:text="개인정보 수집 및 이용 동의"
+                        android:textColor="#ffffff"
+                        android:textStyle="bold"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout5"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="15"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="horizontal" >
+
+                    <CheckBox
+                        android:id="@+id/ckAgreement1"
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="5"
+                        android:background="#FFFFFF"
+                        android:gravity="center_vertical"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="23"
+                        android:paddingLeft="10dp"
+                        android:background="#FFFFFF"
+                        android:gravity="center_vertical"
+                        android:text="서비스 이용약관 동의"
+                        android:textColor="#000000"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/tvAgreement1"
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="5"
+                        android:background="#FFFFFF"
+                        android:gravity="center_vertical"
+                        android:text="보기"
+                        android:textColor="#0000ff"
+                        android:textSize="13dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="25"
+                    android:background="#ffffff"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="2dp"
+                        android:layout_margin="5dp"
+                        android:background="#999999" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="10dp"
+
+                        android:textColor="#000000"
+                        android:textSize="13dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/LinearLayout02"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="15"
+                    android:orientation="horizontal" >
+
+                    <CheckBox
+                        android:id="@+id/ckAgreement2"
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="5"
+                        android:background="#FFFFFF"
+                        android:gravity="center_vertical"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="23"
+                        android:paddingLeft="10dp"
+                        android:background="#FFFFFF"
+                        android:gravity="center_vertical"
+                        android:text="위치정보 서비스 이용약관"
+                        android:textColor="#000000"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/tvAgreement2"
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="5"
+                        android:background="#FFFFFF"
+                        android:gravity="center_vertical"
+                        android:text="보기"
+                        android:textColor="#0000ff"
+                        android:textSize="13dp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:visibility="gone"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="25"
+                    android:background="#ffffff"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="2dp"
+                        android:layout_margin="5dp"
+                        android:background="#999999" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="10dp"
+
+                        android:textColor="#000000"
+                        android:textSize="13dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LinearLayout01"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="15"
+                    android:orientation="horizontal" >
+
+                    <CheckBox
+                        android:id="@+id/ckAgreement3"
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="5"
+                        android:background="#FFFFFF"
+                        android:gravity="center_vertical"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="23"
+                        android:background="#FFFFFF"
+                        android:paddingLeft="10dp"
+                        android:gravity="center_vertical"
+                        android:text="제3자 제공 등에 관한 동의"
+                        android:textColor="#000000"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/tvAgreement3"
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="5"
+                        android:background="#FFFFFF"
+                        android:gravity="center_vertical"
+                        android:text="보기"
+                        android:textColor="#0000ff"
+                        android:textSize="13dp" />
+                </LinearLayout>
+				<LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="25"
+                    android:background="#ffffff"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="2dp"
+                        android:layout_margin="5dp"
+                        android:background="#999999" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="10dp"
+
+                        android:textColor="#000000"
+                        android:textSize="13dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="15"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="23"
+                        android:paddingLeft="10dp"
+                        android:background="#FFFFFF"
+                        android:gravity="center_vertical"
+                        android:text="애플리케이션 권한 안내"
+                        android:textColor="#000000"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/tvAppAgreement"
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="5"
+                        android:background="#FFFFFF"
+                        android:gravity="center_vertical"
+                        android:text="보기"
+                        android:textColor="#0000ff"
+                        android:textSize="13dp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+
+                    <Button
+                        android:id="@+id/btnAgreement"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:text="닫기"
+                        android:textColor="#000000"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

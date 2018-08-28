@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="insung.moving.customer">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+
+
+    <application
+        android:name=".app.MyApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/icon_512"
+        android:label="@string/app_name"
+        android:screenOrientation="portrait"
+        android:roundIcon="@drawable/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <receiver
+
+            android:name=".CampaignTrackingReceiver"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+
+        </receiver>
+        <activity
+            android:name=".activity.SplashActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.MainActivity">
+            <!--          <intent-filter>
+                          <action android:name="android.intent.action.MAIN" />
+
+                          <category android:name="android.intent.category.LAUNCHER" />
+                      </intent-filter>-->
+        </activity>
+
+        <service android:name=".service.SocketService" />
+
+        <activity android:name=".activity.MovingTypeCheckActivity"
+            android:theme="@style/Theme.DialogActivity"/>
+        <activity android:name=".activity.StartAddressDialogActivity"
+            android:theme="@style/Theme.DialogActivity"/>
+
+        <activity android:name=".activity.FinishAddressDialogActivity"
+            android:theme="@style/Theme.DialogActivity"/>
+        <activity android:name=".activity.MovingDayDialogActivity"
+            android:theme="@style/Theme.DialogActivity"/>
+        <activity android:name=".activity.AgreementDlg"
+            android:theme="@style/Theme.DialogActivity"/>
+
+        <activity android:name=".activity.MyOrderlistActivity"
+
+            android:theme="@style/Theme.Design.NoActionBar"/>
+        <activity android:name=".activity.MyOrderlistSearchActivity"
+
+            android:theme="@style/Theme.Design.Light.NoActionBar"/>
+
+        <activity android:name=".activity.MovingCheckListActivity"
+
+            android:theme="@style/Theme.Design.Light.NoActionBar"/>
+        <activity android:name=".activity.ClauseActivity"
+
+        android:theme="@style/Theme.Design.NoActionBar"/>
+        <activity android:name=".activity.AgreementDetail"
+
+            android:theme="@style/Theme.Design.NoActionBar"/>
+
+        <activity android:name=".activity.PrivacyActivity"
+
+            android:theme="@style/Theme.Design.NoActionBar"/>
+        <activity android:name=".activity.SearchMovingDayActivity"
+
+            android:theme="@style/Theme.Design.Light.NoActionBar"/>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="de45cee639704b9720afcb6c2e520f16153c7270"
+            />
+
+
+    </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+</manifest>

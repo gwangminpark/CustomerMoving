@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="170dp"
+    android:orientation="vertical"
+    android:layout_marginTop="5dp"
+    android:layout_marginLeft="25dp"
+    android:layout_marginRight="25dp"
+
+
+    >
+
+
+    <LinearLayout
+        android:layout_width="360dp"
+        android:orientation="horizontal"
+        android:layout_height="30dp">
+
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="89dp"
+            android:layout_toStartOf="@+id/finish_address"
+            android:background="@drawable/layer2">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="신청일자"
+                android:textColor="#666666"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+        <RelativeLayout
+
+            android:background="@drawable/layer2"
+            android:layout_width="210dp"
+            android:layout_height="30dp">
+         <TextView
+                android:id="@+id/order_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+             android:textColor="#556A7D"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="23dp"
+                android:gravity="center"
+             android:textSize="10sp"
+                android:text="test" />
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="360dp"
+        android:orientation="horizontal"
+        android:layout_height="30dp">
+
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/layer3">
+
+            <TextView
+                android:textColor="#666666"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:textSize="10sp"
+
+                android:text="이사종류" />
+
+
+        </RelativeLayout>
+        <RelativeLayout
+
+            android:background="@drawable/layer2"
+            android:layout_width="210dp"
+            android:layout_height="match_parent">
+
+         <TextView
+                android:id="@+id/type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="21dp"
+             android:textColor="#556A7D"
+             android:textSize="10sp"
+                android:layout_weight="1"
+                android:text="text2" />
+
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="360dp"
+        android:orientation="horizontal"
+        android:layout_height="30dp">
+
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:background="@drawable/layer3"
+
+            android:layout_height="match_parent">
+
+            <TextView
+                android:textColor="#666666"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textSize="10sp"
+                android:textStyle="bold"
+
+                android:text="이사날짜" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:background="@drawable/layer2"
+            android:layout_width="210dp"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:id="@+id/moving_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#556A7D"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="23dp"
+                android:gravity="center"
+                android:textSize="10sp"
+                android:text="test" />
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="360dp"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+
+            android:background="@drawable/layer3">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:text="출발지"
+                android:textColor="#666666" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+
+            android:layout_width="210dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/layer2">
+
+
+            <TextView
+                android:id="@+id/start_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="23dp"
+                android:textSize="10sp"
+                android:gravity="center"
+                android:text="test"
+                android:textColor="#556A7D" />
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="360dp"
+        android:orientation="horizontal"
+        android:layout_height="30dp">
+
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/layer3">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="도착지"
+                android:textColor="#666666"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+        <RelativeLayout
+
+            android:background="@drawable/layer2"
+            android:layout_width="210dp"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:id="@+id/finish_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#556A7D"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="23dp"
+                android:gravity="center"
+                android:textSize="10sp"
+                android:text="test" />
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
+</layout>
