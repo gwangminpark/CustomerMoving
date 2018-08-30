@@ -94,7 +94,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:background="@null"
-
+                    android:imeOptions="actionNext"
                     android:inputType="number"
                     android:maxLength="4"
                     android:nextFocusDown="@id/phone_edit2"

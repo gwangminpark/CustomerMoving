@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Created by user on 2018-08-28.
@@ -21,7 +22,7 @@ public class CampaignTrackingReceiver extends BroadcastReceiver {
             referrer = extras.getString("referrer");
         }
 ////
-        Log.i("TESTAAA", "referrer is : " + referrer);
+
 
     }
 

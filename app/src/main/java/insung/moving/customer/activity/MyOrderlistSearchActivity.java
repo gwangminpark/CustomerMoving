@@ -10,6 +10,8 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -99,7 +101,7 @@ public class MyOrderlistSearchActivity extends BaseActivity {
         notittleToolbarBinding= DataBindingUtil.bind(binding.notittleToolbar.getRoot());
         notittleToolbarBinding.toolbarTitle.setText("나의 신청내역");
         setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        Log.i("log33","oncreate!!");
+
 
         setSupportActionBar(notittleToolbarBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -111,6 +113,24 @@ public class MyOrderlistSearchActivity extends BaseActivity {
         this.registerReceiver( Orderlistreceiver, new IntentFilter( INTENT_FILTER ) );
         order_items = new ArrayList<>();
 
+
+        binding.phoneEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(binding.phoneEdit.getText().length()==4){
+                    binding.phoneEdit2.requestFocus();
+                }
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+        });
 
         binding.searchbt.setOnClickListener( new View.OnClickListener() {
             //조회 클릭시
@@ -142,7 +162,9 @@ public class MyOrderlistSearchActivity extends BaseActivity {
 
         String Phone="010"+binding.phoneEdit.getText().toString()+binding.phoneEdit2.getText().toString();
         showProgressDialog( "","" );
-        networkPresenter.GetDorderForCust( String.valueOf( binding.nameEdit.getText() ),Phone,new GetDorderForCustInterface() {
+        Log.i("공백제거전",binding.nameEdit.getText().toString());
+        Log.i("공백제거후",binding.nameEdit.getText().toString().replace( " ","" ));
+        networkPresenter.GetDorderForCust( binding.nameEdit.getText().toString().replace( " ","" ),Phone,new GetDorderForCustInterface() {
             @Override
             public void success(ArrayList<String> orderlistData) {
                 dismissProgressDialog();

@@ -72,11 +72,8 @@ public class PhoneDialogActivity extends BaseActivity{
         }
 
 
-/*
 
-        SharedPreferences prefs1 = getSharedPreferences( "Address", MODE_PRIVATE );
-            name.setText( prefs1.getString( "name", String.valueOf( name.getText() ) ) );
-            message.setText( prefs1.getString( "phone", String.valueOf( name.getText() ) ) );*/
+
 
         checkBox.setOnClickListener(new CheckBox.OnClickListener() {
             @Override public void onClick(View v) {
@@ -111,7 +108,7 @@ public class PhoneDialogActivity extends BaseActivity{
                         orderdata.setName( message.getText().toString() );
 
 
-                        MainActivity.movingname_data = String.valueOf( name.getText() );
+                        MainActivity.movingname_data = name.getText().toString().replace( " ","" );
                         MainActivity.movingphone_data = message.getText().toString();
 
                         MainActivity.MAIN_INPUT_CHECK = 5;
@@ -142,6 +139,7 @@ public class PhoneDialogActivity extends BaseActivity{
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "취소 했습니다", Toast.LENGTH_SHORT).show();
+
                 // 커스텀 다이얼로그를 종료한다.
                 dlg.dismiss();
             }
