@@ -37,7 +37,7 @@ public class MyOrderlistSearchActivity extends BaseActivity {
 
 
     private ArrayList<String> order_items;
-    //  리스트선언
+    //  리스트선언.
 
     public static OrderlistData orderlistData;
     private SocketRecv Orderlistreceiver;

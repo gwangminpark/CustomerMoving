@@ -11,6 +11,7 @@ import android.webkit.WebViewClient;
 import insung.moving.customer.R;
 import insung.moving.customer.databinding.ActivityClauseBinding;
 import insung.moving.customer.databinding.NotittleToolbarBinding;
+import insung.moving.customer.util.ReferrerReceiver;
 
 /**
  * Created by user on 2018-08-22.
@@ -25,7 +26,7 @@ public class ClauseActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_clause);
         notittleToolbarBinding= DataBindingUtil.bind(binding.notittleToolbar.getRoot());
-        notittleToolbarBinding.toolbarTitle.setText("이용약관");
+        notittleToolbarBinding.toolbarTitle.setText("이용약관"+ ReferrerReceiver.referrer);
 
         setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setSupportActionBar(notittleToolbarBinding.toolbar);

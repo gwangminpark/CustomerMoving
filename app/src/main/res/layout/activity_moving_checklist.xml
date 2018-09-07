@@ -17,12 +17,19 @@
             layout="@layout/notittle_toolbar" />
 
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <ScrollView
         android:layout_width="match_parent"
+        android:gravity="center"
+
         android:layout_height="match_parent">
 
         <RelativeLayout
 
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/list_text">
@@ -32,5 +39,6 @@
 
 
     </ScrollView>
+    </RelativeLayout>
 </LinearLayout>
 </layout>

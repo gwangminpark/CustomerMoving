@@ -27,7 +27,7 @@
 
         <receiver
 
-            android:name=".util.CampaignTrackingReceiver"
+            android:name=".util.ReferrerReceiver"
             android:exported="true">
 
             <intent-filter>
