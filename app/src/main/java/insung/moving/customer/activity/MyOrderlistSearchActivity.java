@@ -45,6 +45,62 @@ public class MyOrderlistSearchActivity extends BaseActivity {
     AlertDialog.Builder builder;
     AlertDialog networkAlertDialog;
     private Context context;
+    @SuppressLint("MissingPermission")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate( savedInstanceState );
+        binding = DataBindingUtil.setContentView( this, R.layout.activity_myorder_search );
+        notittleToolbarBinding = DataBindingUtil.bind( binding.notittleToolbar.getRoot() );
+        notittleToolbarBinding.toolbarTitle.setText( "나의 신청내역" );
+        setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT );
+
+
+        setSupportActionBar( notittleToolbarBinding.toolbar );
+        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
+        getSupportActionBar().setDisplayShowHomeEnabled( true );
+        getSupportActionBar().setDisplayShowTitleEnabled( false );
+
+
+        Orderlistreceiver = new SocketRecv();
+        this.registerReceiver( Orderlistreceiver, new IntentFilter( INTENT_FILTER ) );
+        order_items = new ArrayList<>();
+
+
+        binding.phoneEdit.addTextChangedListener( new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (binding.phoneEdit.getText().length() == 4) {
+                    binding.phoneEdit2.requestFocus();
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+        } );
+
+        binding.searchbt.setOnClickListener( new View.OnClickListener() {
+            //조회 클릭시
+            @Override
+            public void onClick(View view) {
+                if (binding.nameEdit.getText().toString().getBytes().length <= 0) {
+                    showToast( "이름을 입력해주세요" );
+                } else if (binding.phoneEdit.getText().toString().getBytes().length <= 3 || binding.phoneEdit2.getText().toString().getBytes().length <= 3) {
+                    showToast( "번호를 입력(체크)해주세요" );
+                } else {
+                    order_list_view();
+                }
+            }
+        } );
+
+
+    }
     public class SocketRecv extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -93,102 +149,52 @@ public class MyOrderlistSearchActivity extends BaseActivity {
 
     private ActivityMyorderSearchBinding binding;
     private NotittleToolbarBinding notittleToolbarBinding;
-    @SuppressLint("MissingPermission")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_myorder_search);
-        notittleToolbarBinding= DataBindingUtil.bind(binding.notittleToolbar.getRoot());
-        notittleToolbarBinding.toolbarTitle.setText("나의 신청내역");
-        setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 
-        setSupportActionBar(notittleToolbarBinding.toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-
-        Orderlistreceiver = new SocketRecv();
-        this.registerReceiver( Orderlistreceiver, new IntentFilter( INTENT_FILTER ) );
-        order_items = new ArrayList<>();
-
-
-        binding.phoneEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(binding.phoneEdit.getText().length()==4){
-                    binding.phoneEdit2.requestFocus();
-                }
-            }
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-        });
-
-        binding.searchbt.setOnClickListener( new View.OnClickListener() {
-            //조회 클릭시
-            @Override
-            public void onClick(View view) {
-                if(binding.nameEdit.getText().toString().getBytes().length<= 0){
-                    showToast( "이름을 입력해주세요" );
-                }else if(binding.phoneEdit.getText().toString().getBytes().length<= 3||binding.phoneEdit2.getText().toString().getBytes().length<= 3){
-                    showToast( "번호를 입력(체크)해주세요" );
-                }else {
-                    order_list_view();
-                }
-            }
-        } );
-
-
-    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
+        switch (item.getItemId()) {
+            case android.R.id.home: { //toolbar의 back키 눌렀을 때 동작
                 this.finish();
                 return true;
             }
         }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected( item );
     }
+
     public void order_list_view() {
 
-        String Phone="010"+binding.phoneEdit.getText().toString()+binding.phoneEdit2.getText().toString();
-        showProgressDialog( "","" );
-        Log.i("공백제거전",binding.nameEdit.getText().toString());
-        Log.i("공백제거후",binding.nameEdit.getText().toString().replace( " ","" ));
-        networkPresenter.GetDorderForCust( binding.nameEdit.getText().toString().replace( " ","" ),Phone,new GetDorderForCustInterface() {
+        String Phone = "010" + binding.phoneEdit.getText().toString() + binding.phoneEdit2.getText().toString();
+        showProgressDialog( "", "" );
+        Log.i( "공백제거전", binding.nameEdit.getText().toString() );
+        Log.i( "공백제거후", binding.nameEdit.getText().toString().replace( " ", "" ) );
+        networkPresenter.GetDorderForCust( binding.nameEdit.getText().toString().replace( " ", "" ), Phone, new GetDorderForCustInterface() {
             @Override
             public void success(ArrayList<String> orderlistData) {
                 dismissProgressDialog();
-                    for (int i = 0; i < orderlistData.size(); i++) {
-                        Log.i( "finish!!", orderlistData.get( i ) );
-                    }
+                for (int i = 0; i < orderlistData.size(); i++) {
+                    Log.i( "finish!!", orderlistData.get( i ) );
+                }
                 Intent intent = new Intent(
                         getApplicationContext(), //
                         MyOrderlistActivity.class );
                 intent.putExtra( "listdata", orderlistData );
                 startActivity( intent );
 
-        }
+            }
 
             @Override
             public void success(RecvPacket packet) {
 
             }
+
             @Override
             public void fail(String t) {
                 showToast( "등록정보가 없습니다 " );
                 dismissProgressDialog();
             }
-        }  );
+        } );
     }
 
     @Override
@@ -197,11 +203,12 @@ public class MyOrderlistSearchActivity extends BaseActivity {
         order_items.clear();
         this.finish();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
-        if(Orderlistreceiver != null)
-            unregisterReceiver(Orderlistreceiver);
+        if (Orderlistreceiver != null)
+            unregisterReceiver( Orderlistreceiver );
     }
 }

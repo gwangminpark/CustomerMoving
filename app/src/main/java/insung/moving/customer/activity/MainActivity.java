@@ -32,7 +32,6 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
 
-
 import insung.moving.customer.R;
 import insung.moving.customer.databinding.ActivityMainBinding;
 import insung.moving.customer.databinding.CommonNavigationBinding;
@@ -50,10 +49,7 @@ import insung.moving.customer.util.BackPressCloseHandler;
 import insung.moving.customer.util.Util;
 
 
-
 import java.util.ArrayList;
-
-
 
 
 public class MainActivity extends BaseActivity {
@@ -70,7 +66,7 @@ public class MainActivity extends BaseActivity {
 
     private ArrayList<String> order_items;
     //  리스트선언
-    private final int REQUEST_MOVINGTYPE_DIALOG=1; //종류선택
+    private final int REQUEST_MOVINGTYPE_DIALOG = 1; //종류선택
     private final int REQUEST_MOVINGDAY_DIALOG = 2; //날짜선택
     private final int REQUEST_STARTADDRESS_DIALOG = 3;//시작주소
     private final int REQUEST_FINISHADDRESS_DIALOG = 4;//도착주소
@@ -99,6 +95,319 @@ public class MainActivity extends BaseActivity {
     AlertDialog.Builder builder;
     AlertDialog networkAlertDialog;
 
+
+
+
+    @SuppressLint("MissingPermission")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate( savedInstanceState );
+        binding = DataBindingUtil.setContentView( this, R.layout.activity_main );
+        commonToolbarBinding = DataBindingUtil.bind( binding.commonToolbar.getRoot() );
+        commonNavigationBinding = DataBindingUtil.bind( binding.commonNavigation.getRoot() );
+        backPressCloseHandler = new BackPressCloseHandler( this );
+        setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT );
+        //   version_checktest();
+        //version_check();
+        //앱버전체크
+
+
+
+/*        //안드로이드 버전체크
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //안드로이드 6.0 마시멜로(23)이하일경우 사용자가 직접 권한 허용 해줘야함
+
+            checkVerify();
+        } else {
+            startApp();
+            //안드로이드 6.0 이하일경우
+        }*/
+
+
+        initNavigation();
+        initActionBar();
+
+        receiver = new SocketRecv();
+        this.registerReceiver( receiver, new IntentFilter( INTENT_FILTER ) );
+        order_items = new ArrayList<>();
+
+        SharedPreferences prefs = getSharedPreferences( "Address", MODE_PRIVATE );
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
+        editor.commit();
+        //   SharedPreferences  초기화
+
+
+        binding.callbt.setOnClickListener( new View.OnClickListener() {
+            //전화버튼 클릭시
+            @Override
+            public void onClick(View view) {
+                TedPermission.with( MainActivity.this )
+                        .setPermissionListener( new PermissionListener() {
+                            @Override
+                            public void onPermissionGranted() {
+                                Intent intent = new Intent( Intent.ACTION_DIAL, Uri.parse( "tel:" + "01012345678" ) );
+                                startActivity( intent );
+                            }
+
+                            @Override
+                            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+
+                            }
+
+                        } )
+                        .setDeniedMessage( getString( R.string.ted_permission_denied_message ) )
+                        .setGotoSettingButtonText( getString( R.string.ted_permission_go_to_setting_button_text ) )
+                        .setPermissions( android.Manifest.permission.CALL_PHONE ).check();
+            }
+        } );
+
+        binding.movingtypeBtn.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+         /*       MovingTypeCheckActivity movingTypeCheckActivity = new MovingTypeCheckActivity(MainActivity.this);
+                movingTypeCheckActivity.callFunction();*/
+                //다이얼로그 호출
+                Intent intent = new Intent( MainActivity.this, MovingTypeCheckActivity.class );
+                intent.putExtra( "type", binding.movingType.getText() );
+                startActivityForResult( intent, REQUEST_MOVINGTYPE_DIALOG );
+
+            }
+        } );
+        binding.movingdayBtn.setOnClickListener( new View.OnClickListener() {
+            //이사종류 클릭시
+            @Override
+            public void onClick(View view) {
+                if (MAIN_INPUT_CHECK == 0) {
+                    //이사종류를 선택 안했을시
+                    Intent intent = new Intent( MainActivity.this, MovingTypeCheckActivity.class );
+                    intent.putExtra( "type", binding.movingType.getText() );
+                    startActivityForResult( intent, REQUEST_MOVINGTYPE_DIALOG );
+                    //  showToast( "이사종류를 선택해주세요" );
+                } else {
+                    //이사종류를 선택 했을시 (MAIN_INPUT_CHECK==1일때)
+                    //추후에 이전단계 변경도 가능해야하므로 else 로 처리
+                    Intent intent = new Intent( MainActivity.this, MovingDayDialogActivity.class );
+                    startActivityForResult( intent, REQUEST_MOVINGDAY_DIALOG );
+                }
+            }
+        } );
+        binding.movingstartBtn.setOnClickListener( new View.OnClickListener() {
+            //이사날짜 클릭시
+            @Override
+            public void onClick(View view) {
+                if (MAIN_INPUT_CHECK == 0) {
+                    Intent intent = new Intent( MainActivity.this, MovingTypeCheckActivity.class );
+                    intent.putExtra( "type", binding.movingType.getText() );
+                    startActivityForResult( intent, REQUEST_MOVINGTYPE_DIALOG );
+                    // showToast( "이사종류를 선택해주세요" );
+                } else if (MAIN_INPUT_CHECK == 1) {
+                    //  showToast( "이사날짜를 선택해주세요" );
+                    Intent intent = new Intent( MainActivity.this, MovingDayDialogActivity.class );
+                    startActivityForResult( intent, REQUEST_MOVINGDAY_DIALOG );
+                } else {
+                    new Handler().postDelayed( new Runnable() {
+
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent( MainActivity.this, StartAddressDialogActivity.class );
+                            intent.putExtra( "start", binding.startday.getText() );
+                            startActivityForResult( intent, REQUEST_STARTADDRESS_DIALOG );
+                        }
+                    }, 500 );
+
+                }
+            }
+        } );
+        binding.movingfinishBtn.setOnClickListener( new View.OnClickListener() {
+            //출발주소 클릭시
+            @Override
+            public void onClick(View view) {
+                if (MAIN_INPUT_CHECK == 0) {
+                    Intent intent = new Intent( MainActivity.this, MovingTypeCheckActivity.class );
+                    intent.putExtra( "type", binding.movingType.getText() );
+                    startActivityForResult( intent, REQUEST_MOVINGTYPE_DIALOG );
+                    //showToast( "이사종류를 선택해주세요" );
+                } else if (MAIN_INPUT_CHECK == 1) {
+                    Intent intent = new Intent( MainActivity.this, MovingDayDialogActivity.class );
+                    startActivityForResult( intent, REQUEST_MOVINGDAY_DIALOG );
+                    // showToast( "이사날짜를 선택해주세요" );
+                } else if (MAIN_INPUT_CHECK == 2) {
+                    new Handler().postDelayed( new Runnable() {
+
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent( MainActivity.this, StartAddressDialogActivity.class );
+                            intent.putExtra( "start", binding.startday.getText() );
+                            startActivityForResult( intent, REQUEST_STARTADDRESS_DIALOG );
+                        }
+                    }, 500 );
+                    //showToast( "출발주소를 선택해주세요 " );
+                } else {
+                    new Handler().postDelayed( new Runnable() {
+
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent( MainActivity.this, FinishAddressDialogActivity.class );
+                            intent.putExtra( "finish", binding.finishday.getText() );
+                            startActivityForResult( intent, REQUEST_FINISHADDRESS_DIALOG );
+                        }
+                    }, 500 );
+
+                }
+            }
+        } );
+        binding.movingphoneBtn.setOnClickListener( new View.OnClickListener() {
+            //도착주소 클릭시
+            @Override
+            public void onClick(View view) {
+                if (MAIN_INPUT_CHECK == 0) {
+                    Intent intent = new Intent( MainActivity.this, MovingTypeCheckActivity.class );
+                    intent.putExtra( "type", binding.movingType.getText() );
+                    startActivityForResult( intent, REQUEST_MOVINGTYPE_DIALOG );
+                    // showToast( "이사종류를 선택해주세요" );
+                } else if (MAIN_INPUT_CHECK == 1) {
+                    Intent intent = new Intent( MainActivity.this, MovingDayDialogActivity.class );
+                    startActivityForResult( intent, REQUEST_MOVINGDAY_DIALOG );
+                    //   showToast( "이사날짜를 선택해주세요" );
+                } else if (MAIN_INPUT_CHECK == 2) {
+                    new Handler().postDelayed( new Runnable() {
+
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent( MainActivity.this, StartAddressDialogActivity.class );
+                            intent.putExtra( "start", binding.startday.getText() );
+                            startActivityForResult( intent, REQUEST_STARTADDRESS_DIALOG );
+                        }
+                    }, 500 );
+                    //showToast( "출발주소를 선택해주세요 " );
+                } else if (MAIN_INPUT_CHECK == 3) {
+                    new Handler().postDelayed( new Runnable() {
+
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent( MainActivity.this, FinishAddressDialogActivity.class );
+                            intent.putExtra( "finish", binding.finishday.getText() );
+                            startActivityForResult( intent, REQUEST_FINISHADDRESS_DIALOG );
+                        }
+                    }, 500 );
+                    // showToast( "도착주소를 선택해주세요" );
+                } else {
+                    PhoneDialogActivity phoneDialogActivity = new PhoneDialogActivity( MainActivity.this );
+                    phoneDialogActivity.callFunction();
+                    //다이얼로그 호출
+                }
+
+            }
+        } );
+        binding.searchBt.setOnClickListener( new View.OnClickListener() {
+            //바로문의하기 버튼 클릭시
+            @Override
+            public void onClick(View view) {
+                if (MAIN_INPUT_CHECK == 0) {
+                    Intent intent = new Intent( MainActivity.this, MovingTypeCheckActivity.class );
+                    intent.putExtra( "type", binding.movingType.getText() );
+                    startActivityForResult( intent, REQUEST_MOVINGTYPE_DIALOG );
+                    //  showToast( "이사종류를 선택해주세요" );
+                } else if (MAIN_INPUT_CHECK == 1) {
+                    Intent intent = new Intent( MainActivity.this, MovingDayDialogActivity.class );
+                    startActivityForResult( intent, REQUEST_MOVINGDAY_DIALOG );
+                    //  showToast( "이사날짜를 선택해주세요" );
+                } else if (MAIN_INPUT_CHECK == 2) {
+                    new Handler().postDelayed( new Runnable() {
+
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent( MainActivity.this, StartAddressDialogActivity.class );
+                            intent.putExtra( "start", binding.startday.getText() );
+                            startActivityForResult( intent, REQUEST_STARTADDRESS_DIALOG );
+                        }
+                    }, 500 );
+                    // showToast( "출발주소를 선택해주세요 " );
+                } else if (MAIN_INPUT_CHECK == 3) {
+                    new Handler().postDelayed( new Runnable() {
+
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent( MainActivity.this, FinishAddressDialogActivity.class );
+                            intent.putExtra( "finish", binding.finishday.getText() );
+                            startActivityForResult( intent, REQUEST_FINISHADDRESS_DIALOG );
+                        }
+                    }, 500 );
+                    // showToast( "도착주소를 선택해주세요" );
+                } else if (MAIN_INPUT_CHECK == 4) {
+                    PhoneDialogActivity phoneDialogActivity = new PhoneDialogActivity( MainActivity.this );
+                    phoneDialogActivity.callFunction();
+                    //   showToast( "연락처를 입력해주세요" );
+                    Log.i( "input2", String.valueOf( MAIN_INPUT_CHECK ) );
+                } else {
+                    showProgressDialog( "", "등록중입니다.\n잠시만 기다려 주세요." );
+                    Log.i( "input2", String.valueOf( MAIN_INPUT_CHECK ) );
+                    moving_order_insert();
+                    // insert 실행
+                }
+            }
+        } );
+
+    }
+
+
+    @Override
+    protected void onRestart() {
+        //MAIN_INPUT_CHECK = 0;
+        movingname_data = "";
+        movingphone_data = "";
+        movingtype_check = 1;
+        //관련 변수 초기화
+        // TODO Auto-generated method stub
+        super.onRestart();
+     /*   Intent i = new Intent( MainActivity.this, MainActivity.class );  //your class
+        startActivity( i );
+        finish();*/
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        try {
+            if (receiver != null)
+                unregisterReceiver( receiver );
+//
+        } catch (Exception e) {
+        }
+        super.onDestroy();
+    }
+
+    private void initNavigation() {
+        // 토글 아이콘
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle( this, binding.drawerLayout, commonToolbarBinding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close );
+        toggle.getDrawerArrowDrawable().setColor( getResources().getColor( R.color.actionbar_text ) );
+        binding.drawerLayout.setDrawerListener( toggle );
+        toggle.syncState();
+
+        commonNavigationBinding.linearRequest.setOnClickListener( navigationClickListener );
+        commonNavigationBinding.linearCheck.setOnClickListener( navigationClickListener );
+        commonNavigationBinding.linearMoving.setOnClickListener( navigationClickListener );
+        commonNavigationBinding.linearPolicy.setOnClickListener( navigationClickListener );
+        commonNavigationBinding.infoPolicy.setOnClickListener( navigationClickListener );
+    }
+
+    @Override
+    public void onBackPressed() {
+        //뒤로가기버튼
+        if (binding.drawerLayout.isDrawerOpen( GravityCompat.START )) {
+            binding.drawerLayout.closeDrawer( GravityCompat.START );
+        } else {
+            backPressCloseHandler.onBackPressed();
+            //super.onBackPressed();
+        }
+    }
+
+    private void initActionBar() {
+        setSupportActionBar( commonToolbarBinding.toolbar );
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled( false );
+    }
 
     public class SocketRecv extends BroadcastReceiver {
         @Override
@@ -144,308 +453,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-
-    @SuppressLint("MissingPermission")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate( savedInstanceState );
-        binding = DataBindingUtil.setContentView( this, R.layout.activity_main );
-        commonToolbarBinding = DataBindingUtil.bind( binding.commonToolbar.getRoot() );
-        commonNavigationBinding = DataBindingUtil.bind( binding.commonNavigation.getRoot() );
-        backPressCloseHandler = new BackPressCloseHandler( this );
-        setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-     //   version_checktest();
-        //version_check();
-        //앱버전체크
-
-
-
-/*        //안드로이드 버전체크
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            //안드로이드 6.0 마시멜로(23)이하일경우 사용자가 직접 권한 허용 해줘야함
-
-            checkVerify();
-        } else {
-            startApp();
-            //안드로이드 6.0 이하일경우
-        }*/
-
-
-        initNavigation();
-        initActionBar();
-
-        receiver = new SocketRecv();
-        this.registerReceiver( receiver, new IntentFilter( INTENT_FILTER ) );
-        order_items = new ArrayList<>();
-
-        SharedPreferences prefs = getSharedPreferences( "Address", MODE_PRIVATE );
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.clear();
-        editor.commit();
-        //   SharedPreferences  초기화
-
-
-
-        binding.callbt.setOnClickListener( new View.OnClickListener() {
-            //전화버튼 클릭시
-            @Override
-            public void onClick(View view) {
-                TedPermission.with(MainActivity.this)
-                        .setPermissionListener(new PermissionListener() {
-                            @Override
-                            public void onPermissionGranted() {
-                       /*         Intent intent = new Intent(MainActivity.this, AgreementDlg.class);
-                                startActivity(intent);*/
-
-                                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "01012345678"));
-                                startActivity(intent);
-                            }
-
-                            @Override
-                            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-
-            }
-
-                 })
-                        .setDeniedMessage(getString(R.string.ted_permission_denied_message))
-                        .setGotoSettingButtonText(getString(R.string.ted_permission_go_to_setting_button_text))
-                        .setPermissions( android.Manifest.permission.CALL_PHONE).check();
-            }
-        } );
-
-        binding.movingtypeBtn.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-         /*       MovingTypeCheckActivity movingTypeCheckActivity = new MovingTypeCheckActivity(MainActivity.this);
-                movingTypeCheckActivity.callFunction();*/
-                //다이얼로그 호출
-                Intent intent = new Intent( MainActivity.this, MovingTypeCheckActivity.class );
-                intent.putExtra("type",binding.movingType.getText());
-                startActivityForResult( intent, REQUEST_MOVINGTYPE_DIALOG);
-
-            }
-        } );
-        binding.movingdayBtn.setOnClickListener( new View.OnClickListener() {
-            //이사종류 클릭시
-            @Override
-            public void onClick(View view) {
-                if (MAIN_INPUT_CHECK == 0) {
-                    //이사종류를 선택 안했을시
-                    Intent intent = new Intent( MainActivity.this, MovingTypeCheckActivity.class );
-                    intent.putExtra("type",binding.movingType.getText());
-                    startActivityForResult( intent, REQUEST_MOVINGTYPE_DIALOG);
-                  //  showToast( "이사종류를 선택해주세요" );
-                } else {
-                    //이사종류를 선택 했을시 (MAIN_INPUT_CHECK==1일때)
-                    //추후에 이전단계 변경도 가능해야하므로 else 로 처리
-                    Intent intent = new Intent( MainActivity.this, MovingDayDialogActivity.class );
-                    startActivityForResult( intent, REQUEST_MOVINGDAY_DIALOG );
-                }
-            }
-        } );
-        binding.movingstartBtn.setOnClickListener( new View.OnClickListener() {
-            //이사날짜 클릭시
-            @Override
-            public void onClick(View view) {
-                if (MAIN_INPUT_CHECK == 0) {
-                    Intent intent = new Intent( MainActivity.this, MovingTypeCheckActivity.class );
-                    intent.putExtra("type",binding.movingType.getText());
-                    startActivityForResult( intent, REQUEST_MOVINGTYPE_DIALOG);
-                   // showToast( "이사종류를 선택해주세요" );
-                } else if (MAIN_INPUT_CHECK == 1) {
-                  //  showToast( "이사날짜를 선택해주세요" );
-                    Intent intent = new Intent( MainActivity.this, MovingDayDialogActivity.class );
-                    startActivityForResult( intent, REQUEST_MOVINGDAY_DIALOG );
-                } else {
-                    new Handler().postDelayed( new Runnable() {
-
-                        @Override
-                        public void run() {
-                            Intent intent = new Intent( MainActivity.this, StartAddressDialogActivity.class );
-                            intent.putExtra("start",binding.startday.getText());
-                            startActivityForResult( intent, REQUEST_STARTADDRESS_DIALOG );
-                        }
-                    } ,500);
-
-                }
-            }
-        } );
-        binding.movingfinishBtn.setOnClickListener( new View.OnClickListener() {
-            //출발주소 클릭시
-            @Override
-            public void onClick(View view) {
-                if (MAIN_INPUT_CHECK == 0) {
-                    Intent intent = new Intent( MainActivity.this, MovingTypeCheckActivity.class );
-                    intent.putExtra("type",binding.movingType.getText());
-                    startActivityForResult( intent, REQUEST_MOVINGTYPE_DIALOG);
-                    //showToast( "이사종류를 선택해주세요" );
-                } else if (MAIN_INPUT_CHECK == 1) {
-                    Intent intent = new Intent( MainActivity.this, MovingDayDialogActivity.class );
-                    startActivityForResult( intent, REQUEST_MOVINGDAY_DIALOG );
-                   // showToast( "이사날짜를 선택해주세요" );
-                } else if (MAIN_INPUT_CHECK == 2) {
-                    new Handler().postDelayed( new Runnable() {
-
-                        @Override
-                        public void run() {
-                            Intent intent = new Intent( MainActivity.this, StartAddressDialogActivity.class );
-                            intent.putExtra("start",binding.startday.getText());
-                            startActivityForResult( intent, REQUEST_STARTADDRESS_DIALOG );
-                        }
-                    } ,500);
-                    //showToast( "출발주소를 선택해주세요 " );
-                } else {
-                    new Handler().postDelayed( new Runnable() {
-
-                        @Override
-                        public void run() {
-                            Intent intent = new Intent( MainActivity.this, FinishAddressDialogActivity.class );
-                            intent.putExtra("finish",binding.finishday.getText());
-                            startActivityForResult( intent, REQUEST_FINISHADDRESS_DIALOG );
-                        }
-                    } ,500);
-
-                }
-            }
-        } );
-        binding.movingphoneBtn.setOnClickListener( new View.OnClickListener() {
-            //도착주소 클릭시
-            @Override
-            public void onClick(View view) {
-                if (MAIN_INPUT_CHECK == 0) {
-                    Intent intent = new Intent( MainActivity.this, MovingTypeCheckActivity.class );
-                    intent.putExtra("type",binding.movingType.getText());
-                    startActivityForResult( intent, REQUEST_MOVINGTYPE_DIALOG);
-                   // showToast( "이사종류를 선택해주세요" );
-                } else if (MAIN_INPUT_CHECK == 1) {
-                    Intent intent = new Intent( MainActivity.this, MovingDayDialogActivity.class );
-                    startActivityForResult( intent, REQUEST_MOVINGDAY_DIALOG );
-                 //   showToast( "이사날짜를 선택해주세요" );
-                } else if (MAIN_INPUT_CHECK == 2) {
-                    new Handler().postDelayed( new Runnable() {
-
-                        @Override
-                        public void run() {
-                            Intent intent = new Intent( MainActivity.this, StartAddressDialogActivity.class );
-                            intent.putExtra("start",binding.startday.getText());
-                            startActivityForResult( intent, REQUEST_STARTADDRESS_DIALOG );
-                        }
-                    } ,500);
-                    //showToast( "출발주소를 선택해주세요 " );
-                } else if (MAIN_INPUT_CHECK == 3) {
-                    new Handler().postDelayed( new Runnable() {
-
-                        @Override
-                        public void run() {
-                            Intent intent = new Intent( MainActivity.this, FinishAddressDialogActivity.class );
-                            intent.putExtra("finish",binding.finishday.getText());
-                            startActivityForResult( intent, REQUEST_FINISHADDRESS_DIALOG );
-                        }
-                    } ,500);
-                   // showToast( "도착주소를 선택해주세요" );
-                } else {
-                    PhoneDialogActivity phoneDialogActivity = new PhoneDialogActivity( MainActivity.this );
-                    phoneDialogActivity.callFunction();
-                    //다이얼로그 호출
-                }
-
-            }
-        } );
-        binding.searchBt.setOnClickListener( new View.OnClickListener() {
-            //바로문의하기 버튼 클릭시
-            @Override
-            public void onClick(View view) {
-                if (MAIN_INPUT_CHECK == 0) {
-                    Intent intent = new Intent( MainActivity.this, MovingTypeCheckActivity.class );
-                    intent.putExtra("type",binding.movingType.getText());
-                    startActivityForResult( intent, REQUEST_MOVINGTYPE_DIALOG);
-                  //  showToast( "이사종류를 선택해주세요" );
-                } else if (MAIN_INPUT_CHECK == 1) {
-                    Intent intent = new Intent( MainActivity.this, MovingDayDialogActivity.class );
-                    startActivityForResult( intent, REQUEST_MOVINGDAY_DIALOG );
-                  //  showToast( "이사날짜를 선택해주세요" );
-                } else if (MAIN_INPUT_CHECK == 2) {
-                    new Handler().postDelayed( new Runnable() {
-
-                        @Override
-                        public void run() {
-                            Intent intent = new Intent( MainActivity.this, StartAddressDialogActivity.class );
-                            intent.putExtra("start",binding.startday.getText());
-                            startActivityForResult( intent, REQUEST_STARTADDRESS_DIALOG );
-                        }
-                    } ,500);
-                   // showToast( "출발주소를 선택해주세요 " );
-                } else if (MAIN_INPUT_CHECK == 3) {
-                    new Handler().postDelayed( new Runnable() {
-
-                        @Override
-                        public void run() {
-                            Intent intent = new Intent( MainActivity.this, FinishAddressDialogActivity.class );
-                            intent.putExtra("finish",binding.finishday.getText());
-                            startActivityForResult( intent, REQUEST_FINISHADDRESS_DIALOG );
-                        }
-                    } ,500);
-                   // showToast( "도착주소를 선택해주세요" );
-                } else if (MAIN_INPUT_CHECK == 4) {
-                    PhoneDialogActivity phoneDialogActivity = new PhoneDialogActivity( MainActivity.this );
-                    phoneDialogActivity.callFunction();
-                 //   showToast( "연락처를 입력해주세요" );
-                    Log.i( "input2", String.valueOf( MAIN_INPUT_CHECK ) );
-                } else {
-                    showProgressDialog( "", "등록중입니다.\n잠시만 기다려 주세요." );
-                    Log.i( "input2", String.valueOf( MAIN_INPUT_CHECK ) );
-                    moving_order_insert();
-                    // insert 실행
-                }
-            }
-        } );
-
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        //뒤로가기버튼
-        if (binding.drawerLayout.isDrawerOpen( GravityCompat.START )) {
-            binding.drawerLayout.closeDrawer( GravityCompat.START );
-        } else {
-            backPressCloseHandler.onBackPressed();
-            //super.onBackPressed();
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        try {
-            if (receiver != null)
-                unregisterReceiver( receiver );
-//
-        } catch (Exception e) {
-        }
-        super.onDestroy();
-    }
-
-    private void initNavigation() {
-        // 토글 아이콘
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle( this, binding.drawerLayout, commonToolbarBinding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close );
-        toggle.getDrawerArrowDrawable().setColor( getResources().getColor( R.color.actionbar_text ) );
-        binding.drawerLayout.setDrawerListener( toggle );
-        toggle.syncState();
-
-        commonNavigationBinding.linearRequest.setOnClickListener( navigationClickListener );
-        commonNavigationBinding.linearCheck.setOnClickListener( navigationClickListener );
-        commonNavigationBinding.linearMoving.setOnClickListener( navigationClickListener );
-        commonNavigationBinding.linearPolicy.setOnClickListener( navigationClickListener );
-        commonNavigationBinding.infoPolicy.setOnClickListener( navigationClickListener );
-    }
-
-
-    private void initActionBar() {
-        setSupportActionBar( commonToolbarBinding.toolbar );
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled( false );
-    }
-
     @Override
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         switch (item.getItemId()) {
@@ -486,7 +493,7 @@ public class MainActivity extends BaseActivity {
                     break;
                 case R.id.infoPolicy:
                     //개인정보처리 방침 클릭시//
-                    intent = new Intent( MainActivity.this,PrivacyActivity.class );
+                    intent = new Intent( MainActivity.this, PrivacyActivity.class );
                     //액티비티 시작!
                     startActivity( intent );
                     break;
@@ -504,7 +511,7 @@ public class MainActivity extends BaseActivity {
                 //이사 종류 선택 Activity 에서 돌아올때
                 if (resultCode == RESULT_OK) {
 
-                    if(data.getStringExtra( "result" ).equals("이사종류")) {
+                    if (data.getStringExtra( "result" ).equals( "이사종류" )) {
                         //최초입력일때
                         MAIN_INPUT_CHECK = 1;
                         animate();
@@ -598,9 +605,9 @@ public class MainActivity extends BaseActivity {
     }
 
     public void moving_order_insert() {
-        Log.i("movingtype_check", String.valueOf( movingtype_check ) );
+        Log.i( "movingtype_check", String.valueOf( movingtype_check ) );
         //소켓서버로 보냄 insert
-        networkPresenter.InsertDorderForCust(  String.valueOf( movingtype_check ), movingday_data, movingname_data, movingphone_data, movingstart_data, movingfinish_data , new InsertDorderForCustCInterface() {
+        networkPresenter.InsertDorderForCust( String.valueOf( movingtype_check ), movingday_data, movingname_data, movingphone_data, movingstart_data, movingfinish_data, new InsertDorderForCustCInterface() {
             @Override
             public void success(String insertcheck) {
                 //등록 성공시
@@ -610,6 +617,7 @@ public class MainActivity extends BaseActivity {
                 MAIN_INPUT_CHECK = 0;
                 onRestart();
             }
+
             @Override
             public void success(RecvPacket packet) {
 
@@ -626,20 +634,7 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    @Override
-    protected void onRestart() {
-        //MAIN_INPUT_CHECK = 0;
-        movingname_data = "";
-        movingphone_data = "";
-        movingtype_check = 1;
-        //관련 변수 초기화
-        // TODO Auto-generated method stub
-        super.onRestart();
-     /*   Intent i = new Intent( MainActivity.this, MainActivity.class );  //your class
-        startActivity( i );
-        finish();*/
 
-    }
 
     //자동차 이동 애니메이션
     //각각 시작좌표,끝좌표가 다름

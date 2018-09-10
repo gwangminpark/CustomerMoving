@@ -17,6 +17,7 @@ import android.util.Log;
 
 
 import com.crashlytics.android.Crashlytics;
+
 import io.fabric.sdk.android.Fabric;
 import insung.moving.customer.R;
 import insung.moving.customer.service.RecvPacket;
@@ -26,7 +27,7 @@ import insung.moving.customer.util.KeyHandleUtil;
 
 
 public class SplashActivity extends BaseActivity {
-//
+    //
     public static float server_version;
     //마켓(서버)에 올라가있는 앱 버전//
     public static float app_version;
@@ -45,7 +46,7 @@ public class SplashActivity extends BaseActivity {
                 if (intent.getBooleanExtra( DEFINE.networkIntentValue, false )) {
                     // 네트워크 성공 시 핸들러 리무브
                     version_check();
-                        //버전체크
+                    //버전체크
                 } else {
                     // 네트워크 실패
                     if (networkAlertDialog != null && networkAlertDialog.isShowing()) {
@@ -77,57 +78,55 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
-        setContentView( R.layout.activity_splash);
+        super.onCreate( savedInstanceState );
+        Fabric.with( this, new Crashlytics() );
+        setContentView( R.layout.activity_splash );
         // 임시 스플래시 액티비티
 
 
-
-
-
-       Splashreceiver = new SocketRecv();
+        Splashreceiver = new SocketRecv();
         this.registerReceiver( Splashreceiver, new IntentFilter( INTENT_FILTER ) );
         //연결 onReceive 호출
     }
-    public void version_check(){
 
-        networkPresenter.GetVersionCust(new GetVersionCustInterface(){
+    public void version_check() {
+
+        networkPresenter.GetVersionCust( new GetVersionCustInterface() {
             @Override
             public void success(String version) {
 
-                Log.i("Version11121",version);
+                Log.i( "Version11121", version );
                 try {
-                    server_version = Float.parseFloat(version );
+                    server_version = Float.parseFloat( version );
                     //서버에서 가져오는 앱버전
-                    app_version= Float.parseFloat( getPackageManager().getPackageInfo( getPackageName(), 0 ).versionName );
+                    app_version = Float.parseFloat( getPackageManager().getPackageInfo( getPackageName(), 0 ).versionName );
                     //클라앱버전
 
-                    if(server_version>app_version){
+                    if (server_version > app_version) {
                         //서버버전이 앱버전보다 높으면 마켓업데이트 창으로 보냄
                         DialogUpdate();
-                    }else if(server_version<app_version){
+                    } else if (server_version < app_version) {
                         //앱버전이 서버버전보다 높으면 서버 점검중
                         DialogCheck();
-                    }else if(server_version==app_version){
+                    } else if (server_version == app_version) {
                         new Handler().postDelayed( new Runnable() {
 
                             @Override
                             public void run() {
-                                startActivity(new Intent(SplashActivity.this,
-                                        MainActivity.class));
+                                startActivity( new Intent( SplashActivity.this,
+                                        MainActivity.class ) );
                                 finish();
                             }
-                        } ,1000);
+                        }, 1000 );
 
                     }
-
 
 
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
             }
+
             @Override
             public void success(RecvPacket packet) {
 
@@ -137,7 +136,7 @@ public class SplashActivity extends BaseActivity {
             public void fail(String t) {
 
             }
-        }  );
+        } );
 
 
     }
@@ -146,12 +145,13 @@ public class SplashActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-     if(Splashreceiver != null)
-            unregisterReceiver(Splashreceiver);
+        if (Splashreceiver != null)
+            unregisterReceiver( Splashreceiver );
     }
+
     public void onBackPressed() {
 
-        KeyHandleUtil.doubleBackServiceFinish(SplashActivity.this, service);
+        KeyHandleUtil.doubleBackServiceFinish( SplashActivity.this, service );
     }
 
 
@@ -211,11 +211,11 @@ public class SplashActivity extends BaseActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent!=null){
-                if (intent.getAction().equals("com.android.vending.INSTALL_REFERRER")) {
+            if (intent != null) {
+                if (intent.getAction().equals( "com.android.vending.INSTALL_REFERRER" )) {
 
                     //아래와 같이 referrer 정보를 얻을 수 있습니다
-                    Log.d("MyReceiver", "referrer " + intent.getStringExtra("referrer"));
+                    Log.d( "MyReceiver", "referrer " + intent.getStringExtra( "referrer" ) );
                 }
             }
         }

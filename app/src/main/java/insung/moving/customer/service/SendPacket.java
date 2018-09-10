@@ -152,25 +152,5 @@ public class SendPacket implements Parcelable {
     }
 
 
-    public String GetCOMMAND() {
-        return COMMAND;
-    }
-
-    public void SetGPS(int lon, int lat) {
-        LON = lon;
-        LAT = lat;
-    }
-
-    public void SetCopy(SendPacket sPacket) {
-        HEAD = sPacket.HEAD;
-        PACKET_SIZE = sPacket.PACKET_SIZE;
-        TYPE = sPacket.TYPE;
-        SUB_TYPE = sPacket.SUB_TYPE;
-        LON = sPacket.LON;
-        LAT = sPacket.LAT;
-        DONG_CODE = sPacket.DONG_CODE;
-        COMMAND = sPacket.COMMAND;
-        pszData = sPacket.pszData.clone();
-    }
 }
 

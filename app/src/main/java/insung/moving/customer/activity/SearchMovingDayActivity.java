@@ -33,58 +33,57 @@ import insung.moving.customer.databinding.NotittleToolbarBinding;
  */
 
 public class SearchMovingDayActivity extends BaseActivity implements OnDateSelectedListener {
-    private static final TitleFormatter DEFAULT_TITLE_FORMATTER = new DateFormatTitleFormatter(new SimpleDateFormat("yyyy년 MM월"));
+    private static final TitleFormatter DEFAULT_TITLE_FORMATTER = new DateFormatTitleFormatter( new SimpleDateFormat( "yyyy년 MM월" ) );
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
-    private  String shot_Day;
+    private String shot_Day;
     private ActivityMovingSearchBinding binding;
     private NotittleToolbarBinding notittleToolbarBinding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_moving_search);
-        notittleToolbarBinding= DataBindingUtil.bind(binding.notittleToolbar.getRoot());
-        notittleToolbarBinding.toolbarTitle.setText("이삿날 찾기");
+        super.onCreate( savedInstanceState );
+        binding = DataBindingUtil.setContentView( this, R.layout.activity_moving_search );
+        notittleToolbarBinding = DataBindingUtil.bind( binding.notittleToolbar.getRoot() );
+        notittleToolbarBinding.toolbarTitle.setText( "이삿날 찾기" );
         GregorianCalendar today = new GregorianCalendar();
-        setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        int Year = today.get( Calendar.YEAR);
-        int Month = today.get(Calendar.MONTH);
-        int Date = today.get(Calendar.DATE);
-        int Hour = today.get(Calendar.HOUR_OF_DAY);
+        setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT );
+        int Year = today.get( Calendar.YEAR );
+        int Month = today.get( Calendar.MONTH );
+        int Date = today.get( Calendar.DATE );
+        int Hour = today.get( Calendar.HOUR_OF_DAY );
 
 
+        setSupportActionBar( notittleToolbarBinding.toolbar );
+        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
+        getSupportActionBar().setDisplayShowHomeEnabled( true );
+        getSupportActionBar().setDisplayShowTitleEnabled( false );
 
-        setSupportActionBar(notittleToolbarBinding.toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        binding.calendarView.setOnDateChangedListener(this);
-        binding.calendarView.setShowOtherDates(MaterialCalendarView.SHOW_OUT_OF_RANGE);
-        binding.calendarView.setTitleFormatter(DEFAULT_TITLE_FORMATTER);
+        binding.calendarView.setOnDateChangedListener( this );
+        binding.calendarView.setShowOtherDates( MaterialCalendarView.SHOW_OUT_OF_RANGE );
+        binding.calendarView.setTitleFormatter( DEFAULT_TITLE_FORMATTER );
 
         Calendar minCalendar = Calendar.getInstance();
         Calendar maxCalendar = Calendar.getInstance();
 
         binding.calendarView.state().edit()
-                .setFirstDayOfWeek(Calendar.SUNDAY)
-                .setMinimumDate(CalendarDay.from(Year, Month,1)) // 달력의 시작
-                .setMaximumDate(CalendarDay.from(Year, Month+10, 31)) // 달력의 끝
-                .setCalendarDisplayMode( CalendarMode.MONTHS)
+                .setFirstDayOfWeek( Calendar.SUNDAY )
+                .setMinimumDate( CalendarDay.from( Year, Month, 1 ) ) // 달력의 시작
+                .setMaximumDate( CalendarDay.from( Year, Month + 10, 31 ) ) // 달력의 끝
+                .setCalendarDisplayMode( CalendarMode.MONTHS )
                 .commit();
 
 
-
-        if(Month<10){
-            if(Date<10){
-                shot_Day = Year + "-0" + (Month+1) + "-0" + Date;
-            }else {
-                shot_Day = Year + "-0" + (Month+1) + "-" + Date;
+        if (Month < 10) {
+            if (Date < 10) {
+                shot_Day = Year + "-0" + (Month + 1) + "-0" + Date;
+            } else {
+                shot_Day = Year + "-0" + (Month + 1) + "-" + Date;
             }
-        }else {
-            if(Date<10){
-                shot_Day = Year + "-" + (Month+1) + "-0" + Date;
-            }else {
-                shot_Day = Year + "-" + (Month+1) + "-" + Date;
+        } else {
+            if (Date < 10) {
+                shot_Day = Year + "-" + (Month + 1) + "-0" + Date;
+            } else {
+                shot_Day = Year + "-" + (Month + 1) + "-" + Date;
             }
             // 기본값으로 오늘 날짜 지정
             // 날짜 데이터를 2018-7-9  -> 2018-07-09 형식으로 만들어줌
@@ -96,32 +95,32 @@ public class SearchMovingDayActivity extends BaseActivity implements OnDateSelec
                 new SundayDecorator(),
                 new SaturdayDecorator(),
                 new HighlightLunarDecorator(),
-                oneDayDecorator);
-        binding.calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+                oneDayDecorator );
+        binding.calendarView.setOnDateChangedListener( new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                oneDayDecorator.setDate(date.getDate());
+                oneDayDecorator.setDate( date.getDate() );
                 widget.invalidateDecorators();
 
                 int Year = date.getYear();
                 int Month = date.getMonth() + 1;
                 int Day = date.getDay();
 
-                Log.i("Year test", Year + "");
-                Log.i("Month test", Month + "");
-                Log.i("Day test", Day + "");
-                Log.i("shot_Day test", shot_Day + "");
+                Log.i( "Year test", Year + "" );
+                Log.i( "Month test", Month + "" );
+                Log.i( "Day test", Day + "" );
+                Log.i( "shot_Day test", shot_Day + "" );
 
-                if(Month<10){
-                    if(Day<10){
+                if (Month < 10) {
+                    if (Day < 10) {
                         shot_Day = Year + "-0" + Month + "-0" + Day;
-                    }else {
+                    } else {
                         shot_Day = Year + "-0" + Month + "-" + Day;
                     }
-                }else {
-                    if(Day<10){
+                } else {
+                    if (Day < 10) {
                         shot_Day = Year + "-" + Month + "-0" + Day;
-                    }else {
+                    } else {
                         shot_Day = Year + "-" + Month + "-" + Day;
                     }
                 }
@@ -131,11 +130,7 @@ public class SearchMovingDayActivity extends BaseActivity implements OnDateSelec
 
             }
 
-        });
-
-
-
-
+        } );
 
 
     }
@@ -147,12 +142,12 @@ public class SearchMovingDayActivity extends BaseActivity implements OnDateSelec
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
+        switch (item.getItemId()) {
+            case android.R.id.home: { //toolbar의 back키 눌렀을 때 동작
                 finish();
                 return true;
             }
         }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected( item );
     }
 }

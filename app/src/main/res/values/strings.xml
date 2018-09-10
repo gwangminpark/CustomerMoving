@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">이사킹</string>
     <!--네비게이션-->
     <string name="navigation_drawer_open">네비게이션 열림</string>
@@ -7,6 +7,8 @@
     <string name="ted_permission_go_to_setting_button_text">설정</string>
     <string name="ted_permission_denied_message">권한이 승인되지 않아 서비스를 실행할 수 없습니다.\n권한설정은 [설정] > [권한]에서 변경하실 수 있습니다.</string>
     <string name="permission_not_agree">권한이 허용되지 않아 전화걸기를 실행할수 없습니다.</string>
+    <string name="agreement">http://24.414.co.kr/Agreement/35.html</string>
+    <string name="InformationConsent"></string>
     <string name="appAgreement">※ 접근권한 안내\n
 인성연합물류 서비스 제공을 위해 다음과 같은 접근권한을 필요로 합니다.\n
 선택적 접근권한의 허용에 동의하지 않아도 서비스 기본기능을 이용할 수 있습니다.\n\n

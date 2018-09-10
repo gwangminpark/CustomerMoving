@@ -9,12 +9,10 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.util.Log;
 
-import insung.moving.customer.model.HeightArrayItem;
 import insung.moving.customer.model.SidoArrayItem;
 import insung.moving.customer.temp.DATA;
 import insung.moving.customer.util.LogUtil;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,25 +27,35 @@ public class MyApplication extends Application {
 
 
     public SidoArrayItem sidoArrayItem;
-    public HeightArrayItem heightArrayItem;
+
+    public static final String [] sidoName = {
+            "서울","부산","대구","인천","광주","대전","울산",
+            "세종","경기","강원","충북","충남","전북","전남",
+            "경북","경남","제주"
+    };
+    public static final String [] sidoCode = {
+            "1100000000", "2600000000", "2700000000", "2800000000",
+            "2900000000", "3000000000", "3100000000", "3600000000",
+            "4100000000", "4200000000", "4300000000", "4400000000",
+            "4500000000", "4600000000", "4700000000", "4800000000", "5000000000"
+    };
+
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.i("디스s", String.valueOf(this));
+        Log.i( "디스s", String.valueOf( this ) );
         mInstance = this;
-        IS_DEBUG_MODE = isDebuggable(this);
+        IS_DEBUG_MODE = isDebuggable( this );
 
         sidoArrayItem = new SidoArrayItem();
-        heightArrayItem= new HeightArrayItem();
 
 
         heightItems = new ArrayList<>();
 
         for (int i = 0; i < DATA.height.length; i++) {
-           heightItems.add( DATA.height[i]);
+            heightItems.add( DATA.height[i] );
         }
 
-       heightArrayItem.setHeightItems( heightItems );
 
 
 /////////
@@ -55,12 +63,12 @@ public class MyApplication extends Application {
         sidoCodes = new ArrayList<>();
 
         for (int i = 0; i < DATA.sidoName.length; i++) {
-            sidoItems.add( DATA.sidoName[i]);
-            sidoCodes.add( DATA.sidoCode[i]);
+            sidoItems.add( DATA.sidoName[i] );
+            sidoCodes.add( DATA.sidoCode[i] );
         }
 
-        sidoArrayItem.setSidoItems(sidoItems);
-        sidoArrayItem.setSidoCodes(sidoCodes);
+        sidoArrayItem.setSidoItems( sidoItems );
+        sidoArrayItem.setSidoCodes( sidoCodes );
 
         //startService(); // 서비스 시작
     }
@@ -76,7 +84,7 @@ public class MyApplication extends Application {
         PackageManager pm = context.getPackageManager();
 
         try {
-            ApplicationInfo appinfo = pm.getApplicationInfo(context.getPackageName(), 0);
+            ApplicationInfo appinfo = pm.getApplicationInfo( context.getPackageName(), 0 );
             debuggable = (0 != (appinfo.flags & ApplicationInfo.FLAG_DEBUGGABLE));
         } catch (NameNotFoundException e) {
         /* debuggable variable will remain false */
@@ -86,17 +94,17 @@ public class MyApplication extends Application {
     }
 
 
-//
+    //
     public static boolean isDebugMode() {
         return IS_DEBUG_MODE;
     }
 
-    public void getRunActivity()	{
-        ActivityManager activity_manager = (ActivityManager)getSystemService( Context.ACTIVITY_SERVICE);
-        List<RunningTaskInfo> task_info = activity_manager.getRunningTasks(9999);
+    public void getRunActivity() {
+        ActivityManager activity_manager = (ActivityManager) getSystemService( Context.ACTIVITY_SERVICE );
+        List<RunningTaskInfo> task_info = activity_manager.getRunningTasks( 9999 );
 
-        for(int i=0; i<task_info.size(); i++) {
-            LogUtil.d("[" + i + "] activitsy:"+ task_info.get(i).topActivity.getPackageName() + " >> " + task_info.get(i).topActivity.getClassName());
+        for (int i = 0; i < task_info.size(); i++) {
+            LogUtil.d( "[" + i + "] activitsy:" + task_info.get( i ).topActivity.getPackageName() + " >> " + task_info.get( i ).topActivity.getClassName() );
         }
     }
 }

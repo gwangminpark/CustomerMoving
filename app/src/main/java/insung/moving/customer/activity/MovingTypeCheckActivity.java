@@ -33,13 +33,6 @@ public class MovingTypeCheckActivity extends BaseActivity{
     private Context context;
     private ActivityMovingTypeDialogBinding binding;
 
-    private  SharedPreferences  sharedpreferences;
-
-    public MovingTypeCheckActivity() {}
-
-    public MovingTypeCheckActivity(Context context) {
-        this.context = context;
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );

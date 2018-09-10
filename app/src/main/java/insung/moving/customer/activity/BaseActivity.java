@@ -88,11 +88,12 @@ public class BaseActivity extends AppCompatActivity {
         }
 
     }
-    protected void setBindService(ServiceConnection getServiceConnection){
+
+    protected void setBindService(ServiceConnection getServiceConnection) {
         if (!bound) {
             bindService(
-                    new Intent(BaseActivity.this, SocketService.class), getServiceConnection,
-                    Context.BIND_AUTO_CREATE);
+                    new Intent( BaseActivity.this, SocketService.class ), getServiceConnection,
+                    Context.BIND_AUTO_CREATE );
         }
     }
 
@@ -114,20 +115,22 @@ public class BaseActivity extends AppCompatActivity {
         progressDialog = ProgressDialogManager.showSingle( this, progressDialog, title, msg );
         progressDialog.setCanceledOnTouchOutside( true );
     }
+
     public void showNetworkProgressDialog(String title, String msg) {
-        progressDialog = ProgressDialogManager.showSingle(this, progressDialog, title, msg);
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+        progressDialog = ProgressDialogManager.showSingle( this, progressDialog, title, msg );
+        progressDialog.setCanceledOnTouchOutside( false );
+        progressDialog.setOnKeyListener( new DialogInterface.OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP){
-                    KeyHandleUtil.doubleBackServiceFinish(BaseActivity.this, service);
+                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+                    KeyHandleUtil.doubleBackServiceFinish( BaseActivity.this, service );
                     return false;
                 }
                 return false;
             }
-        });
+        } );
     }
+
     protected void dismissProgressDialog() {
         ProgressDialogManager.dismiss( progressDialog );
     }
@@ -135,22 +138,22 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
 
-               try {
+        try {
 //                   if (bound) {
 //                       bound = false;
 //                       unbindService( connection );
 //                   }
 
-                if (service != null) {
-                    service.StopThread();
+            if (service != null) {
+                service.StopThread();
 
-                    if (bound) {
-                        bound = false;
-                        unbindService( connection );
-                    }
-                    Intent intent = new Intent( BaseActivity.this, SocketService.class );
-                    this.stopService( intent );
+                if (bound) {
+                    bound = false;
+                    unbindService( connection );
                 }
+                Intent intent = new Intent( BaseActivity.this, SocketService.class );
+                this.stopService( intent );
+            }
 
         } catch (Exception e) {
         }
@@ -161,158 +164,86 @@ public class BaseActivity extends AppCompatActivity {
         Toast.makeText( getApplicationContext(), msg, Toast.LENGTH_SHORT ).show();
     }
 
-    protected void initCommonActionBar(CommonToolbarBinding commonToolbarBinding, String title) {
-        setSupportActionBar( commonToolbarBinding.toolbar );
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled( true );
-        actionBar.setHomeAsUpIndicator( R.drawable.ic_common_back );
-        actionBar.setDisplayShowTitleEnabled( false );
-        commonToolbarBinding.toolbarTitle.setText( title );
-    }
-
-    public void startApp() {
-        showToast( "설정-권한 허용 또는 안드로이드 버전 업데이트를 해주세요..." );
-    }
-
-
-    @TargetApi(Build.VERSION_CODES.M)
-    public void checkVerify() {
-
-
-            if (ContextCompat.checkSelfPermission( this, Manifest.permission.CALL_PHONE ) != PackageManager.PERMISSION_GRANTED) {
-                // 권한체크 후 허용
-
-                // 이 권한을 필요한 이유를 설명해야하는가?
-                if (ActivityCompat.shouldShowRequestPermissionRationale( this, Manifest.permission.CALL_PHONE )) {
-
-                    // 다이어로그같은것을 띄워서 사용자에게 해당 권한이 필요한 이유에 대해 설명
-
-                    // 해당 설명이 끝난뒤 requestPermissions()함수를 호출하여 권한허가를 요청해야 합니다
-                    ActivityCompat.requestPermissions( this,
-                            new String[]{Manifest.permission.CALL_PHONE},
-                            1 );
-                } else {
-                    ActivityCompat.requestPermissions( this,
-                            new String[]{Manifest.permission.CALL_PHONE},
-                            1 );
-
-                    // 필요한 권한과 요청 코드를 넣어서 권한허가요청에 대한 결과를 받아야 합니다
-
-                }
-            }
-            //최초 앱다운후 실행시 권한체크 완료후 앱 실행했을시
-            TelephonyManager mgr = (TelephonyManager) getSystemService( Context.TELEPHONY_SERVICE );
-            try {
-
-
-            } catch (Exception e) {
-                //이미 위에 if(line:154)문 에서 권한 체크여부를 체크하므로 catch로 빠질일은 없음
-                //Toast.makeText( this, "비정상적인 접근", Toast.LENGTH_SHORT ).show();
-                //finish();
-            }
-
-        }
-
-
-
-    @SuppressLint("MissingPermission")
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        switch (requestCode) {
-
-            case 1: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //권한체크 허용도
-
-
-                } else {
-                    //권한체크 거부시 강제종료
-                    Toast.makeText(this, "전화걸기 사용 이 불가합니다.", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-            }
-        }
-    }
 
     public class SocketRecv extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals( DEFINE.NETWORK_INTENT_FILTER) == true) {
+            if (intent.getAction().equals( DEFINE.NETWORK_INTENT_FILTER ) == true) {
 
-                int networkStateValue = intent.getIntExtra(DEFINE.networkIntentValue, 0);
+                int networkStateValue = intent.getIntExtra( DEFINE.networkIntentValue, 0 );
 
-                if(networkStateValue == DEFINE.HANDLER_NETWORK_OK){
+                if (networkStateValue == DEFINE.HANDLER_NETWORK_OK) {
                     // 네트워크 성공 시 핸들러 리무브
                     dismissProgressDialog();
-                    if(networkAlertDialog != null){
+                    if (networkAlertDialog != null) {
                         networkAlertDialog.dismiss();
                     }
 
-                }else if(networkStateValue == DEFINE.HANDLER_NETWORK_LOADING){
+                } else if (networkStateValue == DEFINE.HANDLER_NETWORK_LOADING) {
                     // 네트워크 성공 시 핸들러 리무브
-                    showNetworkProgressDialog("","서버와 연결중입니다.");
+                    showNetworkProgressDialog( "", "서버와 연결중입니다." );
 
-                }else if(networkStateValue == DEFINE.HANDLER_NETWORK_RESTART){
+                } else if (networkStateValue == DEFINE.HANDLER_NETWORK_RESTART) {
                     // 네트워크 재시작 시 로그인 데이터 추가
 
 
-                }else if(networkStateValue == DEFINE.HANDLER_NETWORK_ERROR){
+                } else if (networkStateValue == DEFINE.HANDLER_NETWORK_ERROR) {
                     dismissProgressDialog();
                     // 네트워크 실패
 
-                    if (networkAlertDialog != null && networkAlertDialog.isShowing()){
+                    if (networkAlertDialog != null && networkAlertDialog.isShowing()) {
                         return;
                     }
-                    builder = new AlertDialog.Builder(BaseActivity.this);
-                    builder.setTitle("네트워크 에러");
-                    builder.setCancelable(false);
-                    builder.setMessage("통신이 원할하지 않습니다 재시도해주세요.");
-                    builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    builder = new AlertDialog.Builder( BaseActivity.this );
+                    builder.setTitle( "네트워크 에러" );
+                    builder.setCancelable( false );
+                    builder.setMessage( "통신이 원할하지 않습니다 재시도해주세요." );
+                    builder.setNegativeButton( "취소", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             finish();
                         }
-                    });
-                    builder.setPositiveButton("연결", new DialogInterface.OnClickListener() {
+                    } );
+                    builder.setPositiveButton( "연결", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                         }
-                    });
-                    builder.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                    } );
+                    builder.setOnKeyListener( new DialogInterface.OnKeyListener() {
                         @Override
                         public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                            if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP){
-                                KeyHandleUtil.doubleBackFinish(BaseActivity.this);
+                            if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+                                KeyHandleUtil.doubleBackFinish( BaseActivity.this );
                                 return false;
                             }
                             return false;
                         }
-                    });
+                    } );
                     networkAlertDialog = builder.create();
                     networkAlertDialog.show();
 
-                    networkAlertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    networkAlertDialog.setOnDismissListener( new DialogInterface.OnDismissListener() {
                         @Override
                         public void onDismiss(DialogInterface dialog) {
-                            showNetworkProgressDialog("","서버와 연결중입니다.");
+                            showNetworkProgressDialog( "", "서버와 연결중입니다." );
                             service.StartService();
 
                         }
-                    });
-                }else if(networkStateValue == DEFINE.HANDLER_NETWORK_CLOSE){
+                    } );
+                } else if (networkStateValue == DEFINE.HANDLER_NETWORK_CLOSE) {
                     // 네트워크 성공 시 핸들러 리무브
 //                    showNetworkProgressDialog("","서버와 연결중입니다.");
-                    builder = new AlertDialog.Builder(BaseActivity.this);
-                    builder.setTitle("네트워크 에러");
-                    builder.setCancelable(false);
-                    builder.setMessage("통신이 원할하지 않습니다 재시도해주세요.");
-                    builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    builder = new AlertDialog.Builder( BaseActivity.this );
+                    builder.setTitle( "네트워크 에러" );
+                    builder.setCancelable( false );
+                    builder.setMessage( "통신이 원할하지 않습니다 재시도해주세요." );
+                    builder.setNegativeButton( "취소", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             finish();
                         }
-                    });
+                    } );
                     networkAlertDialog = builder.create();
                     networkAlertDialog.show();
 

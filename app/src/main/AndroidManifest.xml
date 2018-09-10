@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_PHONE_STATE" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
 
     <application
@@ -20,8 +20,8 @@
         android:allowBackup="true"
         android:icon="@drawable/icon_512"
         android:label="@string/app_name"
-        android:screenOrientation="portrait"
         android:roundIcon="@drawable/ic_launcher_round"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
@@ -35,6 +35,7 @@
             </intent-filter>
 
         </receiver>
+
         <activity
             android:name=".activity.SplashActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -55,45 +56,49 @@
 
         <service android:name=".service.SocketService" />
 
-        <activity android:name=".activity.MovingTypeCheckActivity"
-            android:theme="@style/Theme.DialogActivity"/>
-        <activity android:name=".activity.StartAddressDialogActivity"
-            android:theme="@style/Theme.DialogActivity"/>
+        <activity
+            android:name=".activity.MovingTypeCheckActivity"
+            android:theme="@style/Theme.DialogActivity" />
 
-        <activity android:name=".activity.FinishAddressDialogActivity"
-            android:theme="@style/Theme.DialogActivity"/>
-        <activity android:name=".activity.MovingDayDialogActivity"
-            android:theme="@style/Theme.DialogActivity"/>
-        <activity android:name=".activity.AgreementDlg"
-            android:theme="@style/Theme.DialogActivity"/>
+        <activity
+            android:name=".activity.StartAddressDialogActivity"
+            android:theme="@style/Theme.DialogActivity" />
 
-        <activity android:name=".activity.MyOrderlistActivity"
+        <activity
+            android:name=".activity.FinishAddressDialogActivity"
+            android:theme="@style/Theme.DialogActivity" />
 
-            android:theme="@style/Theme.Design.NoActionBar"/>
-        <activity android:name=".activity.MyOrderlistSearchActivity"
+        <activity
+            android:name=".activity.MovingDayDialogActivity"
+            android:theme="@style/Theme.DialogActivity" />
 
-            android:theme="@style/Theme.Design.Light.NoActionBar"/>
+        <activity
+            android:name=".activity.MyOrderlistActivity"
+            android:theme="@style/Theme.Design.NoActionBar" />
 
-        <activity android:name=".activity.MovingCheckListActivity"
+        <activity
+            android:name=".activity.MyOrderlistSearchActivity"
+            android:theme="@style/Theme.Design.Light.NoActionBar" />
 
-            android:theme="@style/Theme.Design.Light.NoActionBar"/>
-        <activity android:name=".activity.ClauseActivity"
+        <activity
+            android:name=".activity.MovingCheckListActivity"
+            android:theme="@style/Theme.Design.Light.NoActionBar" />
 
-        android:theme="@style/Theme.Design.NoActionBar"/>
-        <activity android:name=".activity.AgreementDetail"
+        <activity
+            android:name=".activity.ClauseActivity"
+            android:theme="@style/Theme.Design.NoActionBar" />
 
-            android:theme="@style/Theme.Design.NoActionBar"/>
+        <activity
+            android:name=".activity.PrivacyActivity"
 
-        <activity android:name=".activity.PrivacyActivity"
+            android:theme="@style/Theme.Design.NoActionBar" />
+        <activity
+            android:name=".activity.SearchMovingDayActivity"
+            android:theme="@style/Theme.Design.Light.NoActionBar" />
 
-            android:theme="@style/Theme.Design.NoActionBar"/>
-        <activity android:name=".activity.SearchMovingDayActivity"
-
-            android:theme="@style/Theme.Design.Light.NoActionBar"/>
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="de45cee639704b9720afcb6c2e520f16153c7270"
-            />
+            android:value="de45cee639704b9720afcb6c2e520f16153c7270" />
 
 
     </application>
