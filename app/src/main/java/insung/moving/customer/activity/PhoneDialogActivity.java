@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -21,6 +24,7 @@ import android.widget.Toast;
 
 import insung.moving.customer.R;
 import insung.moving.customer.model.OrderData;
+import insung.moving.customer.util.ReferrerReceiver;
 
 
 /**
@@ -33,6 +37,13 @@ public class PhoneDialogActivity extends BaseActivity {
 
     private int checkbox_check = 0;
     //체크박스 체크했는지 체크하기 위한 변수
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate( savedInstanceState );
+
+
+
+    }
 
     public PhoneDialogActivity(Context context) {
         this.context = context;
@@ -58,11 +69,14 @@ public class PhoneDialogActivity extends BaseActivity {
         final EditText message = (EditText) dlg.findViewById( R.id.mesgase );
         final Button okButton = (Button) dlg.findViewById( R.id.okButton );
         final Button cancelButton = (Button) dlg.findViewById( R.id.cancelButton );
-
+        final WebView webView=(WebView)dlg.findViewById( R.id.web );
         final CheckBox checkBox = (CheckBox) dlg.findViewById( R.id.checkbox );
 
-
         TextView type = ((MainActivity) context).findViewById( R.id.moving_phone );
+
+
+        webView.setWebViewClient( new WebViewClient() ); // 이걸 안해주면 새창이 뜸
+        webView.loadUrl("http://24.414.co.kr/privacy/35_inner.html");
 
         if (!type.getText().equals( "연락처" )) {
             //최초 입력시

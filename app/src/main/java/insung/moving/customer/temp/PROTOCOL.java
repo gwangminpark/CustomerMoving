@@ -10,6 +10,7 @@ public class PROTOCOL{
 	public static final int GET_DAUM_ADDR_PARSING = 99994;
 	public static final int GET_DAUM_ADDR  = 99995;
 	public static final int GET_MAP_ADDR = 29992;
+	public static final int PST_PING  = 29999;
 	//public static final int GET_MAP_ADDR = 99992;
 
 	/* type */

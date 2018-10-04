@@ -16,6 +16,7 @@ import insung.moving.customer.service.resultInterface.GetDorderForCustInterface;
 import insung.moving.customer.service.resultInterface.GetMapAddrInterface;
 import insung.moving.customer.service.resultInterface.GetVersionCustInterface;
 import insung.moving.customer.service.resultInterface.InsertDorderForCustCInterface;
+import insung.moving.customer.service.resultInterface.Pst_PingInterface;
 import insung.moving.customer.temp.DEFINE;
 import insung.moving.customer.temp.PROTOCOL;
 import insung.moving.customer.util.Util;
@@ -102,6 +103,8 @@ public class SocketService extends Service implements Runnable{
 			case PROTOCOL.GET_VERSION_CUST:
 				getVersionCustInterface=(GetVersionCustInterface) baseInterface;
 				break;
+			case PROTOCOL.PST_PING:
+				pst_pingInterface=(Pst_PingInterface) baseInterface;
 		}
 		Send(Packet);
 	}
@@ -117,6 +120,7 @@ public class SocketService extends Service implements Runnable{
 	private GetMapAddrInterface getMapAddrInterface;
 	private GetVersionCustInterface getVersionCustInterface;
 	private InsertDorderForCustCInterface insertDorderForCustCInterface;
+	private Pst_PingInterface pst_pingInterface;
 
 
 
@@ -183,6 +187,9 @@ public class SocketService extends Service implements Runnable{
 						break;
 					case PROTOCOL.GET_VERSION_CUST:
 						dataReceive( recvPacket,getVersionCustInterface);
+						break;
+					case PROTOCOL.PST_PING:
+						dataReceive( recvPacket, pst_pingInterface);
 						break;
 
 				}
@@ -312,7 +319,9 @@ public class SocketService extends Service implements Runnable{
 			try {
 				SocketAddress socketAddr = new InetSocketAddress( DEFINE.SERVER_IP, DEFINE.SERVER_PORT);
 				socket = new Socket();
-				socket.connect(socketAddr, 10000);
+				socket.connect(socketAddr, 3000);
+
+				//핑
 
 				in = new DataInputStream(socket.getInputStream());
 				out = new DataOutputStream(socket.getOutputStream());
@@ -408,7 +417,7 @@ public class SocketService extends Service implements Runnable{
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
-
+		//리무브 메세지
 		super.onDestroy();
 	}
 }

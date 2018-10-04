@@ -11,7 +11,7 @@ android {
         applicationId "insung.moving.customer"
         minSdkVersion 18
         targetSdkVersion 27
-        versionCode 9
+        versionCode 10
         versionName "100"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

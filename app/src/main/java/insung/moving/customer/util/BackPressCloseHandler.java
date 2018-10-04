@@ -2,9 +2,11 @@ package insung.moving.customer.util;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import insung.moving.customer.activity.MainActivity;
+import insung.moving.customer.activity.SplashActivity;
 
 /**
  * Created by user on 2018-07-20.
@@ -35,7 +37,8 @@ public class BackPressCloseHandler {
             android.os.Process.killProcess(android.os.Process.myPid());
             activity.moveTaskToBack(true);
             activity.finish();
-
+            ((SplashActivity)SplashActivity.context).cancle();
+            Log.i("핑쓰레드","2");
         }
     }
 

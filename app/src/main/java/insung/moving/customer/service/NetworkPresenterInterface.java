@@ -6,6 +6,7 @@ import insung.moving.customer.service.resultInterface.GetDorderForCustInterface;
 import insung.moving.customer.service.resultInterface.GetMapAddrInterface;
 import insung.moving.customer.service.resultInterface.GetVersionCustInterface;
 import insung.moving.customer.service.resultInterface.InsertDorderForCustCInterface;
+import insung.moving.customer.service.resultInterface.Pst_PingInterface;
 
 /**
  * Created by Administrator on 2018-07-04.
@@ -23,4 +24,6 @@ public interface NetworkPresenterInterface {
  //주소조회
  void GetVersionCust(GetVersionCustInterface anInterface);
  //버전 체크
+ void PST_PING(Pst_PingInterface anInterface);
+
 }

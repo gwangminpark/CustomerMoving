@@ -18,6 +18,10 @@ import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+import insung.moving.customer.service.resultInterface.Pst_PingInterface;
 import io.fabric.sdk.android.Fabric;
 import insung.moving.customer.R;
 import insung.moving.customer.service.RecvPacket;
@@ -27,17 +31,18 @@ import insung.moving.customer.util.KeyHandleUtil;
 
 
 public class SplashActivity extends BaseActivity {
+    public static Context context;
     //
     public static float server_version;
     //마켓(서버)에 올라가있는 앱 버전//
     public static float app_version;
     //현재 앱 버전
-
+    private TimerTask second;
     private SocketRecv Splashreceiver;
     public static final String INTENT_FILTER = DEFINE.INTENT_HEAD + "MAIN";
     AlertDialog.Builder builder;
     AlertDialog networkAlertDialog;
-
+   public Timer timer = new Timer();
     public class SocketRecv extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -45,6 +50,7 @@ public class SplashActivity extends BaseActivity {
 
                 if (intent.getBooleanExtra( DEFINE.networkIntentValue, false )) {
                     // 네트워크 성공 시 핸들러 리무브
+                    pingstart();
                     version_check();
                     //버전체크
                 } else {
@@ -83,7 +89,7 @@ public class SplashActivity extends BaseActivity {
         setContentView( R.layout.activity_splash );
         // 임시 스플래시 액티비티
 
-
+        context=this;
         Splashreceiver = new SocketRecv();
         this.registerReceiver( Splashreceiver, new IntentFilter( INTENT_FILTER ) );
         //연결 onReceive 호출
@@ -221,5 +227,43 @@ public class SplashActivity extends BaseActivity {
         }
     }
 
+    public void pingstart() {
 
+
+        second = new TimerTask() {
+
+            @Override
+            public void run() {
+                Log.i("핑쓰레드","1");
+                ping();
+
+            }
+        };
+        timer.schedule(second, 0, 120000);
+
+    }
+
+    public void ping(){
+
+        networkPresenter.PST_PING( new Pst_PingInterface() {
+            @Override
+            public void success() {
+
+            }
+
+            @Override
+            public void success(RecvPacket packet) {
+
+            }
+
+            @Override
+            public void fail(String t) {
+
+            }
+        } );
+    }
+
+    public void cancle(){
+            timer.cancel();
+    }
 }

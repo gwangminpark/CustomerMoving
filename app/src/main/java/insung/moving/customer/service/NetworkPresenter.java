@@ -10,6 +10,7 @@ import insung.moving.customer.service.resultInterface.GetDorderForCustInterface;
 import insung.moving.customer.service.resultInterface.GetMapAddrInterface;
 import insung.moving.customer.service.resultInterface.GetVersionCustInterface;
 import insung.moving.customer.service.resultInterface.InsertDorderForCustCInterface;
+import insung.moving.customer.service.resultInterface.Pst_PingInterface;
 import insung.moving.customer.temp.DEFINE;
 import insung.moving.customer.temp.PROTOCOL;
 
@@ -201,6 +202,37 @@ public class NetworkPresenter implements NetworkPresenterInterface {
 
         });
 
+    }
+
+    @Override
+    public void PST_PING(final Pst_PingInterface anInterface) {
+        SendPacket sPacket = new SendPacket();
+        sPacket.AddType( PROTOCOL.PT_REQUEST, PROTOCOL.PST_PING);
+        sPacket.AddMessageType(PROTOCOL.PST_PING);
+        sPacket.Commit();
+
+        service.InterfaceDataSend(sPacket, new Pst_PingInterface() {
+            @Override
+            public void success() {
+
+            }
+            @Override
+            public void success(RecvPacket packet) {
+                try {
+                    String[] recvData = packet.COMMAND.split( DEFINE.DELIMITER );
+
+
+                } catch (Exception e) {
+
+                }
+            }
+            ////
+            @Override
+            public void fail(String t) {
+                anInterface.fail(t);
+            }
+
+        });
     }
 
 

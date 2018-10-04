@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -107,15 +108,13 @@
             android:layout_alignParentTop="true"
             android:background="@drawable/layer2">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="5dp"
-                android:text="인성데이타(주)(이하 '회사'라 한다)는 개인의 정보보호를 매우 중요시하며 정보통신망 이용촉진 및 정보보호등에 관한 법률(정보보호법)을 비롯한 관계법령 및 정보통신부가 제정한 지침 등을준수하고 있습니다. 또한 회사의 서비스를 이용하는 이용자분들의 요청을 신속,원활히 처리하고 관련되는 개인정보들을 안전하게 보호하기 위해 회사의 개인정보 취급정책을 다음과 같이 지침합니다. "
-                android:textSize="12sp" />
+   <WebView
+       android:id="@+id/web"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+
+   </WebView>
 
         </ScrollView>
 
@@ -163,3 +162,4 @@
 
 
 </LinearLayout>
+</layout>

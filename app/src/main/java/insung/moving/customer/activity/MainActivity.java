@@ -43,6 +43,7 @@ import insung.moving.customer.service.SendPacket;
 import insung.moving.customer.service.resultInterface.GetDorderForCustInterface;
 
 import insung.moving.customer.service.resultInterface.InsertDorderForCustCInterface;
+import insung.moving.customer.service.resultInterface.Pst_PingInterface;
 import insung.moving.customer.temp.DEFINE;
 import insung.moving.customer.temp.PROTOCOL;
 import insung.moving.customer.util.BackPressCloseHandler;
@@ -146,7 +147,7 @@ public class MainActivity extends BaseActivity {
                         .setPermissionListener( new PermissionListener() {
                             @Override
                             public void onPermissionGranted() {
-                                Intent intent = new Intent( Intent.ACTION_DIAL, Uri.parse( "tel:" + "01012345678" ) );
+                                Intent intent = new Intent( Intent.ACTION_DIAL, Uri.parse( "tel:" + "16662428" ) );
                                 startActivity( intent );
                             }
 
@@ -372,7 +373,8 @@ public class MainActivity extends BaseActivity {
         try {
             if (receiver != null)
                 unregisterReceiver( receiver );
-//
+
+
         } catch (Exception e) {
         }
         super.onDestroy();
@@ -417,6 +419,8 @@ public class MainActivity extends BaseActivity {
                 if (intent.getBooleanExtra( DEFINE.networkIntentValue, false )) {
                     // 네트워크 성공 시 핸들러 리무브
                     dismissProgressDialog();
+
+
                     if (networkAlertDialog != null) {
                         networkAlertDialog.dismiss();
                     }
@@ -615,7 +619,10 @@ public class MainActivity extends BaseActivity {
                 dismissProgressDialog();
                 showToast( "신청완료" );
                 MAIN_INPUT_CHECK = 0;
-                onRestart();
+                movingname_data = "";
+                movingphone_data = "";
+                movingtype_check = 1;
+              //  onRestart();
             }
 
             @Override
@@ -632,7 +639,6 @@ public class MainActivity extends BaseActivity {
 
 
     }
-
 
 
 
