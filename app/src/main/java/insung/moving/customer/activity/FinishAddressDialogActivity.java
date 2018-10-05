@@ -38,17 +38,17 @@ public class FinishAddressDialogActivity extends BaseActivity {
     private AddressItemAdapter addressItemAdapter;
     private StartAddressItem startAddressItem; // 시도 군구 동 저장할 객체
 
-    private ArrayList<String> sidoItems;    // 군구 이름
-    private ArrayList<String> sidoCodes;    // 군구 코드
+    private static ArrayList<String> sidoItems;    // 시도 이름
+    private static ArrayList<String> sidoCodes;    // 시도 코드
 
-    GunguArrayItem gunguArrayItem; // 군구 리스트 저장 객체
-    private ArrayList<String> gunguItems;    // 군구 이름
-    private ArrayList<String> gunguCodes;    // 군구 코드
+    private static GunguArrayItem gunguArrayItem; // 군구 리스트 저장 객체
+    private static ArrayList<String> gunguItems;    // 군구 이름
+    private static ArrayList<String> gunguCodes;    // 군구 코드
 
-    DongArrayItem dongArrayItem; // 동 리스트 저장 객체
-    private ArrayList<String> dongItems;    // 동 이름
-    private ArrayList<String> dongCodes;    // 동 코드
-    private String CURRENT_TYPE_F = "1"; // 기본 데이터 시도로 저장
+    private static DongArrayItem dongArrayItem; // 동 리스트 저장 객체
+    private static ArrayList<String> dongItems;    // 동 이름
+    private static ArrayList<String> dongCodes;    // 동 코드
+    private static String CURRENT_TYPE_F = "1"; // 기본 데이터 시도로 저장
 
     private String ADDRESS_SIDO_TYPE = "1";
     private String ADDRESS_GUNGU_TYPE = "3";
@@ -62,8 +62,8 @@ public class FinishAddressDialogActivity extends BaseActivity {
 
         binding.recyclerViewAddress.setHasFixedSize( true );
         binding.recyclerViewAddress.setLayoutManager( new GridLayoutManager( FinishAddressDialogActivity.this, 4, GridLayoutManager.VERTICAL, false ) );
-
         startAddressItem = new StartAddressItem();
+
         gunguArrayItem = new GunguArrayItem();
         gunguItems = new ArrayList<>();
         gunguCodes = new ArrayList<>();
@@ -88,11 +88,9 @@ public class FinishAddressDialogActivity extends BaseActivity {
                 @Override
                 public void run() {
                     address_change();
-                    //최초 클릭이 아닐시 이전 클릭정보(마지막 동정보 )가 남아있음
+                    //최초 클릭이 아닐시 이전 클릭정보(마지막 동정보)가 남아있음
                 }
             }, 200 );
-
-            // address_change();
             SharedPreferences prefs = getSharedPreferences( "PrefName_finish", MODE_PRIVATE );
             binding.tittle1.setText( prefs.getString( "tittle1", "" ) );
             binding.tittle2.setText( prefs.getString( "tittle2", "" ) );
@@ -100,26 +98,19 @@ public class FinishAddressDialogActivity extends BaseActivity {
             binding.tittle1.setVisibility( View.VISIBLE );
             binding.tittle2.setBackgroundResource( R.color.title_blue );
             binding.tittle3.setBackgroundResource( R.color.title_blue );
-            // startAddressItem.setDongName(dongArrayItem.getDongItems().get(position));
-
             setBindService( serviceConnection );
         }
-
 
         if (startAddressItem.getStartAddressName() != null) {
             SharedPreferences prefs = getSharedPreferences( "Address", MODE_PRIVATE );
             binding.addressTittle.setText( prefs.getString( "finish_address", startAddressItem.getStartAddressName() ) );
         }
 
-
         // 리싸이클러 뷰 어뎁터 및 아이템 추가
         initRecyclerView( sidoItems );
         binding.cancelButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i( "주소소", String.valueOf( binding.tittle1.getText() ) );
-                Log.i( "주소소", String.valueOf( binding.tittle2.getText() ) );
-                Log.i( "주소소", String.valueOf( binding.tittle3.getText() ) );
                 if (TextUtils.isEmpty( binding.tittle1.getText() )) {
                     finish();
                 } else if (TextUtils.isEmpty( binding.tittle1.getText() ) == false && TextUtils.isEmpty( binding.tittle2.getText() )) {
@@ -215,13 +206,10 @@ public class FinishAddressDialogActivity extends BaseActivity {
                                 CURRENT_TYPE_F = ADDRESS_DONG_TYPE;
                             }
                         } catch (Exception e) {
-
                         }
                     }
-
                     @Override
                     public void fail(String t) {
-
                     }
                 } );
                 CURRENT_TYPE_F = ADDRESS_SIDO_TYPE;
@@ -254,13 +242,9 @@ public class FinishAddressDialogActivity extends BaseActivity {
                 editor.putString( "SidoCode", myApplication.sidoArrayItem.getSidoCodes().get( position ) );
                 editor.commit();
 
-                Log.i( "CURRSS", CURRENT_TYPE_F + "--" + ADDRESS_SIDO_TYPE );
             } else if (CURRENT_TYPE_F == ADDRESS_GUNGU_TYPE) {
                 Log.i( "오류", String.valueOf( 1 ) );
                 // 클릭 시 군구가 없을 경우 군구에 넣는다.
-                if (gunguArrayItem.getGunguItems().get( position ) == null) {
-
-                }
                 startAddressItem.setGunguName( gunguArrayItem.getGunguItems().get( position ) );
                 startAddressItem.setGunguCode( gunguArrayItem.getGunguCodes().get( position ) );
                 sendPacket = GET_MAP_ADDR_SEND( ADDRESS_DONG_TYPE, startAddressItem.getGunguCode() );
@@ -290,13 +274,11 @@ public class FinishAddressDialogActivity extends BaseActivity {
                 if (startAddressItem.getGunguName().equals( "세종시" )) {
                     startAddressItem.setGunguName( "" );
                 }
-
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra( "address_si", startAddressItem.getSidoName() );
                 resultIntent.putExtra( "address_gu", startAddressItem.getGunguName() );
                 resultIntent.putExtra( "address_dong", startAddressItem.getDongName() );
                 setResult( RESULT_OK, resultIntent );
-
 
                 binding.addressTittle.setText( startAddressItem.getStartAddressName() );
 
@@ -308,7 +290,6 @@ public class FinishAddressDialogActivity extends BaseActivity {
 
 
             } else {
-
                 startAddressItem.setDongName( dongArrayItem.getDongItems().get( position ) );
                 startAddressItem.setDongCode( dongArrayItem.getDongCodes().get( position ) );
             }

@@ -44,6 +44,11 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends BaseActivity {
+    //  리스트선언
+    private static final int REQUEST_MOVINGTYPE_DIALOG = 1; //종류선택
+    private static final int REQUEST_MOVINGDAY_DIALOG = 2; //날짜선택
+    private static final int REQUEST_STARTADDRESS_DIALOG = 3;//시작주소
+    private static final int REQUEST_FINISHADDRESS_DIALOG = 4;//도착주소
 
     private ActivityMainBinding binding;
     private CommonToolbarBinding commonToolbarBinding;
@@ -54,34 +59,18 @@ public class MainActivity extends BaseActivity {
     //메인 input기능 유효성 체크를 위한 변수
 
     private ArrayList<String> order_items;
-    //  리스트선언
-    private final int REQUEST_MOVINGTYPE_DIALOG = 1; //종류선택
-    private final int REQUEST_MOVINGDAY_DIALOG = 2; //날짜선택
-    private final int REQUEST_STARTADDRESS_DIALOG = 3;//시작주소
-    private final int REQUEST_FINISHADDRESS_DIALOG = 4;//도착주소
 
-    public static int movingtype_check = 0;
-    //어떤형식의 이사를 선택한지 저장하는 변수
-    //이사구분 (0:선택안함 1:가정이사, 2:사무실이사, 3:원룸이사,4:공장이사,5:제주도이사,6:해외이사)
-
-    public static String movingday_data = "";
-    //선택한 날짜를 저장하는 변수 ex) 2018-07-11
-
-    public static ArrayList<String> movingstart_data;
-    //출발할 주소를 저장하는 ArrayList  ex) {"대구","남구","대명동"}
-
-    public static ArrayList<String> movingfinish_data;
-    //도착될 주소를 저장하는 ArrayList  ex) {"대구","서구","비산동"}
-
-    public static String movingname_data = "";
-    //이름을 저장하는 변수
-    public static String movingphone_data = "";
-    //휴대폰 번호를 저장하는 변수
+    public static int movingtype_check = 0;//이사구분 (0:선택안함 1:가정이사, 2:사무실이사, 3:원룸이사,4:공장이사,5:제주도이사,6:해외이사)
+    public static String movingday_data = ""; //선택한 날짜를 저장하는 변수 ex) 2018-07-11
+    public static ArrayList<String> movingstart_data; //출발할 주소를 저장하는 ArrayList  ex) {"대구","남구","대명동"}
+    public static ArrayList<String> movingfinish_data; //도착될 주소를 저장하는 ArrayList  ex) {"대구","서구","비산동"}
+    public static String movingname_data = ""; //이름을 저장하는 변수
+    public static String movingphone_data = ""; //휴대폰 번호를 저장하는 변수
 
     private SocketRecv receiver;
     public static final String INTENT_FILTER = MyApplication.INTENT_HEAD + "MAIN";
-    AlertDialog.Builder builder;
-    AlertDialog networkAlertDialog;
+    private AlertDialog.Builder builder;
+    private AlertDialog networkAlertDialog;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -104,8 +93,6 @@ public class MainActivity extends BaseActivity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();
         editor.commit();
-        //   SharedPreferences  초기화
-
 
         binding.callbt.setOnClickListener( new View.OnClickListener() {
             //전화버튼 클릭시
@@ -182,7 +169,6 @@ public class MainActivity extends BaseActivity {
                             startActivityForResult( intent, REQUEST_STARTADDRESS_DIALOG );
                         }
                     }, 500 );
-
                 }
             }
         } );
@@ -315,9 +301,14 @@ public class MainActivity extends BaseActivity {
                 }
             }
         } );
-
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i( "log33", "onResume: " );
+        binding.drawerLayout.closeDrawer( GravityCompat.START );
+    }
 
     @Override
     protected void onRestart() {
@@ -333,90 +324,12 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         try {
-            if (receiver != null)
+            if (receiver != null){
                 unregisterReceiver( receiver );
-
-
+            }
         } catch (Exception e) {
         }
         super.onDestroy();
-    }
-
-    private void initNavigation() {
-        // 토글 아이콘
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle( this, binding.drawerLayout, commonToolbarBinding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close );
-        toggle.getDrawerArrowDrawable().setColor( getResources().getColor( R.color.actionbar_text ) );
-        binding.drawerLayout.setDrawerListener( toggle );
-        toggle.syncState();
-
-        commonNavigationBinding.linearRequest.setOnClickListener( navigationClickListener );
-        commonNavigationBinding.linearCheck.setOnClickListener( navigationClickListener );
-        commonNavigationBinding.linearMoving.setOnClickListener( navigationClickListener );
-        commonNavigationBinding.linearPolicy.setOnClickListener( navigationClickListener );
-        commonNavigationBinding.infoPolicy.setOnClickListener( navigationClickListener );
-    }
-
-    @Override
-    public void onBackPressed() {
-        //뒤로가기버튼
-        if (binding.drawerLayout.isDrawerOpen( GravityCompat.START )) {
-            binding.drawerLayout.closeDrawer( GravityCompat.START );
-        } else {
-            backPressCloseHandler.onBackPressed();
-            //super.onBackPressed();
-        }
-    }
-
-    private void initActionBar() {
-        setSupportActionBar( commonToolbarBinding.toolbar );
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled( false );
-    }
-
-    public class SocketRecv extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals( INTENT_FILTER ) == true) {
-
-                if (intent.getBooleanExtra( MyApplication.networkIntentValue, false )) {
-                    // 네트워크 성공 시 핸들러 리무브
-                    dismissProgressDialog();
-
-
-                    if (networkAlertDialog != null) {
-                        networkAlertDialog.dismiss();
-                    }
-
-                } else {
-                    // 네트워크 실패
-                    if (networkAlertDialog != null && networkAlertDialog.isShowing()) {
-                        return;
-                    }
-
-
-                    builder = new AlertDialog.Builder( MainActivity.this );
-                    builder.setTitle( "네트워크 에러" );
-
-                    builder.setMessage( "통신이 원할하지 않습니다 재시도해주세요!!." );
-                    builder.setPositiveButton( "연결", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    } );
-                    networkAlertDialog = builder.create();
-                    networkAlertDialog.show();
-
-                    networkAlertDialog.setOnDismissListener( new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                            showProgressDialog( "", "Loading" );
-                            service.StartService( false );
-                        }
-                    } );
-                }
-            }
-        }
     }
 
     @Override
@@ -424,49 +337,20 @@ public class MainActivity extends BaseActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 binding.drawerLayout.openDrawer( GravityCompat.START );
-
                 return true;
         }
         return super.onOptionsItemSelected( item );
     }
 
-    private View.OnClickListener navigationClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.linearRequest:
-                    //나의 신청내역 클릭시
-                    Intent intent = new Intent( MainActivity.this, MyOrderlistSearchActivity.class );
-                    startActivity( intent );
-                    break;
-                case R.id.linearCheck:
-                    //이사체크리스트 클릭시
-                    intent = new Intent( MainActivity.this, MovingCheckListActivity.class );
-                    //액티비티 시작!
-                    startActivity( intent );
-                    break;
-                case R.id.linearMoving:
-                    //이사날찾기 클릭시
-                    intent = new Intent( MainActivity.this, SearchMovingDayActivity.class );
-                    //액티비티 시작!
-                    startActivity( intent );
-                    break;
-                case R.id.linearPolicy:
-                    //약관클릭시
-                    intent = new Intent( MainActivity.this, ClauseActivity.class );
-                    //액티비티 시작!
-                    startActivity( intent );
-                    break;
-                case R.id.infoPolicy:
-                    //개인정보처리 방침 클릭시//
-                    intent = new Intent( MainActivity.this, PrivacyActivity.class );
-                    //액티비티 시작!
-                    startActivity( intent );
-                    break;
-            }
-
+    @Override
+    public void onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen( GravityCompat.START )) {
+            binding.drawerLayout.closeDrawer( GravityCompat.START );
+        } else {
+            backPressCloseHandler.onBackPressed();
+            //super.onBackPressed();
         }
-    };
+    }
 
 
     @Override
@@ -483,29 +367,35 @@ public class MainActivity extends BaseActivity {
                         animate();
                         binding.movingType.setText( "가정이사" );
                     }
-                    switch (movingtype_check) {
 
+                    switch (movingtype_check) {
                         case 1:
                             binding.movingType.setText( "가정이사" );
                             break;
+
                         case 2:
                             binding.movingType.setText( "사무실이사" );
                             break;
+
                         case 3:
                             binding.movingType.setText( "원룸이사" );
                             break;
+
                         case 4:
                             binding.movingType.setText( "공장이사" );
                             break;
+
                         case 5:
                             binding.movingType.setText( "제주도이사" );
                             break;
+
                         case 6:
                             binding.movingType.setText( "해외이사" );
                             break;
                     }
                 }
                 break;
+
             case REQUEST_MOVINGDAY_DIALOG:
                 //이사 날짜 선택 Activity 에서 돌아올때
                 if (resultCode == RESULT_OK) {
@@ -521,6 +411,7 @@ public class MainActivity extends BaseActivity {
                     //메인에 보이는 Text바꿔줌
                 }
                 break;
+
             case REQUEST_STARTADDRESS_DIALOG:
                 //출발주소 선택 에서 돌아올때
                 if (resultCode == RESULT_OK) {
@@ -532,17 +423,16 @@ public class MainActivity extends BaseActivity {
                     binding.startLeftCircle.setBackgroundResource( R.drawable.check_1 );
                     movingstart_data = new ArrayList<String>();
                     //시 군구 동 주소를 담기위한 ArrayList 생성
-
                     movingstart_data.add( 0, data.getStringExtra( "address_si" ) );
                     movingstart_data.add( 1, data.getStringExtra( "address_gu" ) );
                     movingstart_data.add( 2, data.getStringExtra( "address_dong" ) );
                     //ArrayList에 시 군구 동 담아줌
 
                     binding.startday.setText( data.getStringExtra( "address_dong" ) );
-
                     //메인에 보여주는 text
                 }
                 break;
+
             case REQUEST_FINISHADDRESS_DIALOG:
                 //도착주소 선택 에서 돌아올때
                 if (resultCode == RESULT_OK) {
@@ -555,7 +445,6 @@ public class MainActivity extends BaseActivity {
                     binding.finishLeftCircle.setBackgroundResource( R.drawable.check_1 );
                     movingfinish_data = new ArrayList<String>();
                     //시군 구 동 주소를 담기위한 ArrayList 생성
-
                     movingfinish_data.add( 0, data.getStringExtra( "address_si" ) );
                     movingfinish_data.add( 1, data.getStringExtra( "address_gu" ) );
                     movingfinish_data.add( 2, data.getStringExtra( "address_dong" ) );
@@ -563,11 +452,68 @@ public class MainActivity extends BaseActivity {
 
                     binding.finishday.setText( data.getStringExtra( "address_dong" ) );
                     //메인에 보여주는 text
-
                 }
                 break;
+
         }
     }
+
+    private void initNavigation() {
+        // 토글 아이콘
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle( this, binding.drawerLayout, commonToolbarBinding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close );
+        toggle.getDrawerArrowDrawable().setColor( getResources().getColor( R.color.actionbar_text ) );
+        binding.drawerLayout.setDrawerListener( toggle );
+        toggle.syncState();
+
+        commonNavigationBinding.linearRequest.setOnClickListener( navigationClickListener );
+        commonNavigationBinding.linearCheck.setOnClickListener( navigationClickListener );
+        commonNavigationBinding.linearMoving.setOnClickListener( navigationClickListener );
+        commonNavigationBinding.linearPolicy.setOnClickListener( navigationClickListener );
+        commonNavigationBinding.infoPolicy.setOnClickListener( navigationClickListener );
+    }
+
+    private void initActionBar() {
+        setSupportActionBar( commonToolbarBinding.toolbar );
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled( false );
+    }
+
+    private View.OnClickListener navigationClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.linearRequest:
+                    //나의 신청내역 클릭시
+                    Intent intent = new Intent( MainActivity.this, MyOrderlistSearchActivity.class );
+                    startActivity( intent );
+                    break;
+
+                case R.id.linearCheck:
+                    //이사체크리스트 클릭시
+                    intent = new Intent( MainActivity.this, MovingCheckListActivity.class );
+                    startActivity( intent );
+                    break;
+
+                case R.id.linearMoving:
+                    //이사날찾기 클릭시
+                    intent = new Intent( MainActivity.this, SearchMovingDayActivity.class );
+                    startActivity( intent );
+                    break;
+
+                case R.id.linearPolicy:
+                    //약관클릭시
+                    intent = new Intent( MainActivity.this, ClauseActivity.class );
+                    startActivity( intent );
+                    break;
+
+                case R.id.infoPolicy:
+                    //개인정보처리 방침 클릭시//
+                    intent = new Intent( MainActivity.this, PrivacyActivity.class );
+                    startActivity( intent );
+                    break;
+            }
+        }
+    };
 
     public void moving_order_insert() {
         Log.i( "movingtype_check", String.valueOf( movingtype_check ) );
@@ -583,7 +529,7 @@ public class MainActivity extends BaseActivity {
                 movingname_data = "";
                 movingphone_data = "";
                 movingtype_check = 1;
-              //  onRestart();
+                //  onRestart();
             }
 
             @Override
@@ -597,59 +543,71 @@ public class MainActivity extends BaseActivity {
                 showToast( "등록에 실패하였습니다." );
             }
         } );
-
-
     }
 
-
-
-    //자동차 이동 애니메이션
-    //각각 시작좌표,끝좌표가 다름
     public void animate() {
         // 이사종류-> 이사날짜로 내려가는 에니메이션
-        Animation anim = AnimationUtils.loadAnimation
-                ( getApplicationContext(), // 현재화면의 제어권자
-                        R.anim.translate_anim );   // 에니메이션 설정 파일
+        Animation anim = AnimationUtils.loadAnimation( getApplicationContext(),R.anim.translate_anim );
         ImageView car = (ImageView) findViewById( R.id.car );
         car.startAnimation( anim );
     }
 
     public void animate2() {
         // 이사날짜-> 출발주소로 내려가는 에니메이션
-        Animation anim = AnimationUtils.loadAnimation
-                ( getApplicationContext(), // 현재화면의 제어권자
-                        R.anim.translate_anim2 );   // 에니메이션 설정 파일
+        Animation anim = AnimationUtils.loadAnimation( getApplicationContext(), R.anim.translate_anim2 );
         ImageView car = (ImageView) findViewById( R.id.car );
         car.startAnimation( anim );
-
-
     }
 
     public void animate3() {
         // 출발주소-> 도착주소로 내려가는 에니메이션
-        Animation anim = AnimationUtils.loadAnimation
-                ( getApplicationContext(), // 현재화면의 제어권자
-                        R.anim.translate_anim3 );   // 에니메이션 설정 파일
+        Animation anim = AnimationUtils.loadAnimation( getApplicationContext(), R.anim.translate_anim3 );
         ImageView car = (ImageView) findViewById( R.id.car );
         car.startAnimation( anim );
-
     }
 
     public void animate4() {
         // 도착주소-> 연락처로 내려가는 에니메이션
-        Animation anim = AnimationUtils.loadAnimation
-                ( getApplicationContext(), // 현재화면의 제어권자
-                        R.anim.translate_anim4 );   // 에니메이션 설정 파일
+        Animation anim = AnimationUtils.loadAnimation( getApplicationContext(),R.anim.translate_anim4 );
         ImageView car = (ImageView) findViewById( R.id.car );
         car.startAnimation( anim );
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.i( "log33", "onResume: " );
-        binding.drawerLayout.closeDrawer( GravityCompat.START );
+    public class SocketRecv extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals( INTENT_FILTER ) == true) {
+                if (intent.getBooleanExtra( MyApplication.networkIntentValue, false )) {
+                    // 네트워크 성공 시 핸들러 리무브
+                    dismissProgressDialog();
+                    if (networkAlertDialog != null) {
+                        networkAlertDialog.dismiss();
+                    }
+                } else {
+                    // 네트워크 실패
+                    if (networkAlertDialog != null && networkAlertDialog.isShowing()) {
+                        return;
+                    }
+                    builder = new AlertDialog.Builder( MainActivity.this );
+                    builder.setTitle( "네트워크 에러" );
+                    builder.setMessage( "통신이 원할하지 않습니다 재시도해주세요!!." );
+                    builder.setPositiveButton( "연결", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    } );
+                    networkAlertDialog = builder.create();
+                    networkAlertDialog.show();
+                    networkAlertDialog.setOnDismissListener( new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            showProgressDialog( "", "Loading" );
+                            service.StartService( false );
+                        }
+                    } );
+                }
+            }
+        }
     }
-
-
 }
