@@ -31,7 +31,6 @@ public class MyOrderlistActivity extends BaseActivity {
 
     private ArrayList<String> order_items;    //  리스트
 
-
     private MyorderListActivityBinding binding;
     private NotittleToolbarBinding notittleToolbarBinding;
     private CommonNavigationBinding commonNavigationBinding;
@@ -53,17 +52,14 @@ public class MyOrderlistActivity extends BaseActivity {
 
         order_items = new ArrayList<>();
 
-
         setSupportActionBar( notittleToolbarBinding.toolbar );
         getSupportActionBar().setDisplayHomeAsUpEnabled( true );
         getSupportActionBar().setDisplayShowHomeEnabled( true );
         getSupportActionBar().setDisplayShowTitleEnabled( false );
 
-
         mRecyclerView = binding.recyclerview;
         mLayoutManager = new LinearLayoutManager( this );
         mLayoutManager.setOrientation( LinearLayoutManager.VERTICAL );
-
 
         Intent i = getIntent();
         ArrayList<String> myorder_list = (ArrayList<String>) i.getSerializableExtra( "listdata" );
@@ -106,11 +102,8 @@ public class MyOrderlistActivity extends BaseActivity {
         toggle.syncState();
 
         commonNavigationBinding.linearRequest.setOnClickListener( navigationClickListener );
-
         commonNavigationBinding.linearCheck.setOnClickListener( navigationClickListener );
-
         commonNavigationBinding.linearMoving.setOnClickListener( navigationClickListener );
-
         commonNavigationBinding.linearPolicy.setOnClickListener( navigationClickListener );
 
     }
@@ -130,7 +123,6 @@ public class MyOrderlistActivity extends BaseActivity {
                 case R.id.linearCheck:
                     showProgressDialog( "", "조회중입니다.\n잠시만 기다려 주세요." );
                     // 이사 체크리스트
-
                     break;
 
                 case R.id.linearMoving:

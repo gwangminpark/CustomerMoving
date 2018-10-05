@@ -6,18 +6,17 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
 
 import insung.moving.customer.activity.MainActivity;
+import insung.moving.customer.app.MyApplication;
 import insung.moving.customer.service.resultInterface.BaseInterface;
 import insung.moving.customer.service.resultInterface.GetDorderForCustInterface;
 import insung.moving.customer.service.resultInterface.GetMapAddrInterface;
 import insung.moving.customer.service.resultInterface.GetVersionCustInterface;
 import insung.moving.customer.service.resultInterface.InsertDorderForCustCInterface;
 import insung.moving.customer.service.resultInterface.Pst_PingInterface;
-import insung.moving.customer.temp.DEFINE;
 import insung.moving.customer.temp.PROTOCOL;
 import insung.moving.customer.util.Util;
 
@@ -152,13 +151,13 @@ public class SocketService extends Service implements Runnable{
 				bServerConnect = false;
 
 				Intent intent = new Intent( MainActivity.INTENT_FILTER);
-				intent.putExtra( DEFINE.networkIntentValue, false);
+				intent.putExtra( MyApplication.networkIntentValue, false);
 				sendBroadcast(intent);
 
 			}else if( msg.what == HANDLER_NETWORK_OK ) {
 
 				Intent intent = new Intent( MainActivity.INTENT_FILTER);
-				intent.putExtra( DEFINE.networkIntentValue, true);
+				intent.putExtra( MyApplication.networkIntentValue, true);
 				sendBroadcast(intent);
 
 			}else if( msg.what == HANDLER_LOADING ) {
@@ -317,7 +316,7 @@ public class SocketService extends Service implements Runnable{
 			SocketDisConnect();
 
 			try {
-				SocketAddress socketAddr = new InetSocketAddress( DEFINE.SERVER_IP, DEFINE.SERVER_PORT);
+				SocketAddress socketAddr = new InetSocketAddress( MyApplication.SERVER_IP, MyApplication.SERVER_PORT);
 				socket = new Socket();
 				socket.connect(socketAddr, 3000);
 

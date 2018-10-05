@@ -1,6 +1,5 @@
 package insung.moving.customer.activity;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -10,22 +9,18 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 
 import com.gun0912.tedpermission.PermissionListener;
@@ -33,21 +28,16 @@ import com.gun0912.tedpermission.TedPermission;
 
 
 import insung.moving.customer.R;
+import insung.moving.customer.app.MyApplication;
 import insung.moving.customer.databinding.ActivityMainBinding;
 import insung.moving.customer.databinding.CommonNavigationBinding;
 import insung.moving.customer.databinding.CommonToolbarBinding;
 
 
 import insung.moving.customer.service.RecvPacket;
-import insung.moving.customer.service.SendPacket;
-import insung.moving.customer.service.resultInterface.GetDorderForCustInterface;
 
 import insung.moving.customer.service.resultInterface.InsertDorderForCustCInterface;
-import insung.moving.customer.service.resultInterface.Pst_PingInterface;
-import insung.moving.customer.temp.DEFINE;
-import insung.moving.customer.temp.PROTOCOL;
 import insung.moving.customer.util.BackPressCloseHandler;
-import insung.moving.customer.util.Util;
 
 
 import java.util.ArrayList;
@@ -60,10 +50,8 @@ public class MainActivity extends BaseActivity {
     private CommonNavigationBinding commonNavigationBinding;
     private BackPressCloseHandler backPressCloseHandler;
 
-
     public static int MAIN_INPUT_CHECK = 0;
     //메인 input기능 유효성 체크를 위한 변수
-
 
     private ArrayList<String> order_items;
     //  리스트선언
@@ -90,14 +78,10 @@ public class MainActivity extends BaseActivity {
     public static String movingphone_data = "";
     //휴대폰 번호를 저장하는 변수
 
-
     private SocketRecv receiver;
-    public static final String INTENT_FILTER = DEFINE.INTENT_HEAD + "MAIN";
+    public static final String INTENT_FILTER = MyApplication.INTENT_HEAD + "MAIN";
     AlertDialog.Builder builder;
     AlertDialog networkAlertDialog;
-
-
-
 
     @SuppressLint("MissingPermission")
     @Override
@@ -108,22 +92,6 @@ public class MainActivity extends BaseActivity {
         commonNavigationBinding = DataBindingUtil.bind( binding.commonNavigation.getRoot() );
         backPressCloseHandler = new BackPressCloseHandler( this );
         setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT );
-        //   version_checktest();
-        //version_check();
-        //앱버전체크
-
-
-
-/*        //안드로이드 버전체크
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            //안드로이드 6.0 마시멜로(23)이하일경우 사용자가 직접 권한 허용 해줘야함
-
-            checkVerify();
-        } else {
-            startApp();
-            //안드로이드 6.0 이하일경우
-        }*/
-
 
         initNavigation();
         initActionBar();
@@ -166,8 +134,6 @@ public class MainActivity extends BaseActivity {
         binding.movingtypeBtn.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-         /*       MovingTypeCheckActivity movingTypeCheckActivity = new MovingTypeCheckActivity(MainActivity.this);
-                movingTypeCheckActivity.callFunction();*/
                 //다이얼로그 호출
                 Intent intent = new Intent( MainActivity.this, MovingTypeCheckActivity.class );
                 intent.putExtra( "type", binding.movingType.getText() );
@@ -295,7 +261,7 @@ public class MainActivity extends BaseActivity {
                     // showToast( "도착주소를 선택해주세요" );
                 } else {
                     PhoneDialogActivity phoneDialogActivity = new PhoneDialogActivity( MainActivity.this );
-                    phoneDialogActivity.callFunction();
+                    phoneDialogActivity.call_phonedlg();
                     //다이얼로그 호출
                 }
 
@@ -338,7 +304,7 @@ public class MainActivity extends BaseActivity {
                     // showToast( "도착주소를 선택해주세요" );
                 } else if (MAIN_INPUT_CHECK == 4) {
                     PhoneDialogActivity phoneDialogActivity = new PhoneDialogActivity( MainActivity.this );
-                    phoneDialogActivity.callFunction();
+                    phoneDialogActivity.call_phonedlg();
                     //   showToast( "연락처를 입력해주세요" );
                     Log.i( "input2", String.valueOf( MAIN_INPUT_CHECK ) );
                 } else {
@@ -362,10 +328,6 @@ public class MainActivity extends BaseActivity {
         //관련 변수 초기화
         // TODO Auto-generated method stub
         super.onRestart();
-     /*   Intent i = new Intent( MainActivity.this, MainActivity.class );  //your class
-        startActivity( i );
-        finish();*/
-
     }
 
     @Override
@@ -416,7 +378,7 @@ public class MainActivity extends BaseActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals( INTENT_FILTER ) == true) {
 
-                if (intent.getBooleanExtra( DEFINE.networkIntentValue, false )) {
+                if (intent.getBooleanExtra( MyApplication.networkIntentValue, false )) {
                     // 네트워크 성공 시 핸들러 리무브
                     dismissProgressDialog();
 
@@ -553,7 +515,6 @@ public class MainActivity extends BaseActivity {
                         MainActivity.MAIN_INPUT_CHECK = 2;
                     }
                     binding.dayLeftCircle.setBackgroundResource( R.drawable.check_1 );
-
                     movingday_data = data.getStringExtra( "result" );
                     //변수받아서 movingday_data에저장
                     binding.day.setText( movingday_data );

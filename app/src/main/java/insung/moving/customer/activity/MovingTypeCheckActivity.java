@@ -28,7 +28,7 @@ import insung.moving.customer.databinding.ActivityMovingTypeDialogBinding;
  * Created by user on 2018-06-14.
  */
 
-public class MovingTypeCheckActivity extends BaseActivity{
+public class MovingTypeCheckActivity extends BaseActivity {
 
     private Context context;
     private ActivityMovingTypeDialogBinding binding;
@@ -37,19 +37,15 @@ public class MovingTypeCheckActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         binding = DataBindingUtil.setContentView( this, R.layout.activity_moving_type_dialog );
-       // callFunction();
 
         Intent intent = getIntent();
-        String type = intent.getStringExtra("type");
+        String type = intent.getStringExtra( "type" );
 
-        if(type.equals( "이사종류")) {
+        if (type.equals( "이사종류" )) {
             //최초입력일시
 
             MainActivity.movingtype_check = 1;
         }
-
-
-
 
 
         final Button okButton = (Button) findViewById( R.id.okButton );
@@ -71,15 +67,15 @@ public class MovingTypeCheckActivity extends BaseActivity{
         final ImageView checkview2_2 = (ImageView) findViewById( R.id.checkview2_2 );
 
         final RelativeLayout checkview3 = (RelativeLayout) findViewById( R.id.checkview3 );
-        final ImageView checkview3_3 = (ImageView)findViewById( R.id.checkview3_3 );
+        final ImageView checkview3_3 = (ImageView) findViewById( R.id.checkview3_3 );
 
         final RelativeLayout checkview4 = (RelativeLayout) findViewById( R.id.checkview4 );
         final ImageView checkview4_4 = (ImageView) findViewById( R.id.checkview4_4 );
 
-        final RelativeLayout checkview5 = (RelativeLayout)findViewById( R.id.checkview5 );
+        final RelativeLayout checkview5 = (RelativeLayout) findViewById( R.id.checkview5 );
         final ImageView checkview5_5 = (ImageView) findViewById( R.id.checkview5_5 );
 
-        final RelativeLayout checkview6 = (RelativeLayout)findViewById( R.id.checkview6 );
+        final RelativeLayout checkview6 = (RelativeLayout) findViewById( R.id.checkview6 );
         final ImageView checkview6_6 = (ImageView) findViewById( R.id.checkview6_6 );
 
 
@@ -166,7 +162,6 @@ public class MovingTypeCheckActivity extends BaseActivity{
                     checkview5_5.setVisibility( View.GONE );
                     checkview6_6.setVisibility( View.GONE );
 
-
                     MainActivity.movingtype_check = 2;
                     //메인에서 선언한 type 체크를 위한 static 변수
 
@@ -209,8 +204,6 @@ public class MovingTypeCheckActivity extends BaseActivity{
                     checkview3.setBackgroundResource( R.drawable.house_03 );
                     MainActivity.movingtype_check = 0;
                     //메인에서 선언한 type 체크를 위한 static 변수
-
-
                 }
 
             }
@@ -321,17 +314,17 @@ public class MovingTypeCheckActivity extends BaseActivity{
             @Override
             public void onClick(View view) {
                 Intent intent = getIntent();
-                String type = intent.getStringExtra("type");
+                String type = intent.getStringExtra( "type" );
                 //TextView type = ((MainActivity) context).findViewById( R.id.moving_type );
                 //메인에 타입 Textview
 
-                    // 체크완료시 유효성변수를 1로 바꿈
-                    Intent resultIntent = new Intent();
-                    resultIntent.putExtra( "result",type );
-                    setResult( RESULT_OK, resultIntent );
-                    finish();
+                // 체크완료시 유효성변수를 1로 바꿈
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra( "result", type );
+                setResult( RESULT_OK, resultIntent );
+                finish();
 
-                    // 커스텀 다이얼로그를 종료한다.
+                // 커스텀 다이얼로그를 종료한다.
 
 
             }

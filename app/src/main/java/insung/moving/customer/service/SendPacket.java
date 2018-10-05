@@ -3,8 +3,8 @@ package insung.moving.customer.service;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import insung.moving.customer.app.MyApplication;
 import insung.moving.customer.temp.DATA;
-import insung.moving.customer.temp.DEFINE;
 import insung.moving.customer.util.Util;
 
 
@@ -57,15 +57,15 @@ public class SendPacket implements Parcelable {
     }
 
     public void AddString(String Data) {
-        COMMAND += Data + DEFINE.DELIMITER;
+        COMMAND += Data + MyApplication.DELIMITER;
     }
 
     public void AddInt(int Data) {
-        COMMAND += Data + DEFINE.DELIMITER;
+        COMMAND += Data + MyApplication.DELIMITER;
     }
 
     public void AddRowDelimiter() {
-        COMMAND += DEFINE.ROW_DELIMITER;
+        COMMAND += MyApplication.ROW_DELIMITER;
     }
 
     public void Commit() {

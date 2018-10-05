@@ -18,6 +18,7 @@ import android.widget.Toast;
 import insung.moving.customer.adapter.AddressItemAdapter;
 import insung.moving.customer.adapter.recyclerview.BaseRecyclerViewAdapter;
 import insung.moving.customer.R;
+import insung.moving.customer.app.MyApplication;
 import insung.moving.customer.databinding.ActivityFinishAddressDialogBinding;
 import insung.moving.customer.model.DongArrayItem;
 import insung.moving.customer.model.GunguArrayItem;
@@ -26,22 +27,19 @@ import insung.moving.customer.service.RecvPacket;
 import insung.moving.customer.service.SendPacket;
 import insung.moving.customer.service.SocketService;
 import insung.moving.customer.service.resultInterface.GetMapAddrInterface;
-import insung.moving.customer.temp.DEFINE;
 import insung.moving.customer.temp.PROTOCOL;
 
 import java.util.ArrayList;
 
 public class FinishAddressDialogActivity extends BaseActivity {
 
-    public static final String INTENT_FILTER = DEFINE.INTENT_HEAD + "MAIN";
+    public static final String INTENT_FILTER = MyApplication.INTENT_HEAD + "MAIN";
     private ActivityFinishAddressDialogBinding binding;
     private AddressItemAdapter addressItemAdapter;
-
     private StartAddressItem startAddressItem; // 시도 군구 동 저장할 객체
 
     private ArrayList<String> sidoItems;    // 군구 이름
     private ArrayList<String> sidoCodes;    // 군구 코드
-
 
     GunguArrayItem gunguArrayItem; // 군구 리스트 저장 객체
     private ArrayList<String> gunguItems;    // 군구 이름
@@ -50,10 +48,6 @@ public class FinishAddressDialogActivity extends BaseActivity {
     DongArrayItem dongArrayItem; // 동 리스트 저장 객체
     private ArrayList<String> dongItems;    // 동 이름
     private ArrayList<String> dongCodes;    // 동 코드
-
-
-
-
     private String CURRENT_TYPE_F = "1"; // 기본 데이터 시도로 저장
 
     private String ADDRESS_SIDO_TYPE = "1";
@@ -62,45 +56,12 @@ public class FinishAddressDialogActivity extends BaseActivity {
     private String ADDRESS_HEIGHT_TYPE = "7";
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        startAddressItem = null;
-
-        gunguArrayItem = null;
-        gunguItems = null;
-        gunguCodes = null;
-
-        dongArrayItem = null;
-        dongItems = null;
-        dongCodes = null;
-
-    }
-
-    public ServiceConnection serviceConnection = new ServiceConnection() {
-        public void onServiceConnected(ComponentName className, IBinder iservice) {
-            SocketService.SocketServiceBinder binder = (SocketService.SocketServiceBinder) iservice;
-            service = binder.getService();
-            bound = true;
-            networkPresenter.service = service;
-            address_change();
-        }
-
-        public void onServiceDisconnected(ComponentName className) {
-            service = null;
-            bound = false;
-        }
-    };
-
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         binding = DataBindingUtil.setContentView( this, R.layout.activity_finish_address_dialog );
 
         binding.recyclerViewAddress.setHasFixedSize( true );
         binding.recyclerViewAddress.setLayoutManager( new GridLayoutManager( FinishAddressDialogActivity.this, 4, GridLayoutManager.VERTICAL, false ) );
-
 
         startAddressItem = new StartAddressItem();
         gunguArrayItem = new GunguArrayItem();
@@ -219,7 +180,7 @@ public class FinishAddressDialogActivity extends BaseActivity {
                     public void success(RecvPacket packet) {
                         try {
 
-                            final String[] recvData = packet.COMMAND.split( DEFINE.DELIMITER );
+                            final String[] recvData = packet.COMMAND.split( MyApplication.DELIMITER );
                             if (CURRENT_TYPE_F == ADDRESS_SIDO_TYPE) {
 
                                 gunguCodes.clear();
@@ -359,7 +320,7 @@ public class FinishAddressDialogActivity extends BaseActivity {
                 public void success(RecvPacket packet) {
                     try {
 
-                        final String[] recvData = packet.COMMAND.split( DEFINE.DELIMITER );
+                        final String[] recvData = packet.COMMAND.split( MyApplication.DELIMITER );
                         Log.i( "CUR RSS", CURRENT_TYPE_F + "--" + ADDRESS_SIDO_TYPE );
                         if (CURRENT_TYPE_F == ADDRESS_SIDO_TYPE) {
 
@@ -407,12 +368,42 @@ public class FinishAddressDialogActivity extends BaseActivity {
         }
     };
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        startAddressItem = null;
+
+        gunguArrayItem = null;
+        gunguItems = null;
+        gunguCodes = null;
+
+        dongArrayItem = null;
+        dongItems = null;
+        dongCodes = null;
+
+    }
+
+    public ServiceConnection serviceConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder iservice) {
+            SocketService.SocketServiceBinder binder = (SocketService.SocketServiceBinder) iservice;
+            service = binder.getService();
+            bound = true;
+            networkPresenter.service = service;
+            address_change();
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            service = null;
+            bound = false;
+        }
+    };
 
     public SendPacket GET_MAP_ADDR_SEND(String addressType, String addressCode) {
         // 군구 호출 메서드
         SendPacket sPacket = new SendPacket();
 
-        addressCode = addressCode.replace( DEFINE.ROW_DELIMITER, "" );
+        addressCode = addressCode.replace( MyApplication.ROW_DELIMITER, "" );
         //ROW_DELEMITER이 붙어서 addressCode가 넘어오므로 제거해줌
 
         try {
@@ -461,7 +452,7 @@ public class FinishAddressDialogActivity extends BaseActivity {
             public void success(RecvPacket packet) {
                 Log.i( "늦음", "0" );
                 try {
-                    final String[] recvData = packet.COMMAND.split( DEFINE.DELIMITER );
+                    final String[] recvData = packet.COMMAND.split( MyApplication.DELIMITER );
 
                     dongCodes.clear();
                     dongItems.clear();

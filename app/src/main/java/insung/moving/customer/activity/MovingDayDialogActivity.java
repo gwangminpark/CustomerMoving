@@ -43,8 +43,6 @@ public class MovingDayDialogActivity extends BaseActivity implements OnDateSelec
     private String shot_Day;
     //날짜 저장하기 위한 변수
 
-    //체크박스 체크했는지 체크하기 위한 변수
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -77,9 +75,8 @@ public class MovingDayDialogActivity extends BaseActivity implements OnDateSelec
                 .setMaximumDate( CalendarDay.from( Year, Month + 2, 31 ) ) // 달력의 끝
                 .setCalendarDisplayMode( CalendarMode.MONTHS )
                 .commit();
-
-
-        if (Month < 10) {
+        Log.i("날짜", String.valueOf( Month )+Date );
+        if (Month < 9) {
             if (Date < 10) {
                 shot_Day = Year + "-0" + (Month + 1) + "-0" + Date;
             } else {
@@ -93,16 +90,12 @@ public class MovingDayDialogActivity extends BaseActivity implements OnDateSelec
             }
             // 기본값으로 오늘 날짜 지정
             // 날짜 데이터를 2018-7-9  -> 2018-07-09 형식으로 만들어줌
-
         }
-
 
         binding.calendarView.addDecorators(
                 new SundayDecorator(),
                 new SaturdayDecorator(),
                 new HighlightLunarDecorator(),
-
-
                 oneDayDecorator );
         binding.calendarView.setOnDateChangedListener( new OnDateSelectedListener() {
             @Override

@@ -11,7 +11,6 @@ import insung.moving.customer.service.resultInterface.GetMapAddrInterface;
 import insung.moving.customer.service.resultInterface.GetVersionCustInterface;
 import insung.moving.customer.service.resultInterface.InsertDorderForCustCInterface;
 import insung.moving.customer.service.resultInterface.Pst_PingInterface;
-import insung.moving.customer.temp.DEFINE;
 import insung.moving.customer.temp.PROTOCOL;
 
 /**
@@ -46,9 +45,9 @@ public class NetworkPresenter implements NetworkPresenterInterface {
 
             sPacket.AddType( PROTOCOL.PT_REQUEST, PROTOCOL.INSERT_DORDER_FOR_CUST_C );
             sPacket.AddMessageType(PROTOCOL.INSERT_DORDER_FOR_CUST_C);
-            sPacket.AddString( "TEST" );
-            sPacket.AddString( "7" );
-            sPacket.AddString( "35" );   //콜센타 코드 CCODE
+            sPacket.AddString( "KING" );
+            sPacket.AddString( "8" );
+            sPacket.AddString( "39" );   //콜센타 코드 CCODE
             sPacket.AddString( "0" );   //소속업체코드 (1차)
             sPacket.AddString( "0" );    //
             sPacket.AddString( "14" );       //오더구분
@@ -98,9 +97,9 @@ public class NetworkPresenter implements NetworkPresenterInterface {
         SendPacket sPacket = new SendPacket();
         sPacket.AddType( PROTOCOL.PT_REQUEST, PROTOCOL.GET_DORDER_FOR_CUST);
         sPacket.AddMessageType(PROTOCOL.GET_DORDER_FOR_CUST);
-        sPacket.AddString("TEST");
-        sPacket.AddString("7");
-        sPacket.AddString("35");
+        sPacket.AddString("KING");
+        sPacket.AddString("8");
+        sPacket.AddString("39");
         sPacket.AddString("0");
         sPacket.AddString( "0" );
         sPacket.AddString(phone);
@@ -120,7 +119,7 @@ public class NetworkPresenter implements NetworkPresenterInterface {
             @Override
             public void success(RecvPacket packet) {
                 try {
-                    String[] recvData = packet.COMMAND.split( DEFINE.ROW_DELIMITER );
+                    String[] recvData = packet.COMMAND.split( MyApplication.ROW_DELIMITER );
 
 
                     //showToast("조회 성공");
@@ -129,7 +128,7 @@ public class NetworkPresenter implements NetworkPresenterInterface {
                     for (int i = 0; i < recvData.length; i++) {
                         Log.i( "recvDataa", recvData[i] );
 
-                        String[] sData = recvData[i].split( DEFINE.DELIMITER );
+                        String[] sData = recvData[i].split( MyApplication.DELIMITER );
                         //반복문 돌면서 sData의 []값에 해당되는 데이터가 order_items에 담김
 
                         order_items.add( sData[10] );  //주문일자
@@ -182,7 +181,7 @@ public class NetworkPresenter implements NetworkPresenterInterface {
             @Override
             public void success(RecvPacket packet) {
                 try {
-                    String[] recvData = packet.COMMAND.split( DEFINE.DELIMITER );
+                    String[] recvData = packet.COMMAND.split( MyApplication.DELIMITER );
 
                     for (int i = 0; i < recvData.length; i++) {
                         Log.i( "recvDataa", recvData[i] );
@@ -219,7 +218,7 @@ public class NetworkPresenter implements NetworkPresenterInterface {
             @Override
             public void success(RecvPacket packet) {
                 try {
-                    String[] recvData = packet.COMMAND.split( DEFINE.DELIMITER );
+                    String[] recvData = packet.COMMAND.split( MyApplication.DELIMITER );
 
 
                 } catch (Exception e) {

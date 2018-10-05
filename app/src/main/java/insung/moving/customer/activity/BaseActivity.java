@@ -1,8 +1,5 @@
 package insung.moving.customer.activity;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -11,45 +8,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.IBinder;
 import android.os.StrictMode;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.ibm.icu.text.Transliterator;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-
 import insung.moving.customer.app.MyApplication;
-import insung.moving.customer.R;
-import insung.moving.customer.databinding.CommonToolbarBinding;
 import insung.moving.customer.service.NetworkPresenter;
-import insung.moving.customer.service.SendPacket;
 import insung.moving.customer.service.SocketService;
-import insung.moving.customer.temp.DEFINE;
-import insung.moving.customer.temp.PROTOCOL;
 import insung.moving.customer.util.KeyHandleUtil;
 import insung.moving.customer.util.ProgressDialogManager;
 
@@ -62,18 +31,12 @@ public class BaseActivity extends AppCompatActivity {
     public AlertDialog.Builder builder;
     public NetworkPresenter networkPresenter;
     public AlertDialog networkAlertDialog;
-    public String myNumber;
-    //나의 휴대폰번호를 임시로 저장시켜놓는 변수
 
-    //    public MainThreadHandler<BaseActivity> mHandler = new MainThreadHandler<>(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
 
         getWindow().addFlags( WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON );
-
-//        setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT );
-
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy( policy );
@@ -86,7 +49,6 @@ public class BaseActivity extends AppCompatActivity {
                     new Intent( BaseActivity.this, SocketService.class ), connection,
                     Context.BIND_AUTO_CREATE );
         }
-
     }
 
     protected void setBindService(ServiceConnection getServiceConnection) {
@@ -168,26 +130,26 @@ public class BaseActivity extends AppCompatActivity {
     public class SocketRecv extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals( DEFINE.NETWORK_INTENT_FILTER ) == true) {
+            if (intent.getAction().equals( MyApplication.NETWORK_INTENT_FILTER ) == true) {
 
-                int networkStateValue = intent.getIntExtra( DEFINE.networkIntentValue, 0 );
+                int networkStateValue = intent.getIntExtra( MyApplication.networkIntentValue, 0 );
 
-                if (networkStateValue == DEFINE.HANDLER_NETWORK_OK) {
+                if (networkStateValue == MyApplication.HANDLER_NETWORK_OK) {
                     // 네트워크 성공 시 핸들러 리무브
                     dismissProgressDialog();
                     if (networkAlertDialog != null) {
                         networkAlertDialog.dismiss();
                     }
 
-                } else if (networkStateValue == DEFINE.HANDLER_NETWORK_LOADING) {
+                } else if (networkStateValue == MyApplication.HANDLER_NETWORK_LOADING) {
                     // 네트워크 성공 시 핸들러 리무브
                     showNetworkProgressDialog( "", "서버와 연결중입니다." );
 
-                } else if (networkStateValue == DEFINE.HANDLER_NETWORK_RESTART) {
+                } else if (networkStateValue == MyApplication.HANDLER_NETWORK_RESTART) {
                     // 네트워크 재시작 시 로그인 데이터 추가
 
 
-                } else if (networkStateValue == DEFINE.HANDLER_NETWORK_ERROR) {
+                } else if (networkStateValue == MyApplication.HANDLER_NETWORK_ERROR) {
                     dismissProgressDialog();
                     // 네트워크 실패
 
@@ -231,7 +193,7 @@ public class BaseActivity extends AppCompatActivity {
 
                         }
                     } );
-                } else if (networkStateValue == DEFINE.HANDLER_NETWORK_CLOSE) {
+                } else if (networkStateValue == MyApplication.HANDLER_NETWORK_CLOSE) {
                     // 네트워크 성공 시 핸들러 리무브
 //                    showNetworkProgressDialog("","서버와 연결중입니다.");
                     builder = new AlertDialog.Builder( BaseActivity.this );

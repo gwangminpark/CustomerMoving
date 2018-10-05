@@ -21,25 +21,25 @@ import com.crashlytics.android.Crashlytics;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import insung.moving.customer.app.MyApplication;
 import insung.moving.customer.service.resultInterface.Pst_PingInterface;
 import io.fabric.sdk.android.Fabric;
 import insung.moving.customer.R;
 import insung.moving.customer.service.RecvPacket;
 import insung.moving.customer.service.resultInterface.GetVersionCustInterface;
-import insung.moving.customer.temp.DEFINE;
 import insung.moving.customer.util.KeyHandleUtil;
 
 
 public class SplashActivity extends BaseActivity {
     public static Context context;
-    //
-    public static float server_version;
+
+    private float server_version;
     //마켓(서버)에 올라가있는 앱 버전//
-    public static float app_version;
+    private float app_version;
     //현재 앱 버전
     private TimerTask second;
     private SocketRecv Splashreceiver;
-    public static final String INTENT_FILTER = DEFINE.INTENT_HEAD + "MAIN";
+    public static final String INTENT_FILTER = MyApplication.INTENT_HEAD + "MAIN";
     AlertDialog.Builder builder;
     AlertDialog networkAlertDialog;
    public Timer timer = new Timer();
@@ -48,7 +48,7 @@ public class SplashActivity extends BaseActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals( INTENT_FILTER ) == true) {
 
-                if (intent.getBooleanExtra( DEFINE.networkIntentValue, false )) {
+                if (intent.getBooleanExtra( MyApplication.networkIntentValue, false )) {
                     // 네트워크 성공 시 핸들러 리무브
                     pingstart();
                     version_check();

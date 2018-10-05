@@ -17,6 +17,7 @@ import android.widget.Toast;
 import insung.moving.customer.adapter.recyclerview.BaseRecyclerViewAdapter;
 import insung.moving.customer.adapter.*;
 import insung.moving.customer.R;
+import insung.moving.customer.app.MyApplication;
 import insung.moving.customer.databinding.ActivityStartAddressDialogBinding;
 import insung.moving.customer.model.DongArrayItem;
 import insung.moving.customer.model.GunguArrayItem;
@@ -25,22 +26,19 @@ import insung.moving.customer.service.RecvPacket;
 import insung.moving.customer.service.SendPacket;
 import insung.moving.customer.service.SocketService;
 import insung.moving.customer.service.resultInterface.GetMapAddrInterface;
-import insung.moving.customer.temp.DEFINE;
 import insung.moving.customer.temp.PROTOCOL;
 
 import java.util.ArrayList;
 
 public class StartAddressDialogActivity extends BaseActivity {
 
-    public static final String INTENT_FILTER = DEFINE.INTENT_HEAD + "MAIN";
+    public static final String INTENT_FILTER = MyApplication.INTENT_HEAD + "MAIN";
     private ActivityStartAddressDialogBinding binding;
     private AddressItemAdapter addressItemAdapter;
-
     private StartAddressItem startAddressItem; // 시도 군구 동 저장할 객체
 
     private ArrayList<String> sidoItems;    // 군구 이름
     private ArrayList<String> sidoCodes;    // 군구 코드
-
 
     GunguArrayItem gunguArrayItem; // 군구 리스트 저장 객체
     private ArrayList<String> gunguItems;    // 군구 이름
@@ -50,50 +48,14 @@ public class StartAddressDialogActivity extends BaseActivity {
     private ArrayList<String> dongItems;    // 동 이름
     private ArrayList<String> dongCodes;    // 동 코드
 
-
     private ArrayList<String> heightItems;    // 층 이름
     private ArrayList<String> heightCodes;    // 층  코드
 
     private String CURRENT_TYPE = "1"; // 기본 데이터 시도로 저장
 
-    private String ADDRESS_SIDO_TYPE = "1";
-    private String ADDRESS_GUNGU_TYPE = "3";
-    private String ADDRESS_DONG_TYPE = "5";
-    private String ADDRESS_HEIGHT_TYPE = "7";
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        startAddressItem = null;
-
-        gunguArrayItem = null;
-        gunguItems = null;
-        gunguCodes = null;
-
-        dongArrayItem = null;
-        dongItems = null;
-        dongCodes = null;
-
-    }
-
-    public ServiceConnection serviceConnection = new ServiceConnection() {
-        public void onServiceConnected(ComponentName className, IBinder iservice) {
-            SocketService.SocketServiceBinder binder = (SocketService.SocketServiceBinder) iservice;
-            service = binder.getService();
-            bound = true;
-            networkPresenter.service = service;
-            Log.i( "늦음", "ss" );
-            address_change();
-        }
-
-        public void onServiceDisconnected(ComponentName className) {
-            Log.i( "늦음", "nn" );
-            service = null;
-            bound = false;
-        }
-    };
-
+    private static final String ADDRESS_SIDO_TYPE = "1";
+    private static final String ADDRESS_GUNGU_TYPE = "3";
+    private static final String ADDRESS_DONG_TYPE = "5";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,8 +77,6 @@ public class StartAddressDialogActivity extends BaseActivity {
 
         sidoItems = new ArrayList<>();
         sidoCodes = new ArrayList<>();
-
-
 
 
         heightItems = new ArrayList<>();
@@ -227,7 +187,7 @@ public class StartAddressDialogActivity extends BaseActivity {
                     public void success(RecvPacket packet) {
                         try {
 
-                            final String[] recvData = packet.COMMAND.split( DEFINE.DELIMITER );
+                            final String[] recvData = packet.COMMAND.split( MyApplication.DELIMITER );
                             if (CURRENT_TYPE == ADDRESS_SIDO_TYPE) {
 
                                 gunguCodes.clear();
@@ -382,7 +342,7 @@ public class StartAddressDialogActivity extends BaseActivity {
                 public void success(RecvPacket packet) {
                     try {
 
-                        final String[] recvData = packet.COMMAND.split( DEFINE.DELIMITER );
+                        final String[] recvData = packet.COMMAND.split( MyApplication.DELIMITER );
                         if (CURRENT_TYPE == ADDRESS_SIDO_TYPE) {
 
                             gunguCodes.clear();
@@ -430,12 +390,50 @@ public class StartAddressDialogActivity extends BaseActivity {
         }
     };
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        startAddressItem = null;
+
+        gunguArrayItem = null;
+        gunguItems = null;
+        gunguCodes = null;
+
+        dongArrayItem = null;
+        dongItems = null;
+        dongCodes = null;
+
+    }
+
+    public ServiceConnection serviceConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder iservice) {
+            SocketService.SocketServiceBinder binder = (SocketService.SocketServiceBinder) iservice;
+            service = binder.getService();
+            bound = true;
+            networkPresenter.service = service;
+            Log.i( "늦음", "ss" );
+            address_change();
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            Log.i( "늦음", "nn" );
+            service = null;
+            bound = false;
+        }
+    };
+
+
+    @Override
+    public void showNetworkProgressDialog(String title, String msg) {
+        super.showNetworkProgressDialog( title, msg );
+    }
 
     public SendPacket GET_MAP_ADDR_SEND(String addressType, String addressCode) {
         // 군구 호출 메서드
         SendPacket sPacket = new SendPacket();
 
-        addressCode = addressCode.replace( DEFINE.ROW_DELIMITER, "" );
+        addressCode = addressCode.replace( MyApplication.ROW_DELIMITER, "" );
         //ROW_DELEMITER이 붙어서 addressCode가 넘어오므로 제거해줌
 
         try {
@@ -454,33 +452,6 @@ public class StartAddressDialogActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         finish();
-       /* if(CURRENT_TYPE == ADDRESS_SIDO_TYPE){
-            finish();
-        }else if(CURRENT_TYPE == ADDRESS_GUNGU_TYPE){
-            startAddressItem.setGunguName("");
-            startAddressItem.setGunguCode("");
-
-            initRecyclerView(myApplication.sidoArrayItem.getSidoItems());
-
-            CURRENT_TYPE = ADDRESS_SIDO_TYPE;
-
-        }else if(CURRENT_TYPE == ADDRESS_DONG_TYPE){
-            startAddressItem.setDongName("");
-            startAddressItem.setDongCode("");
-
-            initRecyclerView(gunguArrayItem.getGunguItems());
-
-            CURRENT_TYPE = ADDRESS_GUNGU_TYPE;
-        }else if(CURRENT_TYPE==ADDRESS_HEIGHT_TYPE){
-            startAddressItem.setHeightName("");
-
-            initRecyclerView(dongArrayItem.getDongItems());
-
-            heightItems.clear();
-            //뒤로가기 눌렀을때 층 아이템 클리어해줌
-            CURRENT_TYPE=ADDRESS_DONG_TYPE;
-        }
-        binding.addressTittle.setText(startAddressItem.getStartAddressName());*/
     }
 
     private void initRecyclerView(ArrayList<String> adrressArrayList) {
@@ -515,7 +486,7 @@ public class StartAddressDialogActivity extends BaseActivity {
             public void success(RecvPacket packet) {
                 Log.i( "늦음", "0" );
                 try {
-                    final String[] recvData = packet.COMMAND.split( DEFINE.DELIMITER );
+                    final String[] recvData = packet.COMMAND.split( MyApplication.DELIMITER );
 
                     dongCodes.clear();
                     dongItems.clear();

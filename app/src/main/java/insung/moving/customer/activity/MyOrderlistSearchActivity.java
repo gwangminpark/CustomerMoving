@@ -19,15 +19,13 @@ import android.view.View;
 import java.util.ArrayList;
 
 import insung.moving.customer.R;
+import insung.moving.customer.app.MyApplication;
 import insung.moving.customer.model.OrderlistData;
 import insung.moving.customer.service.RecvPacket;
 
 import insung.moving.customer.databinding.ActivityMyorderSearchBinding;
 import insung.moving.customer.databinding.NotittleToolbarBinding;
-import insung.moving.customer.service.SendPacket;
 import insung.moving.customer.service.resultInterface.GetDorderForCustInterface;
-import insung.moving.customer.temp.DEFINE;
-import insung.moving.customer.temp.PROTOCOL;
 
 /**
  * Created by user on 2018-07-26.
@@ -41,10 +39,15 @@ public class MyOrderlistSearchActivity extends BaseActivity {
 
     public static OrderlistData orderlistData;
     private SocketRecv Orderlistreceiver;
-    public static final String INTENT_FILTER = DEFINE.INTENT_HEAD + "MAIN";
+    public static final String INTENT_FILTER = MyApplication.INTENT_HEAD + "MAIN";
+
+    private ActivityMyorderSearchBinding binding;
+    private NotittleToolbarBinding notittleToolbarBinding;
+
     AlertDialog.Builder builder;
     AlertDialog networkAlertDialog;
     private Context context;
+
     @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,12 +104,29 @@ public class MyOrderlistSearchActivity extends BaseActivity {
 
 
     }
+
+    @Override
+    public void onBackPressed() {
+        //뒤로가기 버튼
+        order_items.clear();
+        this.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (Orderlistreceiver != null)
+            unregisterReceiver( Orderlistreceiver );
+    }
+
+
     public class SocketRecv extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals( INTENT_FILTER ) == true) {
 
-                if (intent.getBooleanExtra( DEFINE.networkIntentValue, false )) {
+                if (intent.getBooleanExtra(MyApplication.networkIntentValue, false )) {
                     // 네트워크 성공 시 핸들러 리무브
                     dismissProgressDialog();
                     if (networkAlertDialog != null) {
@@ -123,7 +143,6 @@ public class MyOrderlistSearchActivity extends BaseActivity {
 
                     builder = new AlertDialog.Builder( MyOrderlistSearchActivity.this );
                     builder.setTitle( "네트워크 에러" );
-
                     builder.setMessage( "통신이 원할하지 않습니다 재시도해주세요." );
                     builder.setPositiveButton( "연결", new DialogInterface.OnClickListener() {
                         @Override
@@ -133,7 +152,6 @@ public class MyOrderlistSearchActivity extends BaseActivity {
                     } );
                     networkAlertDialog = builder.create();
                     networkAlertDialog.show();
-
                     networkAlertDialog.setOnDismissListener( new DialogInterface.OnDismissListener() {
                         @Override
                         public void onDismiss(DialogInterface dialog) {
@@ -145,11 +163,6 @@ public class MyOrderlistSearchActivity extends BaseActivity {
             }
         }
     }
-
-
-    private ActivityMyorderSearchBinding binding;
-    private NotittleToolbarBinding notittleToolbarBinding;
-
 
 
     @Override
@@ -195,20 +208,5 @@ public class MyOrderlistSearchActivity extends BaseActivity {
                 dismissProgressDialog();
             }
         } );
-    }
-
-    @Override
-    public void onBackPressed() {
-        //뒤로가기 버튼
-        order_items.clear();
-        this.finish();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (Orderlistreceiver != null)
-            unregisterReceiver( Orderlistreceiver );
     }
 }

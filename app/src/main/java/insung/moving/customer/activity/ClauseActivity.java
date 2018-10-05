@@ -27,7 +27,7 @@ public class ClauseActivity extends BaseActivity {
         super.onCreate( savedInstanceState );
         binding = DataBindingUtil.setContentView( this, R.layout.activity_clause );
         notittleToolbarBinding = DataBindingUtil.bind( binding.notittleToolbar.getRoot() );
-        notittleToolbarBinding.toolbarTitle.setText( "이용약관" + ReferrerReceiver.referrer );
+        notittleToolbarBinding.toolbarTitle.setText( "이용약관");
 
         setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT );
         setSupportActionBar( notittleToolbarBinding.toolbar );
@@ -38,7 +38,7 @@ public class ClauseActivity extends BaseActivity {
 
         WebView webView = (WebView) findViewById( R.id.web );
         webView.setWebViewClient( new WebViewClient() ); // 이걸 안해주면 새창이 뜸
-        webView.loadUrl( String.valueOf( R.string.agreement ) );
+        webView.loadUrl("http://24.414.co.kr/Agreement/39.html");
 
     }
 

@@ -36,7 +36,7 @@ public class PrivacyActivity extends BaseActivity {
 
         WebView webView = (WebView) findViewById( R.id.web );
         webView.setWebViewClient( new WebViewClient() ); // 이걸 안해주면 새창이 뜸
-        webView.loadUrl( "http://24.414.co.kr/Privacy/35.html" );
+        webView.loadUrl( "http://24.414.co.kr/Privacy/39.html" );
 
     }
 
