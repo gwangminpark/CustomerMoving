@@ -31,18 +31,40 @@ import insung.moving.customer.util.KeyHandleUtil;
 
 
 public class SplashActivity extends BaseActivity {
-    public static Context context;
 
-    private float server_version;
-    //마켓(서버)에 올라가있는 앱 버전//
-    private float app_version;
-    //현재 앱 버전
-    private TimerTask second;
-    private SocketRecv Splashreceiver;
+    public static Context context;
+    private static float server_version; //마켓(서버)에 올라가있는 앱 버전//
+    private static float app_version; //현재 앱 버전
+    private static TimerTask second;
+    private static SocketRecv Splashreceiver;
     public static final String INTENT_FILTER = MyApplication.INTENT_HEAD + "MAIN";
     AlertDialog.Builder builder;
     AlertDialog networkAlertDialog;
-   public Timer timer = new Timer();
+    public static Timer timer = new Timer();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate( savedInstanceState );
+        Fabric.with( this, new Crashlytics() );
+        setContentView( R.layout.activity_splash );
+
+        context = this;
+        Splashreceiver = new SocketRecv();
+        this.registerReceiver( Splashreceiver, new IntentFilter( INTENT_FILTER ) );
+
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (Splashreceiver != null)
+            unregisterReceiver( Splashreceiver );
+    }
+
+    public void onBackPressed() {
+        KeyHandleUtil.doubleBackServiceFinish( SplashActivity.this, service );
+    }
+
     public class SocketRecv extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -82,17 +104,102 @@ public class SplashActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate( savedInstanceState );
-        Fabric.with( this, new Crashlytics() );
-        setContentView( R.layout.activity_splash );
-        // 임시 스플래시 액티비티
+    private void DialogUpdate() {
+        AlertDialog.Builder dlg = new AlertDialog.Builder( this );
+        dlg.setMessage( "이사킹을 사용하기 위해서는 업데이트를 해야합니다" ).setCancelable( false );
+        dlg.setPositiveButton( "업데이트",
+                new DialogInterface.OnClickListener() {
 
-        context=this;
-        Splashreceiver = new SocketRecv();
-        this.registerReceiver( Splashreceiver, new IntentFilter( INTENT_FILTER ) );
-        //연결 onReceive 호출
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( "market://details?id=insung.moving.customer" ) );
+                        startActivity( intent );
+                        finish();
+                    }
+                } );
+        dlg.setNegativeButton( "취소",
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                } );
+        AlertDialog alert = dlg.create();
+        alert.setTitle( "업데이트" );
+        alert.setIcon( R.mipmap.ic_launcher );
+        alert.show();
+    }
+
+    private void DialogCheck() {
+        AlertDialog.Builder dlg = new AlertDialog.Builder( this );
+        dlg.setMessage( "서버에서 점검중입니다. 잠시 후에 이용해주세요." ).setCancelable( false );
+        dlg.setPositiveButton( "확인",
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO Auto-generated method stub
+                        finish();
+                    }
+                } );
+
+        AlertDialog alert = dlg.create();
+        alert.setTitle( "점검중.." );
+        alert.setIcon( R.mipmap.ic_launcher );
+        alert.show();
+    }
+
+    public class MyRecevier extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                if (intent.getAction().equals( "com.android.vending.INSTALL_REFERRER" )) {
+
+                    //아래와 같이 referrer 정보를 얻을 수 있습니다
+                    Log.d( "MyReceiver", "referrer " + intent.getStringExtra( "referrer" ) );
+                }
+            }
+        }
+    }
+
+    public void pingstart() {
+
+
+        second = new TimerTask() {
+
+            @Override
+            public void run() {
+                Log.i( "핑쓰레드", "1" );
+                ping();
+
+            }
+        };
+        timer.schedule( second, 0, 120000 );
+
+    }
+
+    public void ping() {
+
+        networkPresenter.PST_PING( new Pst_PingInterface() {
+            @Override
+            public void success() {
+            }
+
+            @Override
+            public void success(RecvPacket packet) {
+
+            }
+
+            @Override
+            public void fail(String t) {
+
+            }
+        } );
+    }
+
+    public void cancle() {
+        timer.cancel();
     }
 
     public void version_check() {
@@ -127,7 +234,6 @@ public class SplashActivity extends BaseActivity {
 
                     }
 
-
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -144,126 +250,5 @@ public class SplashActivity extends BaseActivity {
             }
         } );
 
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (Splashreceiver != null)
-            unregisterReceiver( Splashreceiver );
-    }
-
-    public void onBackPressed() {
-
-        KeyHandleUtil.doubleBackServiceFinish( SplashActivity.this, service );
-    }
-
-
-    private void DialogUpdate() {
-        AlertDialog.Builder dlg = new AlertDialog.Builder( this );
-        dlg.setMessage( "이사킹을 사용하기 위해서는 업데이트를 해야합니다" ).setCancelable( false );
-        dlg.setPositiveButton( "업데이트",
-                new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // TODO Auto-generated method stub
-
-
-                        Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( "market://details?id=insung.moving.customer" ) );
-                        startActivity( intent );
-                        finish();
-                    }
-                } );
-        dlg.setNegativeButton( "취소",
-                new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // TODO Auto-generated method stub
-                        finish();
-
-                    }
-                } );
-        AlertDialog alert = dlg.create();
-        alert.setTitle( "업데이트" );
-        alert.setIcon( R.mipmap.ic_launcher );
-        alert.show();
-    }
-
-    private void DialogCheck() {
-        AlertDialog.Builder dlg = new AlertDialog.Builder( this );
-        dlg.setMessage( "서버에서 점검중입니다. 잠시 후에 이용해주세요." ).setCancelable( false );
-        dlg.setPositiveButton( "확인",
-                new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // TODO Auto-generated method stub
-                        finish();
-                    }
-                } );
-
-        AlertDialog alert = dlg.create();
-        alert.setTitle( "점검중.." );
-        alert.setIcon( R.mipmap.ic_launcher );
-        alert.show();
-    }
-
-    public class MyRecevier extends BroadcastReceiver {
-
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent != null) {
-                if (intent.getAction().equals( "com.android.vending.INSTALL_REFERRER" )) {
-
-                    //아래와 같이 referrer 정보를 얻을 수 있습니다
-                    Log.d( "MyReceiver", "referrer " + intent.getStringExtra( "referrer" ) );
-                }
-            }
-        }
-    }
-
-    public void pingstart() {
-
-
-        second = new TimerTask() {
-
-            @Override
-            public void run() {
-                Log.i("핑쓰레드","1");
-                ping();
-
-            }
-        };
-        timer.schedule(second, 0, 120000);
-
-    }
-
-    public void ping(){
-
-        networkPresenter.PST_PING( new Pst_PingInterface() {
-            @Override
-            public void success() {
-
-            }
-
-            @Override
-            public void success(RecvPacket packet) {
-
-            }
-
-            @Override
-            public void fail(String t) {
-
-            }
-        } );
-    }
-
-    public void cancle(){
-            timer.cancel();
     }
 }

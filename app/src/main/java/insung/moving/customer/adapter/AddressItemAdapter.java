@@ -32,7 +32,6 @@ public class AddressItemAdapter extends BaseRecyclerViewAdapter<String, AddressI
     @Override
     public void onBindView(ViewHolder holder, int position) {
 
-
         if(this.position == position){
             // select
             holder.binding.tvLocation.setSelected(true);
@@ -43,8 +42,6 @@ public class AddressItemAdapter extends BaseRecyclerViewAdapter<String, AddressI
         holder.binding.tvLocation.setText(items.get(position).toString());
 
     }
-
-
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private AddressItemBinding binding;

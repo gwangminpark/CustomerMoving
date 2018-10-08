@@ -6,13 +6,11 @@ public class PROTOCOL{
 	public static final int INSERT_DORDER_FOR_CUST_C = 20001;
 	public static final int GET_DORDER_FOR_CUST = 20002;
 	public static final int GET_VERSION_CUST=10010;
-
 	public static final int GET_DAUM_ADDR_PARSING = 99994;
 	public static final int GET_DAUM_ADDR  = 99995;
 	public static final int GET_MAP_ADDR = 29992;
 	public static final int PST_PING  = 29999;
 	//public static final int GET_MAP_ADDR = 99992;
-
 	/* type */
 	final static public int PT_REQUEST					= 101;
 	final static public int PT_RESPONSE					= 102;

@@ -23,17 +23,15 @@ public class DefaultDecorator implements DayViewDecorator {
 
     @Override
     public boolean shouldDecorate(CalendarDay day) {
-        day.copyTo(calendar);
+        day.copyTo( calendar );
 
-
-            int weekDay = 7;
-           // Log.i( "weekDay", String.valueOf( weekDay ) );
-            return weekDay == Calendar.SUNDAY;
-
+        int weekDay = 7;
+        // Log.i( "weekDay", String.valueOf( weekDay ) );
+        return weekDay == Calendar.SUNDAY;
     }
 
     @Override
     public void decorate(DayViewFacade view) {
-        view.addSpan(new ForegroundColorSpan(Color.GREEN));
+        view.addSpan( new ForegroundColorSpan( Color.GREEN ) );
     }
 }

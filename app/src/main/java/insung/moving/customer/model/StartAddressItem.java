@@ -9,20 +9,17 @@ public class StartAddressItem {
     public String sidoName;
     public String gunguName;
     public String heightName;
-
     public String dongCode;
     public String sidoCode;
     public String gunguCode;
     public String heightCode;
     public String StartAddressName;
 
-
     public StartAddressItem() {
         this.sidoName = "";
         this.gunguName = "";
         this.dongName = "";
         this.heightName="";
-
         this.sidoCode = "";
         this.gunguCode = "";
         this.dongCode = "";

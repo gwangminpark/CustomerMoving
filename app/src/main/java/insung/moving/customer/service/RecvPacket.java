@@ -51,20 +51,20 @@ public class RecvPacket implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         // TODO Auto-generated method stub
-        dest.writeString(HEAD);
-        dest.writeInt(PACKET_SIZE);
-        dest.writeInt(TYPE);
-        dest.writeInt(SUB_TYPE);
-        dest.writeInt(ERROR);
-        dest.writeInt(NROW);
-        dest.writeInt(MSG_TYPE);
-        dest.writeString(COMMAND);
-        dest.writeString(INTENT);
+        dest.writeString( HEAD );
+        dest.writeInt( PACKET_SIZE );
+        dest.writeInt( TYPE );
+        dest.writeInt( SUB_TYPE );
+        dest.writeInt( ERROR );
+        dest.writeInt( NROW );
+        dest.writeInt( MSG_TYPE );
+        dest.writeString( COMMAND );
+        dest.writeString( INTENT );
     }
 
     public static final Creator<RecvPacket> CREATOR = new Creator<RecvPacket>() {
         public RecvPacket createFromParcel(Parcel in) {
-            return new RecvPacket(in);
+            return new RecvPacket( in );
         }
 
         public RecvPacket[] newArray(int size) {

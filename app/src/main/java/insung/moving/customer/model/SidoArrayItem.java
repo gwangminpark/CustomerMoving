@@ -17,7 +17,6 @@ public class SidoArrayItem {
         return sidoItems;
     }
 
-
     public void setSidoCodes(ArrayList<String> sidoCodes) {
         this.sidoCodes = sidoCodes;
     }

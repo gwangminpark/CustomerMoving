@@ -17,7 +17,6 @@ public class DongArrayItem {
         return DongItems;
     }
 
-
     public void setDongCodes(ArrayList<String> DongCodes) {
         this.DongCodes = DongCodes;
     }

@@ -11,11 +11,11 @@ import insung.moving.customer.R;
  */
 
 class RecyclerViewHolder extends RecyclerView.ViewHolder {
-    public TextView order_day;
-    public TextView moving_type;
-    public TextView moving_day;
-    public TextView start_addrses;
-    public TextView finish_address;
+    public static TextView order_day;
+    public static TextView moving_type;
+    public static TextView moving_day;
+    public static TextView start_addrses;
+    public static TextView finish_address;
 
     public RecyclerViewHolder(View itemView) {
         super(itemView);

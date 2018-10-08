@@ -18,7 +18,6 @@ import insung.moving.customer.util.ReferrerReceiver;
  */
 
 public class ClauseActivity extends BaseActivity {
-
     private ActivityClauseBinding binding;
     private NotittleToolbarBinding notittleToolbarBinding;
 
@@ -35,11 +34,9 @@ public class ClauseActivity extends BaseActivity {
         getSupportActionBar().setDisplayShowHomeEnabled( true );
         getSupportActionBar().setDisplayShowTitleEnabled( false );
 
-
         WebView webView = (WebView) findViewById( R.id.web );
         webView.setWebViewClient( new WebViewClient() ); // 이걸 안해주면 새창이 뜸
         webView.loadUrl("http://24.414.co.kr/Agreement/39.html");
-
     }
 
     @Override

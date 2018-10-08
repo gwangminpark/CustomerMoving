@@ -16,17 +16,16 @@ public class FinishAddressItem {
     public String heightCode;
     public String StartAddressName;
 
-
     public FinishAddressItem() {
         this.sidoName = "";
         this.gunguName = "";
         this.dongName = "";
-        this.heightName="";
+        this.heightName = "";
 
         this.sidoCode = "";
         this.gunguCode = "";
         this.dongCode = "";
-        this.heightCode="";
+        this.heightCode = "";
     }
 
     public String getSidoName() {
@@ -96,19 +95,19 @@ public class FinishAddressItem {
         this.heightCode = heightCode;
     }
 
-    public String getStartAddressName(){
-        if(!getHeightName().equals("")){
-            return getSidoName() +" - "+getGunguName()+" - "+getDongName()+"-"+getHeightName();
-        }
-        else if(!getDongName().equals("")){
-            return getSidoName() +" - "+getGunguName()+" - "+getDongName();
-        }else if(!getGunguName().equals("")){
-            return getSidoName() +" - "+getGunguName();
-        }else{
+    public String getStartAddressName() {
+        if (!getHeightName().equals( "" )) {
+            return getSidoName() + " - " + getGunguName() + " - " + getDongName() + "-" + getHeightName();
+        } else if (!getDongName().equals( "" )) {
+            return getSidoName() + " - " + getGunguName() + " - " + getDongName();
+        } else if (!getGunguName().equals( "" )) {
+            return getSidoName() + " - " + getGunguName();
+        } else {
             return getSidoName();
         }
 
     }
+
     public void setStartAddressName(String startAddressName) {
         StartAddressName = startAddressName;
     }

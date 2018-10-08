@@ -17,7 +17,6 @@ public class GunguArrayItem {
         return GunguItems;
     }
 
-
     public void setGunguCodes(ArrayList<String> GunguCodes) {
         this.GunguCodes = GunguCodes;
     }

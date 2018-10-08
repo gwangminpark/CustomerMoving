@@ -34,15 +34,11 @@ import insung.moving.customer.util.ReferrerReceiver;
 public class PhoneDialogActivity extends BaseActivity {
 
     private Context context;
-
-    private int checkbox_check = 0;
-
+    private static int checkbox_check = 0;
     //체크박스 체크했는지 체크하기 위한 변수
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-
-
     }
 
     public PhoneDialogActivity(Context context) {
@@ -51,7 +47,6 @@ public class PhoneDialogActivity extends BaseActivity {
 
     // 호출할 다이얼로그 함수를 정의한다.
     public void call_phonedlg() {
-
 
         final Dialog dlg = new Dialog( context );
         dlg.requestWindowFeature( Window.FEATURE_NO_TITLE );
@@ -114,7 +109,6 @@ public class PhoneDialogActivity extends BaseActivity {
                         OrderData orderdata = new OrderData();
                         orderdata.setName( message.getText().toString() );
 
-
                         MainActivity.movingname_data = name.getText().toString().replace( " ", "" );
                         MainActivity.movingphone_data = message.getText().toString();
 
@@ -127,7 +121,6 @@ public class PhoneDialogActivity extends BaseActivity {
                         type.setText( name.getText().toString() );
                         //넣어줌
                         search_bt.setBackgroundColor( Color.parseColor( "#005FC9" ) );
-
 
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putString( "name", String.valueOf( name.getText() ) );

@@ -33,7 +33,6 @@ public class PrivacyActivity extends BaseActivity {
         getSupportActionBar().setDisplayShowHomeEnabled( true );
         getSupportActionBar().setDisplayShowTitleEnabled( false );
 
-
         WebView webView = (WebView) findViewById( R.id.web );
         webView.setWebViewClient( new WebViewClient() ); // 이걸 안해주면 새창이 뜸
         webView.loadUrl( "http://24.414.co.kr/Privacy/39.html" );

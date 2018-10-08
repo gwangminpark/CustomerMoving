@@ -34,9 +34,9 @@ import java.util.ArrayList;
 public class FinishAddressDialogActivity extends BaseActivity {
 
     public static final String INTENT_FILTER = MyApplication.INTENT_HEAD + "MAIN";
-    private ActivityFinishAddressDialogBinding binding;
-    private AddressItemAdapter addressItemAdapter;
-    private StartAddressItem startAddressItem; // 시도 군구 동 저장할 객체
+    private static ActivityFinishAddressDialogBinding binding;
+    private static AddressItemAdapter addressItemAdapter;
+    private static StartAddressItem startAddressItem; // 시도 군구 동 저장할 객체
 
     private static ArrayList<String> sidoItems;    // 시도 이름
     private static ArrayList<String> sidoCodes;    // 시도 코드
@@ -50,10 +50,9 @@ public class FinishAddressDialogActivity extends BaseActivity {
     private static ArrayList<String> dongCodes;    // 동 코드
     private static String CURRENT_TYPE_F = "1"; // 기본 데이터 시도로 저장
 
-    private String ADDRESS_SIDO_TYPE = "1";
-    private String ADDRESS_GUNGU_TYPE = "3";
-    private String ADDRESS_DONG_TYPE = "5";
-    private String ADDRESS_HEIGHT_TYPE = "7";
+    private static String ADDRESS_SIDO_TYPE = "1";
+    private static String ADDRESS_GUNGU_TYPE = "3";
+    private static String ADDRESS_DONG_TYPE = "5";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +129,6 @@ public class FinishAddressDialogActivity extends BaseActivity {
                 onBackPressed();
             }
         } );
-
 
         binding.tittle1.setOnClickListener( new View.OnClickListener() {
             @Override

@@ -36,46 +36,43 @@ import java.util.GregorianCalendar;
 
 public class MovingDayDialogActivity extends BaseActivity implements OnDateSelectedListener {
 
-    MovingdayDialogBinding binding;
-
     private static final TitleFormatter DEFAULT_TITLE_FORMATTER = new DateFormatTitleFormatter( new SimpleDateFormat( "yyyy년 MM월" ) );
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
-    private String shot_Day;
-    //날짜 저장하기 위한 변수
+    private static String shot_Day;
+    private MovingdayDialogBinding binding;
+
+    private static int Year;
+    private static int Month;
+    private static int Date;
+    private static int Day;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         binding = DataBindingUtil.setContentView( this, R.layout.movingday_dialog );
-
         binding.calendarView.setOnDateChangedListener( this );
-        //  binding.calendarView.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
-
         GregorianCalendar today = new GregorianCalendar();
 
         long now = System.currentTimeMillis();
         Date date = new Date( now );
-        SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd" );
-        String getTime = sdf.format( date );
+        SimpleDateFormat day = new SimpleDateFormat( "yyyy-MM-dd" );
+        String getTime = day.format( date );
         //현재 날짜
 
-        int Year = today.get( Calendar.YEAR );
-        int Month = today.get( Calendar.MONTH );
-        int Date = today.get( Calendar.DATE );
-        int Hour = today.get( Calendar.HOUR_OF_DAY );
+        Year = today.get( Calendar.YEAR );
+        Month = today.get( Calendar.MONTH );
+        Date = today.get( Calendar.DATE );
 
         binding.calendarView.setOnDateChangedListener( this );
         binding.calendarView.setShowOtherDates( MaterialCalendarView.SHOW_OUT_OF_RANGE );
         binding.calendarView.setTitleFormatter( DEFAULT_TITLE_FORMATTER );
-
-
         binding.calendarView.state().edit()
                 .setFirstDayOfWeek( Calendar.SUNDAY )
                 .setMinimumDate( CalendarDay.from( Year, Month, 1 ) ) // 달력의 시작
                 .setMaximumDate( CalendarDay.from( Year, Month + 2, 31 ) ) // 달력의 끝
                 .setCalendarDisplayMode( CalendarMode.MONTHS )
                 .commit();
-        Log.i("날짜", String.valueOf( Month )+Date );
+        Log.i( "날짜", String.valueOf( Month ) + Date );
         if (Month < 9) {
             if (Date < 10) {
                 shot_Day = Year + "-0" + (Month + 1) + "-0" + Date;
@@ -103,19 +100,13 @@ public class MovingDayDialogActivity extends BaseActivity implements OnDateSelec
                 oneDayDecorator.setDate( date.getDate() );
                 widget.invalidateDecorators();
 
-                int Year = date.getYear();
-                int Month = date.getMonth() + 1;
-                int Day = date.getDay();
+                Year = date.getYear();
+                Month = date.getMonth() + 1;
+                Day = date.getDay();
 
                 if (Day < 13) {
                     Toast.makeText( MovingDayDialogActivity.this, "현재날짜보다 더큰날짜입력", Toast.LENGTH_SHORT );
                 }
-
-                Log.i( "Year test", Year + "" );
-                Log.i( "Month test", Month + "" );
-                Log.i( "Day test", Day + "" );
-                Log.i( "shot_Day test", shot_Day + "" );
-
                 if (Month < 10) {
                     if (Day < 10) {
                         shot_Day = Year + "-0" + Month + "-0" + Day;
@@ -130,9 +121,7 @@ public class MovingDayDialogActivity extends BaseActivity implements OnDateSelec
                     }
                 }
                 // 날짜 데이터를 2018-7-9  -> 2018-07-09 형식으로 만들어줌
-
                 binding.calendarView.clearSelection();
-
             }
 
         } );
@@ -156,16 +145,11 @@ public class MovingDayDialogActivity extends BaseActivity implements OnDateSelec
                         setResult( RESULT_OK, resultIntent );
                         finish();
                     }
-
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-
-                //엑티비티 종료시 shot_Day(선택날짜) 같이 보내줌
             }
         } );
-
-
         binding.btnCancel.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -173,7 +157,6 @@ public class MovingDayDialogActivity extends BaseActivity implements OnDateSelec
             }
         } );
     }
-
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {

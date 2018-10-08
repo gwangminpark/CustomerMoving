@@ -50,8 +50,6 @@ public class SearchMovingDayActivity extends BaseActivity implements OnDateSelec
         int Year = today.get( Calendar.YEAR );
         int Month = today.get( Calendar.MONTH );
         int Date = today.get( Calendar.DATE );
-        int Hour = today.get( Calendar.HOUR_OF_DAY );
-
 
         setSupportActionBar( notittleToolbarBinding.toolbar );
         getSupportActionBar().setDisplayHomeAsUpEnabled( true );
@@ -72,7 +70,6 @@ public class SearchMovingDayActivity extends BaseActivity implements OnDateSelec
                 .setCalendarDisplayMode( CalendarMode.MONTHS )
                 .commit();
 
-
         if (Month < 10) {
             if (Date < 10) {
                 shot_Day = Year + "-0" + (Month + 1) + "-0" + Date;
@@ -87,9 +84,7 @@ public class SearchMovingDayActivity extends BaseActivity implements OnDateSelec
             }
             // 기본값으로 오늘 날짜 지정
             // 날짜 데이터를 2018-7-9  -> 2018-07-09 형식으로 만들어줌
-
         }
-
 
         binding.calendarView.addDecorators(
                 new SundayDecorator(),
@@ -105,11 +100,6 @@ public class SearchMovingDayActivity extends BaseActivity implements OnDateSelec
                 int Year = date.getYear();
                 int Month = date.getMonth() + 1;
                 int Day = date.getDay();
-
-                Log.i( "Year test", Year + "" );
-                Log.i( "Month test", Month + "" );
-                Log.i( "Day test", Day + "" );
-                Log.i( "shot_Day test", shot_Day + "" );
 
                 if (Month < 10) {
                     if (Day < 10) {
@@ -131,13 +121,10 @@ public class SearchMovingDayActivity extends BaseActivity implements OnDateSelec
             }
 
         } );
-
-
     }
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-
     }
 
     @Override

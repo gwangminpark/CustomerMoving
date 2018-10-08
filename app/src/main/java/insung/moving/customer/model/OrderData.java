@@ -11,7 +11,6 @@ public class OrderData {
     //(1:포장이사, 2:일반이사, 3:보관이사, 5:고급포장이사)
     private String moving_date;
     private String name;
-    private int phone;
 
     //이사시작 정보
     private String start_address1;
@@ -32,21 +31,14 @@ public class OrderData {
     //대명동, 등 동
     private int finish_height;
     //층수
-
     private String member_memo;
     //고객메모
-
-
 
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
-
-
 
 }

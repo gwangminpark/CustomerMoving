@@ -41,13 +41,14 @@ public class SendPacket implements Parcelable {
         LAT = in.readInt();
         DONG_CODE = in.readInt();
         COMMAND = in.readString();
-        in.readByteArray(pszData);
+        in.readByteArray( pszData );
     }
 
     public void AddType(int Type, int SubType) {
         TYPE = Type;
         SUB_TYPE = SubType;
     }
+
     public void AddMessageType(int messageType) {
         MSG_TYPE = messageType;
     }
@@ -72,8 +73,8 @@ public class SendPacket implements Parcelable {
         //한글 포맷으로 인해 바이트화 시킬때 getBytes로 바이트화시키기 때문에
         //COMMAND.length()를 이요해서 문자열길이를 패킷사이즈로 주게되면 바이트 길이 오류가 나게된다.
         try {
-            byte[] bName = COMMAND.getBytes("ksc5601");
-            COMMAND = new String(bName, 0, bName.length, "ksc5601");
+            byte[] bName = COMMAND.getBytes( "ksc5601" );
+            COMMAND = new String( bName, 0, bName.length, "ksc5601" );
             PACKET_SIZE = bName.length + 28;
         } catch (Exception e) {
         }
@@ -81,14 +82,14 @@ public class SendPacket implements Parcelable {
         LON = DATA.nLon;
         LAT = DATA.nLat;
 
-        Util.StringToByte(pszData, 0, HEAD);
-        Util.IntToByte(pszData, 4, Util.htonl(PACKET_SIZE));
-        Util.IntToByte(pszData, 8, Util.htonl(TYPE));
-        Util.IntToByte(pszData, 12, Util.htonl(SUB_TYPE));
-        Util.IntToByte(pszData, 16, Util.htonl(LON));
-        Util.IntToByte(pszData, 20, Util.htonl(LAT));
-        Util.IntToByte(pszData, 24, Util.htonl(DONG_CODE));
-        Util.StringToByte(pszData, 28, COMMAND);
+        Util.StringToByte( pszData, 0, HEAD );
+        Util.IntToByte( pszData, 4, Util.htonl( PACKET_SIZE ) );
+        Util.IntToByte( pszData, 8, Util.htonl( TYPE ) );
+        Util.IntToByte( pszData, 12, Util.htonl( SUB_TYPE ) );
+        Util.IntToByte( pszData, 16, Util.htonl( LON ) );
+        Util.IntToByte( pszData, 20, Util.htonl( LAT ) );
+        Util.IntToByte( pszData, 24, Util.htonl( DONG_CODE ) );
+        Util.StringToByte( pszData, 28, COMMAND );
     }
 
     public void Commit(byte[] imageString) {
@@ -99,14 +100,14 @@ public class SendPacket implements Parcelable {
         LON = DATA.nLon;
         LAT = DATA.nLat;
 
-        Util.StringToByte(pszData, 0, HEAD);
-        Util.IntToByte(pszData, 4, Util.htonl(PACKET_SIZE));
-        Util.IntToByte(pszData, 8, Util.htonl(TYPE));
-        Util.IntToByte(pszData, 12, Util.htonl(SUB_TYPE));
-        Util.IntToByte(pszData, 16, Util.htonl(LON));
-        Util.IntToByte(pszData, 20, Util.htonl(LAT));
-        Util.IntToByte(pszData, 24, Util.htonl(DONG_CODE));
-        System.arraycopy(imageString, 0, pszData, 28, imageString.length);
+        Util.StringToByte( pszData, 0, HEAD );
+        Util.IntToByte( pszData, 4, Util.htonl( PACKET_SIZE ) );
+        Util.IntToByte( pszData, 8, Util.htonl( TYPE ) );
+        Util.IntToByte( pszData, 12, Util.htonl( SUB_TYPE ) );
+        Util.IntToByte( pszData, 16, Util.htonl( LON ) );
+        Util.IntToByte( pszData, 20, Util.htonl( LAT ) );
+        Util.IntToByte( pszData, 24, Util.htonl( DONG_CODE ) );
+        System.arraycopy( imageString, 0, pszData, 28, imageString.length );
     }
 
     @Override
@@ -118,20 +119,20 @@ public class SendPacket implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         // TODO Auto-generated method stub
-        dest.writeString(HEAD);
-        dest.writeInt(PACKET_SIZE);
-        dest.writeInt(TYPE);
-        dest.writeInt(SUB_TYPE);
-        dest.writeInt(LON);
-        dest.writeInt(LAT);
-        dest.writeInt(DONG_CODE);
-        dest.writeString(COMMAND);
-        dest.writeByteArray(pszData);
+        dest.writeString( HEAD );
+        dest.writeInt( PACKET_SIZE );
+        dest.writeInt( TYPE );
+        dest.writeInt( SUB_TYPE );
+        dest.writeInt( LON );
+        dest.writeInt( LAT );
+        dest.writeInt( DONG_CODE );
+        dest.writeString( COMMAND );
+        dest.writeByteArray( pszData );
     }
 
     public static final Creator<SendPacket> CREATOR = new Creator<SendPacket>() {
         public SendPacket createFromParcel(Parcel in) {
-            return new SendPacket(in);
+            return new SendPacket( in );
         }
 
         public SendPacket[] newArray(int size) {

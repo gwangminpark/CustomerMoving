@@ -54,5 +54,4 @@ public class MyorderItem extends ArrayList<String> {
         this.FINISH_ADDRESS = FINISH_ADDRESS;
     }
 
-
 }

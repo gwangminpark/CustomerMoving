@@ -34,15 +34,14 @@ import insung.moving.customer.service.resultInterface.GetDorderForCustInterface;
 public class MyOrderlistSearchActivity extends BaseActivity {
 
 
-    private ArrayList<String> order_items;
-    //  리스트선언.
+    private static ArrayList<String> order_items;
 
     public static OrderlistData orderlistData;
     private SocketRecv Orderlistreceiver;
     public static final String INTENT_FILTER = MyApplication.INTENT_HEAD + "MAIN";
 
-    private ActivityMyorderSearchBinding binding;
-    private NotittleToolbarBinding notittleToolbarBinding;
+    private static ActivityMyorderSearchBinding binding;
+    private static NotittleToolbarBinding notittleToolbarBinding;
 
     AlertDialog.Builder builder;
     AlertDialog networkAlertDialog;

@@ -22,7 +22,6 @@ import insung.moving.customer.service.SocketService;
 import insung.moving.customer.util.KeyHandleUtil;
 import insung.moving.customer.util.ProgressDialogManager;
 
-
 public class BaseActivity extends AppCompatActivity {
     protected MyApplication myApplication;
     protected ProgressDialog progressDialog;
@@ -35,9 +34,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-
         getWindow().addFlags( WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON );
-
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy( policy );
 
@@ -49,6 +46,26 @@ public class BaseActivity extends AppCompatActivity {
                     new Intent( BaseActivity.this, SocketService.class ), connection,
                     Context.BIND_AUTO_CREATE );
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        try {
+            if (service != null) {
+                service.StopThread();
+
+                if (bound) {
+                    bound = false;
+                    unbindService( connection );
+                }
+                Intent intent = new Intent( BaseActivity.this, SocketService.class );
+                this.stopService( intent );
+            }
+
+        } catch (Exception e) {
+        }
+        super.onDestroy();
     }
 
     protected void setBindService(ServiceConnection getServiceConnection) {
@@ -97,35 +114,9 @@ public class BaseActivity extends AppCompatActivity {
         ProgressDialogManager.dismiss( progressDialog );
     }
 
-    @Override
-    protected void onDestroy() {
-
-        try {
-//                   if (bound) {
-//                       bound = false;
-//                       unbindService( connection );
-//                   }
-
-            if (service != null) {
-                service.StopThread();
-
-                if (bound) {
-                    bound = false;
-                    unbindService( connection );
-                }
-                Intent intent = new Intent( BaseActivity.this, SocketService.class );
-                this.stopService( intent );
-            }
-
-        } catch (Exception e) {
-        }
-        super.onDestroy();
-    }
-
     protected void showToast(String msg) {
         Toast.makeText( getApplicationContext(), msg, Toast.LENGTH_SHORT ).show();
     }
-
 
     public class SocketRecv extends BroadcastReceiver {
         @Override
@@ -140,14 +131,12 @@ public class BaseActivity extends AppCompatActivity {
                     if (networkAlertDialog != null) {
                         networkAlertDialog.dismiss();
                     }
-
                 } else if (networkStateValue == MyApplication.HANDLER_NETWORK_LOADING) {
                     // 네트워크 성공 시 핸들러 리무브
                     showNetworkProgressDialog( "", "서버와 연결중입니다." );
 
                 } else if (networkStateValue == MyApplication.HANDLER_NETWORK_RESTART) {
                     // 네트워크 재시작 시 로그인 데이터 추가
-
 
                 } else if (networkStateValue == MyApplication.HANDLER_NETWORK_ERROR) {
                     dismissProgressDialog();

@@ -29,15 +29,14 @@ import insung.moving.customer.model.OrderlistData;
 
 public class MyOrderlistActivity extends BaseActivity {
 
-    private ArrayList<String> order_items;    //  리스트
+    private static ArrayList<String> order_items;    //  리스트
 
-    private MyorderListActivityBinding binding;
-    private NotittleToolbarBinding notittleToolbarBinding;
-    private CommonNavigationBinding commonNavigationBinding;
+    private static MyorderListActivityBinding binding;
+    private static NotittleToolbarBinding notittleToolbarBinding;
 
-    RecyclerView mRecyclerView;
-    LinearLayoutManager mLayoutManager;
-    MyOrderlistAdapter mAdapter;
+    private RecyclerView mRecyclerView;
+    private LinearLayoutManager mLayoutManager;
+    private MyOrderlistAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +44,6 @@ public class MyOrderlistActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView( this, R.layout.myorder_list_activity );
         notittleToolbarBinding = DataBindingUtil.bind( binding.notittleToolbar.getRoot() );
         setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT );
-//        commonNavigationBinding = DataBindingUtil.bind(binding.commonNavigation.getRoot());
-
-//       initNavigation();
-        // initActionBar();
 
         order_items = new ArrayList<>();
 
@@ -78,61 +73,13 @@ public class MyOrderlistActivity extends BaseActivity {
                     myorder_list.get( (z * 5) + 3 ),         //출발지
                     myorder_list.get( (z * 5) + 4 ) ) );       //도착지
         }
-
         // LinearLayout으로 설정
         mRecyclerView.setLayoutManager( mLayoutManager );
-        // Animation Defualt 설정
         mRecyclerView.setItemAnimator( new DefaultItemAnimator() );
-        // Decoration 설정
-        // mRecyclerView.addItemDecoration(new RecyclerViewDecoration(this, RecyclerViewDecoration.VERTICAL_LIST));
-        // Adapter 생성
         mAdapter = new MyOrderlistAdapter( items );
         mRecyclerView.setAdapter( mAdapter );
 
-
     }
-
-    private void initNavigation() {
-        // 토글 아이콘
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle( this, binding.drawerLayout, notittleToolbarBinding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close );
-        toggle.getDrawerArrowDrawable().setColor( getResources().getColor( R.color.actionbar_text ) );
-        binding.drawerLayout.setDrawerListener( toggle );
-
-        toggle.syncState();
-
-        commonNavigationBinding.linearRequest.setOnClickListener( navigationClickListener );
-        commonNavigationBinding.linearCheck.setOnClickListener( navigationClickListener );
-        commonNavigationBinding.linearMoving.setOnClickListener( navigationClickListener );
-        commonNavigationBinding.linearPolicy.setOnClickListener( navigationClickListener );
-
-    }
-
-    private View.OnClickListener navigationClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.linearRequest:
-                    finish();
-                    Intent intent = new Intent(
-                            getApplicationContext(), // 현재 화면의 제어권자
-                            MainActivity.class ); // 다음 넘어갈 클래스 지정
-                    startActivity( intent ); // 다음 화면으로 넘어간다
-                    break;
-
-                case R.id.linearCheck:
-                    showProgressDialog( "", "조회중입니다.\n잠시만 기다려 주세요." );
-                    // 이사 체크리스트
-                    break;
-
-                case R.id.linearMoving:
-                    break;
-
-                case R.id.linearPolicy:
-                    break;
-            }
-        }
-    };
 
     @Override
     public void onBackPressed() {
