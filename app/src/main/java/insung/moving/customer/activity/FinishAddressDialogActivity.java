@@ -33,7 +33,6 @@ import java.util.ArrayList;
 
 public class FinishAddressDialogActivity extends BaseActivity {
 
-    public static final String INTENT_FILTER = MyApplication.INTENT_HEAD + "MAIN";
     private static ActivityFinishAddressDialogBinding binding;
     private static AddressItemAdapter addressItemAdapter;
     private static StartAddressItem startAddressItem; // 시도 군구 동 저장할 객체
@@ -86,8 +85,7 @@ public class FinishAddressDialogActivity extends BaseActivity {
 
                 @Override
                 public void run() {
-                    address_change();
-                    //최초 클릭이 아닐시 이전 클릭정보(마지막 동정보)가 남아있음
+                    address_change(); //최초 클릭이 아닐시 이전 클릭정보(마지막 동정보)가 남아있음
                 }
             }, 200 );
             SharedPreferences prefs = getSharedPreferences( "PrefName_finish", MODE_PRIVATE );
@@ -119,8 +117,6 @@ public class FinishAddressDialogActivity extends BaseActivity {
                 } else if (TextUtils.isEmpty( binding.tittle1.getText() ) == false && TextUtils.isEmpty( binding.tittle2.getText() ) == false && TextUtils.isEmpty( binding.tittle3.getText() ) == false) {
                     finish();
                 }
-
-                // finish();
             }
         } );
         binding.okButton.setOnClickListener( new View.OnClickListener() {
@@ -159,7 +155,6 @@ public class FinishAddressDialogActivity extends BaseActivity {
                 startAddressItem.setDongCode( "" );
                 startAddressItem.setSidoName( prefs.getString( "SidoName", "" ) );
                 startAddressItem.setSidoCode( prefs.getString( "SidoCode", "" ) );
-
 
                 sendPacket = GET_MAP_ADDR_SEND( ADDRESS_GUNGU_TYPE, startAddressItem.getSidoCode() );
                 //   initRecyclerView(gunguArrayItem.getGunguItems());
@@ -215,7 +210,6 @@ public class FinishAddressDialogActivity extends BaseActivity {
         } );
 
     }
-
 
     BaseRecyclerViewAdapter.OnItemClickListener addressOnItemClickListener = new BaseRecyclerViewAdapter.OnItemClickListener() {
         @Override
@@ -363,20 +357,10 @@ public class FinishAddressDialogActivity extends BaseActivity {
 
     }
 
-    public ServiceConnection serviceConnection = new ServiceConnection() {
-        public void onServiceConnected(ComponentName className, IBinder iservice) {
-            SocketService.SocketServiceBinder binder = (SocketService.SocketServiceBinder) iservice;
-            service = binder.getService();
-            bound = true;
-            networkPresenter.service = service;
-            address_change();
-        }
-
-        public void onServiceDisconnected(ComponentName className) {
-            service = null;
-            bound = false;
-        }
-    };
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 
     public SendPacket GET_MAP_ADDR_SEND(String addressType, String addressCode) {
         // 군구 호출 메서드
@@ -398,17 +382,11 @@ public class FinishAddressDialogActivity extends BaseActivity {
         return sPacket;
     }
 
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
-
     private void initRecyclerView(ArrayList<String> adrressArrayList) {
         addressItemAdapter = new AddressItemAdapter( FinishAddressDialogActivity.this );
         addressItemAdapter.addItems( adrressArrayList );
         binding.recyclerViewAddress.setAdapter( addressItemAdapter );
         addressItemAdapter.setOnItemClickListener( addressOnItemClickListener );
-
 
     }
 
@@ -429,10 +407,8 @@ public class FinishAddressDialogActivity extends BaseActivity {
         networkPresenter.GetMapAddr( sendPacket, new GetMapAddrInterface() {
             @Override
             public void success(RecvPacket packet) {
-                Log.i( "늦음", "0" );
                 try {
                     final String[] recvData = packet.COMMAND.split( MyApplication.DELIMITER );
-
                     dongCodes.clear();
                     dongItems.clear();
                     for (int i = 0; i < recvData.length; i++) {
@@ -443,22 +419,34 @@ public class FinishAddressDialogActivity extends BaseActivity {
                     }
                     dongArrayItem.setDongItems( dongItems );
                     dongArrayItem.setDongCodes( dongCodes );
-                    Log.i( "늦음", "1" );
                     initRecyclerView( dongItems );
-                    //동 표시
+
                     CURRENT_TYPE_F = ADDRESS_DONG_TYPE;
 
                 } catch (Exception e) {
-                    Log.i( "늦음", "2" );
                 }
             }
 
             @Override
             public void fail(String t) {
-                Log.i( "늦음", "3" );
             }
         } );
         CURRENT_TYPE_F = ADDRESS_GUNGU_TYPE;
 
     }
+
+    public ServiceConnection serviceConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder iservice) {
+            SocketService.SocketServiceBinder binder = (SocketService.SocketServiceBinder) iservice;
+            service = binder.getService();
+            bound = true;
+            networkPresenter.service = service;
+            address_change();
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            service = null;
+            bound = false;
+        }
+    };
 }

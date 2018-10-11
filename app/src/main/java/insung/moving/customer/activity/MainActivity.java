@@ -44,7 +44,7 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends BaseActivity {
-    //  리스트선언
+
     private static final int REQUEST_MOVINGTYPE_DIALOG = 1; //종류선택
     private static final int REQUEST_MOVINGDAY_DIALOG = 2; //날짜선택
     private static final int REQUEST_STARTADDRESS_DIALOG = 3;//시작주소
@@ -53,7 +53,7 @@ public class MainActivity extends BaseActivity {
     public static final String INTENT_FILTER = MyApplication.INTENT_HEAD + "MAIN";
 
     public static int MAIN_INPUT_CHECK = 0;//메인 input기능 유효성 체크를 위한 변수
-    public static int movingtype_check = 0;//이사구분 (0:선택안함 1:가정이사, 2:사무실이사, 3:원룸이사,4:공장이사,5:제주도이사,6:해외이사)
+    public static int movingtype_check = 1;//이사구분 (1:가정이사, 2:사무실이사, 3:원룸이사,4:공장이사,5:제주도이사,6:해외이사)
     public static String movingday_data = ""; //선택한 날짜를 저장하는 변수 ex) 2018-07-11
     public static ArrayList<String> movingstart_data; //출발할 주소를 저장하는 ArrayList  ex) {"대구","남구","대명동"}
     public static ArrayList<String> movingfinish_data; //도착될 주소를 저장하는 ArrayList  ex) {"대구","서구","비산동"}
@@ -347,7 +347,6 @@ public class MainActivity extends BaseActivity {
             //super.onBackPressed();
         }
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

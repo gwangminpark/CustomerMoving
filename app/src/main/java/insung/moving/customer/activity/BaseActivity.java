@@ -23,8 +23,10 @@ import insung.moving.customer.util.KeyHandleUtil;
 import insung.moving.customer.util.ProgressDialogManager;
 
 public class BaseActivity extends AppCompatActivity {
+
     protected MyApplication myApplication;
     protected ProgressDialog progressDialog;
+
     public boolean bound;
     public SocketService service;
     public AlertDialog.Builder builder;

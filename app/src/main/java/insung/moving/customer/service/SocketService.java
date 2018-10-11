@@ -218,7 +218,6 @@ public class SocketService extends Service implements Runnable {
         recvThread.start();
     }
 
-
     public void StartService(boolean bReStart) {
 //		handler.removeMessages(HANDLER_INTERNET_CLOSE);
 
@@ -252,9 +251,6 @@ public class SocketService extends Service implements Runnable {
                         // 데이터가 올때까지 무한 대기 코드ㅇㅇ
                         break;
                     }
-//
-////
-////
                     RecvPacket rPacket = new RecvPacket();
                     boolean bHeaderCheck = HeaderParsing( HeaderData, rPacket );
 
@@ -290,8 +286,6 @@ public class SocketService extends Service implements Runnable {
                     Log.d( "INSUNG", "INSUNG RECV = " + e.getMessage() );
                     bServerConnect = false;
                     handler.sendEmptyMessageDelayed( HANDLER_NETWORK_ERROR, 3000 );
-
-
 
                     break;
                 }

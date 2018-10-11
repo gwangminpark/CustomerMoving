@@ -32,21 +32,20 @@ import java.util.ArrayList;
 
 public class StartAddressDialogActivity extends BaseActivity {
 
-    public static final String INTENT_FILTER = MyApplication.INTENT_HEAD + "MAIN";
     private ActivityStartAddressDialogBinding binding;
     private AddressItemAdapter addressItemAdapter;
     private StartAddressItem startAddressItem; // 시도 군구 동 저장할 객체
 
-    private ArrayList<String> sidoItems;    // 군구 이름
-    private ArrayList<String> sidoCodes;    // 군구 코드
+    private static ArrayList<String> sidoItems;    // 군구 이름
+    private static ArrayList<String> sidoCodes;    // 군구 코드
 
-    private GunguArrayItem gunguArrayItem; // 군구 리스트 저장 객체
-    private ArrayList<String> gunguItems;    // 군구 이름
-    private ArrayList<String> gunguCodes;    // 군구 코드
+    private static GunguArrayItem gunguArrayItem; // 군구 리스트 저장 객체
+    private static ArrayList<String> gunguItems;    // 군구 이름
+    private static ArrayList<String> gunguCodes;    // 군구 코드
 
-    private DongArrayItem dongArrayItem; // 동 리스트 저장 객체
-    private ArrayList<String> dongItems;    // 동 이름
-    private ArrayList<String> dongCodes;    // 동 코드
+    private static DongArrayItem dongArrayItem; // 동 리스트 저장 객체
+    private static ArrayList<String> dongItems;    // 동 이름
+    private static ArrayList<String> dongCodes;    // 동 코드
 
     private String CURRENT_TYPE = "1"; // 기본 데이터 시도로 저장
 
@@ -111,15 +110,11 @@ public class StartAddressDialogActivity extends BaseActivity {
             binding.addressTittle.setText( prefs.getString( "start_address", startAddressItem.getStartAddressName() ) );
         }
 
-
         // 리싸이클러 뷰 어뎁터 및 아이템 추가
         initRecyclerView( sidoItems );
         binding.cancelButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i( "주소소", String.valueOf( binding.tittle1.getText() ) );
-                Log.i( "주소소", String.valueOf( binding.tittle2.getText() ) );
-                Log.i( "주소소", String.valueOf( binding.tittle3.getText() ) );
                 if (TextUtils.isEmpty( binding.tittle1.getText() )) {
                     finish();
                 } else if (TextUtils.isEmpty( binding.tittle1.getText() ) == false && TextUtils.isEmpty( binding.tittle2.getText() )) {
@@ -285,23 +280,7 @@ public class StartAddressDialogActivity extends BaseActivity {
                 SharedPreferences.Editor editors = pref.edit();
                 editors.putString( "tittle3", String.valueOf( binding.tittle3.getText() ) );
                 editors.commit();
-                //동 클릭했을시
-                //층수 데이터는 소켓통신 안해도 되므로 바로 리싸이클러뷰에 뿌려줌
-                //밑에 주석풀면 층수 표시됨
-/*                for (int i = 0; i < DATA.height.length; i++) {
-                    // 시도, 코드 객체 담아줌
-                    heightCodes.add( String.valueOf(i));
-                    heightItems.add(DATA.height[i]+"층");
-                }
-                heightArrayItem.setHeightItems( heightItems );
-                heightArrayItem.setHeightCodes( heightCodes );
-                initRecyclerView(heightItems);
 
-                CURRENT_TYPE = ADDRESS_HEIGHT_TYPE;*/
-
-
-                // MainActivity.MAIN_INPUT_CHECK=3;
-                //메인 인풋체크변수 변경
                 if (startAddressItem.getGunguName().equals( "세종시" )) {
                     startAddressItem.setGunguName( "" );
                 }
@@ -405,12 +384,10 @@ public class StartAddressDialogActivity extends BaseActivity {
             service = binder.getService();
             bound = true;
             networkPresenter.service = service;
-            Log.i( "늦음", "ss" );
             address_change();
         }
 
         public void onServiceDisconnected(ComponentName className) {
-            Log.i( "늦음", "nn" );
             service = null;
             bound = false;
         }
@@ -453,7 +430,6 @@ public class StartAddressDialogActivity extends BaseActivity {
         binding.recyclerViewAddress.setAdapter( addressItemAdapter );
         addressItemAdapter.setOnItemClickListener( addressOnItemClickListener );
 
-
     }
 
     public void address_change() {
@@ -468,11 +444,9 @@ public class StartAddressDialogActivity extends BaseActivity {
         startAddressItem.setSidoName( prefs.getString( "SidoName", "" ) );
         startAddressItem.setSidoCode( prefs.getString( "SidoCode", "" ) );
 
-
         sendPacket = GET_MAP_ADDR_SEND( ADDRESS_DONG_TYPE, startAddressItem.getGunguCode() );
         //   initRecyclerView(gunguArrayItem.getGunguItems());
         // initRecyclerView(myApplication.sidoArrayItem.getSidoItems());
-
 
         networkPresenter.GetMapAddr( sendPacket, new GetMapAddrInterface() {
             @Override

@@ -8,13 +8,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import insung.moving.customer.dialog.decorators.DefaultDecorator;
 import insung.moving.customer.dialog.decorators.HighlightLunarDecorator;
 import insung.moving.customer.dialog.decorators.OneDayDecorator;
 import insung.moving.customer.dialog.decorators.SaturdayDecorator;
 import insung.moving.customer.dialog.decorators.SundayDecorator;
 import insung.moving.customer.R;
-import insung.moving.customer.databinding.MovingdayDialogBinding;
+import insung.moving.customer.databinding.DialogMovingdayBinding;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
@@ -28,17 +27,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
-
 /**
  * Created by Administrator on 2017-08-30.
  */
-
 public class MovingDayDialogActivity extends BaseActivity implements OnDateSelectedListener {
     private static final TitleFormatter DEFAULT_TITLE_FORMATTER = new DateFormatTitleFormatter( new SimpleDateFormat( "yyyy년 MM월" ) );
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
     private static String shot_Day;
-    private MovingdayDialogBinding binding;
+    private DialogMovingdayBinding binding;
 
     private static int Year;
     private static int Month;
@@ -48,7 +44,7 @@ public class MovingDayDialogActivity extends BaseActivity implements OnDateSelec
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        binding = DataBindingUtil.setContentView( this, R.layout.movingday_dialog );
+        binding = DataBindingUtil.setContentView( this, R.layout.dialog_movingday );
         binding.calendarView.setOnDateChangedListener( this );
         GregorianCalendar today = new GregorianCalendar();
 
@@ -68,16 +64,21 @@ public class MovingDayDialogActivity extends BaseActivity implements OnDateSelec
         binding.calendarView.state().edit()
                 .setFirstDayOfWeek( Calendar.SUNDAY )
                 .setMinimumDate( CalendarDay.from( Year, Month, 1 ) ) // 달력의 시작
-                .setMaximumDate( CalendarDay.from( Year, Month + 2, 31 ) ) // 달력의 끝
+                .setMaximumDate( CalendarDay.from( Year, Month + 3, 31 ) ) // 달력의 끝
                 .setCalendarDisplayMode( CalendarMode.MONTHS )
                 .commit();
         Log.i( "날짜", String.valueOf( Month ) + Date );
         if (Month < 9) {
-            if (Date < 10) {
-                shot_Day = Year + "-0" + (Month + 1) + "-0" + Date;
-            } else {
-                shot_Day = Year + "-0" + (Month + 1) + "-" + Date;
-            }
+            shot_Day= String.valueOf( Year+(Month+1)+Date );
+                try {
+                    Date check_datet = new SimpleDateFormat( "yyyy-MM-dd" ).parse( shot_Day );
+                    Log.i("날짜", String.valueOf( check_datet ) );
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+
+                }
+
         } else {
             if (Date < 10) {
                 shot_Day = Year + "-" + (Month + 1) + "-0" + Date;

@@ -26,8 +26,6 @@ import insung.moving.customer.dialog.decorators.SundayDecorator;
 import insung.moving.customer.R;
 import insung.moving.customer.databinding.ActivityMovingSearchBinding;
 import insung.moving.customer.databinding.NotittleToolbarBinding;
-
-
 /**
  * Created by user on 2018-07-13.
  */
