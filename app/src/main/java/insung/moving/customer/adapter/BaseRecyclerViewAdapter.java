@@ -1,4 +1,4 @@
-package insung.moving.customer.adapter.recyclerview;
+package insung.moving.customer.adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;

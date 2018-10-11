@@ -165,7 +165,6 @@ public class SplashActivity extends BaseActivity {
 
     public void pingstart() {
 
-
         second = new TimerTask() {
 
             @Override
@@ -176,7 +175,6 @@ public class SplashActivity extends BaseActivity {
             }
         };
         timer.schedule( second, 0, 120000 );
-
     }
 
     public void ping() {

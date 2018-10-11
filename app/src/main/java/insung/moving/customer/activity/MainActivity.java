@@ -50,16 +50,9 @@ public class MainActivity extends BaseActivity {
     private static final int REQUEST_STARTADDRESS_DIALOG = 3;//시작주소
     private static final int REQUEST_FINISHADDRESS_DIALOG = 4;//도착주소
 
-    private ActivityMainBinding binding;
-    private CommonToolbarBinding commonToolbarBinding;
-    private CommonNavigationBinding commonNavigationBinding;
-    private BackPressCloseHandler backPressCloseHandler;
+    public static final String INTENT_FILTER = MyApplication.INTENT_HEAD + "MAIN";
 
-    public static int MAIN_INPUT_CHECK = 0;
-    //메인 input기능 유효성 체크를 위한 변수
-
-    private ArrayList<String> order_items;
-
+    public static int MAIN_INPUT_CHECK = 0;//메인 input기능 유효성 체크를 위한 변수
     public static int movingtype_check = 0;//이사구분 (0:선택안함 1:가정이사, 2:사무실이사, 3:원룸이사,4:공장이사,5:제주도이사,6:해외이사)
     public static String movingday_data = ""; //선택한 날짜를 저장하는 변수 ex) 2018-07-11
     public static ArrayList<String> movingstart_data; //출발할 주소를 저장하는 ArrayList  ex) {"대구","남구","대명동"}
@@ -67,8 +60,12 @@ public class MainActivity extends BaseActivity {
     public static String movingname_data = ""; //이름을 저장하는 변수
     public static String movingphone_data = ""; //휴대폰 번호를 저장하는 변수
 
+    private ActivityMainBinding binding;
+    private CommonToolbarBinding commonToolbarBinding;
+    private CommonNavigationBinding commonNavigationBinding;
+    private BackPressCloseHandler backPressCloseHandler;
+
     private SocketRecv receiver;
-    public static final String INTENT_FILTER = MyApplication.INTENT_HEAD + "MAIN";
     private AlertDialog.Builder builder;
     private AlertDialog networkAlertDialog;
 
@@ -87,7 +84,6 @@ public class MainActivity extends BaseActivity {
 
         receiver = new SocketRecv();
         this.registerReceiver( receiver, new IntentFilter( INTENT_FILTER ) );
-        order_items = new ArrayList<>();
 
         SharedPreferences prefs = getSharedPreferences( "Address", MODE_PRIVATE );
         SharedPreferences.Editor editor = prefs.edit();

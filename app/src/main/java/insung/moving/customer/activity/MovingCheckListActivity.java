@@ -18,7 +18,6 @@ import insung.moving.customer.databinding.NotittleToolbarBinding;
  */
 
 public class MovingCheckListActivity extends BaseActivity {
-
     private ActivityMovingChecklistBinding binding;
     private NotittleToolbarBinding notittleToolbarBinding;
 
@@ -44,7 +43,7 @@ public class MovingCheckListActivity extends BaseActivity {
                 return true;
             }
         }
+
         return super.onOptionsItemSelected( item );
     }
-
 }

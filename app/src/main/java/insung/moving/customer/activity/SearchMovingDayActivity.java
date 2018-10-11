@@ -59,10 +59,6 @@ public class SearchMovingDayActivity extends BaseActivity implements OnDateSelec
         binding.calendarView.setOnDateChangedListener( this );
         binding.calendarView.setShowOtherDates( MaterialCalendarView.SHOW_OUT_OF_RANGE );
         binding.calendarView.setTitleFormatter( DEFAULT_TITLE_FORMATTER );
-
-        Calendar minCalendar = Calendar.getInstance();
-        Calendar maxCalendar = Calendar.getInstance();
-
         binding.calendarView.state().edit()
                 .setFirstDayOfWeek( Calendar.SUNDAY )
                 .setMinimumDate( CalendarDay.from( Year, Month, 1 ) ) // 달력의 시작

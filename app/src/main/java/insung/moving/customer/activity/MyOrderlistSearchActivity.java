@@ -32,20 +32,16 @@ import insung.moving.customer.service.resultInterface.GetDorderForCustInterface;
  */
 
 public class MyOrderlistSearchActivity extends BaseActivity {
-
+    public static final String INTENT_FILTER = MyApplication.INTENT_HEAD + "MAIN";
 
     private static ArrayList<String> order_items;
 
-    public static OrderlistData orderlistData;
+    private ActivityMyorderSearchBinding binding;
+    private NotittleToolbarBinding notittleToolbarBinding;
+
     private SocketRecv Orderlistreceiver;
-    public static final String INTENT_FILTER = MyApplication.INTENT_HEAD + "MAIN";
-
-    private static ActivityMyorderSearchBinding binding;
-    private static NotittleToolbarBinding notittleToolbarBinding;
-
-    AlertDialog.Builder builder;
-    AlertDialog networkAlertDialog;
-    private Context context;
+    private AlertDialog.Builder builder;
+    private AlertDialog networkAlertDialog;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -56,12 +52,10 @@ public class MyOrderlistSearchActivity extends BaseActivity {
         notittleToolbarBinding.toolbarTitle.setText( "나의 신청내역" );
         setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT );
 
-
         setSupportActionBar( notittleToolbarBinding.toolbar );
         getSupportActionBar().setDisplayHomeAsUpEnabled( true );
         getSupportActionBar().setDisplayShowHomeEnabled( true );
         getSupportActionBar().setDisplayShowTitleEnabled( false );
-
 
         Orderlistreceiver = new SocketRecv();
         this.registerReceiver( Orderlistreceiver, new IntentFilter( INTENT_FILTER ) );
@@ -101,7 +95,6 @@ public class MyOrderlistSearchActivity extends BaseActivity {
             }
         } );
 
-
     }
 
     @Override
@@ -115,54 +108,10 @@ public class MyOrderlistSearchActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        if (Orderlistreceiver != null)
+        if (Orderlistreceiver != null){
             unregisterReceiver( Orderlistreceiver );
-    }
-
-
-    public class SocketRecv extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals( INTENT_FILTER ) == true) {
-
-                if (intent.getBooleanExtra(MyApplication.networkIntentValue, false )) {
-                    // 네트워크 성공 시 핸들러 리무브
-                    dismissProgressDialog();
-                    if (networkAlertDialog != null) {
-                        networkAlertDialog.dismiss();
-                    }
-
-                } else {
-                    // 네트워크 실패
-
-                    if (networkAlertDialog != null && networkAlertDialog.isShowing()) {
-                        return;
-                    }
-
-
-                    builder = new AlertDialog.Builder( MyOrderlistSearchActivity.this );
-                    builder.setTitle( "네트워크 에러" );
-                    builder.setMessage( "통신이 원할하지 않습니다 재시도해주세요." );
-                    builder.setPositiveButton( "연결", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    } );
-                    networkAlertDialog = builder.create();
-                    networkAlertDialog.show();
-                    networkAlertDialog.setOnDismissListener( new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                            showProgressDialog( "", "Loading" );
-                            service.StartService( false );
-                        }
-                    } );
-                }
-            }
         }
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -207,5 +156,47 @@ public class MyOrderlistSearchActivity extends BaseActivity {
                 dismissProgressDialog();
             }
         } );
+    }
+
+    public class SocketRecv extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals( INTENT_FILTER ) == true) {
+
+                if (intent.getBooleanExtra(MyApplication.networkIntentValue, false )) {
+                    // 네트워크 성공 시 핸들러 리무브
+                    dismissProgressDialog();
+                    if (networkAlertDialog != null) {
+                        networkAlertDialog.dismiss();
+                    }
+
+                } else {
+                    // 네트워크 실패
+
+                    if (networkAlertDialog != null && networkAlertDialog.isShowing()) {
+                        return;
+                    }
+
+                    builder = new AlertDialog.Builder( MyOrderlistSearchActivity.this );
+                    builder.setTitle( "네트워크 에러" );
+                    builder.setMessage( "통신이 원할하지 않습니다 재시도해주세요." );
+                    builder.setPositiveButton( "연결", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    } );
+                    networkAlertDialog = builder.create();
+                    networkAlertDialog.show();
+                    networkAlertDialog.setOnDismissListener( new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            showProgressDialog( "", "Loading" );
+                            service.StartService( false );
+                        }
+                    } );
+                }
+            }
+        }
     }
 }

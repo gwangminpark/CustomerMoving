@@ -11,7 +11,6 @@ import insung.moving.customer.service.resultInterface.GetMapAddrInterface;
 import insung.moving.customer.service.resultInterface.GetVersionCustInterface;
 import insung.moving.customer.service.resultInterface.InsertDorderForCustCInterface;
 import insung.moving.customer.service.resultInterface.Pst_PingInterface;
-import insung.moving.customer.temp.PROTOCOL;
 
 /**
  * Created by Administrator on 2018-07-04.
@@ -45,8 +44,8 @@ public class NetworkPresenter implements NetworkPresenterInterface {
         //등록
 
         SendPacket sPacket = new SendPacket();
-        sPacket.AddType( PROTOCOL.PT_REQUEST, PROTOCOL.INSERT_DORDER_FOR_CUST_C );
-        sPacket.AddMessageType( PROTOCOL.INSERT_DORDER_FOR_CUST_C );
+        sPacket.AddType( Protocol.PT_REQUEST, Protocol.INSERT_DORDER_FOR_CUST_C );
+        sPacket.AddMessageType( Protocol.INSERT_DORDER_FOR_CUST_C );
         sPacket.AddString( "KING" );
         sPacket.AddString( "8" );
         sPacket.AddString( "39" );   //콜센타 코드 CCODE
@@ -94,8 +93,8 @@ public class NetworkPresenter implements NetworkPresenterInterface {
     public void GetDorderForCust(String name, String phone, final GetDorderForCustInterface anInterface) {
         //리스트 가져오기
         SendPacket sPacket = new SendPacket();
-        sPacket.AddType( PROTOCOL.PT_REQUEST, PROTOCOL.GET_DORDER_FOR_CUST );
-        sPacket.AddMessageType( PROTOCOL.GET_DORDER_FOR_CUST );
+        sPacket.AddType( Protocol.PT_REQUEST, Protocol.GET_DORDER_FOR_CUST );
+        sPacket.AddMessageType( Protocol.GET_DORDER_FOR_CUST );
         sPacket.AddString( "KING" );
         sPacket.AddString( "8" );
         sPacket.AddString( "39" );
@@ -165,8 +164,8 @@ public class NetworkPresenter implements NetworkPresenterInterface {
     public void GetVersionCust(final GetVersionCustInterface anInterface) {
         //버전조회
         SendPacket sPacket = new SendPacket();
-        sPacket.AddType( PROTOCOL.PT_REQUEST, PROTOCOL.GET_VERSION_CUST );
-        sPacket.AddMessageType( PROTOCOL.GET_VERSION_CUST );
+        sPacket.AddType( Protocol.PT_REQUEST, Protocol.GET_VERSION_CUST );
+        sPacket.AddMessageType( Protocol.GET_VERSION_CUST );
         sPacket.Commit();
 
         service.InterfaceDataSend( sPacket, new GetVersionCustInterface() {
@@ -204,8 +203,8 @@ public class NetworkPresenter implements NetworkPresenterInterface {
     @Override
     public void PST_PING(final Pst_PingInterface anInterface) {
         SendPacket sPacket = new SendPacket();
-        sPacket.AddType( PROTOCOL.PT_REQUEST, PROTOCOL.PST_PING );
-        sPacket.AddMessageType( PROTOCOL.PST_PING );
+        sPacket.AddType( Protocol.PT_REQUEST, Protocol.PST_PING );
+        sPacket.AddMessageType( Protocol.PST_PING );
         sPacket.Commit();
 
         service.InterfaceDataSend( sPacket, new Pst_PingInterface() {

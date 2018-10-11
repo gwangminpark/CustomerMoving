@@ -35,7 +35,6 @@ import java.util.GregorianCalendar;
  */
 
 public class MovingDayDialogActivity extends BaseActivity implements OnDateSelectedListener {
-
     private static final TitleFormatter DEFAULT_TITLE_FORMATTER = new DateFormatTitleFormatter( new SimpleDateFormat( "yyyy년 MM월" ) );
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
     private static String shot_Day;
@@ -131,6 +130,7 @@ public class MovingDayDialogActivity extends BaseActivity implements OnDateSelec
             public void onClick(View view) {
                 long now = System.currentTimeMillis();
                 Date date = new Date( now );
+
                 try {
                     Date check_date = new SimpleDateFormat( "yyyy-MM-dd" ).parse( shot_Day );
                     long calDate = check_date.getTime() - date.getTime();

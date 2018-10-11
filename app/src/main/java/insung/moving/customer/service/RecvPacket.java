@@ -3,8 +3,6 @@ package insung.moving.customer.service;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import insung.moving.customer.temp.PROTOCOL;
-
 
 public class RecvPacket implements Parcelable {
     public String HEAD;            // 헤더 "SISD"

@@ -40,7 +40,6 @@ public class PhoneDialogActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
     }
-
     public PhoneDialogActivity(Context context) {
         this.context = context;
     }
@@ -60,9 +59,7 @@ public class PhoneDialogActivity extends BaseActivity {
         final Button cancelButton = (Button) dlg.findViewById( R.id.cancelButton );
         final WebView webView = (WebView) dlg.findViewById( R.id.web );
         final CheckBox checkBox = (CheckBox) dlg.findViewById( R.id.checkbox );
-
         TextView type = ((MainActivity) context).findViewById( R.id.moving_phone );
-
 
         webView.setWebViewClient( new WebViewClient() ); // 이걸 안해주면 새창이 뜸
         webView.loadUrl( "http://24.414.co.kr/privacy/39_inner.html" );
@@ -73,7 +70,6 @@ public class PhoneDialogActivity extends BaseActivity {
             name.setText( prefs.getString( "name", "" ) );
             message.setText( prefs.getString( "phone", "" ) );
         }
-
 
         checkBox.setOnClickListener( new CheckBox.OnClickListener() {
             @Override

@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 
 import insung.moving.customer.adapter.AddressItemAdapter;
-import insung.moving.customer.adapter.recyclerview.BaseRecyclerViewAdapter;
+import insung.moving.customer.adapter.BaseRecyclerViewAdapter;
 import insung.moving.customer.R;
 import insung.moving.customer.app.MyApplication;
 import insung.moving.customer.databinding.ActivityFinishAddressDialogBinding;
@@ -27,7 +27,7 @@ import insung.moving.customer.service.RecvPacket;
 import insung.moving.customer.service.SendPacket;
 import insung.moving.customer.service.SocketService;
 import insung.moving.customer.service.resultInterface.GetMapAddrInterface;
-import insung.moving.customer.temp.PROTOCOL;
+import insung.moving.customer.service.Protocol;
 
 import java.util.ArrayList;
 
@@ -386,8 +386,8 @@ public class FinishAddressDialogActivity extends BaseActivity {
         //ROW_DELEMITER이 붙어서 addressCode가 넘어오므로 제거해줌
 
         try {
-            sPacket.AddType( PROTOCOL.PT_REQUEST, PROTOCOL.GET_MAP_ADDR );
-            sPacket.AddMessageType( PROTOCOL.GET_MAP_ADDR );
+            sPacket.AddType( Protocol.PT_REQUEST, Protocol.GET_MAP_ADDR );
+            sPacket.AddMessageType( Protocol.GET_MAP_ADDR );
             sPacket.AddString( addressType );
             sPacket.AddString( addressCode );
             sPacket.AddRowDelimiter();

@@ -20,7 +20,7 @@ import insung.moving.customer.model.OrderlistData;
 
 public class MyOrderlistAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
     private ArrayList<OrderlistData> mItems;
-    Context mContext;
+    private Context mContext;
     public MyOrderlistAdapter (ArrayList itemList) {
         mItems = itemList;
     }

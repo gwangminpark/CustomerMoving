@@ -42,15 +42,12 @@ public class BaseActivity extends AppCompatActivity {
         myApplication = (MyApplication) getApplicationContext();
 
         if (!bound) {
-            bindService(
-                    new Intent( BaseActivity.this, SocketService.class ), connection,
-                    Context.BIND_AUTO_CREATE );
+            bindService( new Intent( BaseActivity.this, SocketService.class ), connection, Context.BIND_AUTO_CREATE );
         }
     }
 
     @Override
     protected void onDestroy() {
-
         try {
             if (service != null) {
                 service.StopThread();
@@ -59,36 +56,21 @@ public class BaseActivity extends AppCompatActivity {
                     bound = false;
                     unbindService( connection );
                 }
+
                 Intent intent = new Intent( BaseActivity.this, SocketService.class );
                 this.stopService( intent );
             }
-
         } catch (Exception e) {
         }
+
         super.onDestroy();
     }
 
     protected void setBindService(ServiceConnection getServiceConnection) {
         if (!bound) {
-            bindService(
-                    new Intent( BaseActivity.this, SocketService.class ), getServiceConnection,
-                    Context.BIND_AUTO_CREATE );
+            bindService( new Intent( BaseActivity.this, SocketService.class ), getServiceConnection, Context.BIND_AUTO_CREATE );
         }
     }
-
-    private ServiceConnection connection = new ServiceConnection() {
-        public void onServiceConnected(ComponentName className, IBinder iservice) {
-            SocketService.SocketServiceBinder binder = (SocketService.SocketServiceBinder) iservice;
-            service = binder.getService();
-            bound = true;
-            networkPresenter.service = service;
-        }
-
-        public void onServiceDisconnected(ComponentName className) {
-            service = null;
-            bound = false;
-        }
-    };
 
     protected void showProgressDialog(String title, String msg) {
         progressDialog = ProgressDialogManager.showSingle( this, progressDialog, title, msg );
@@ -118,11 +100,24 @@ public class BaseActivity extends AppCompatActivity {
         Toast.makeText( getApplicationContext(), msg, Toast.LENGTH_SHORT ).show();
     }
 
+    private ServiceConnection connection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder iservice) {
+            SocketService.SocketServiceBinder binder = (SocketService.SocketServiceBinder) iservice;
+            service = binder.getService();
+            bound = true;
+            networkPresenter.service = service;
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            service = null;
+            bound = false;
+        }
+    };
+
     public class SocketRecv extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals( MyApplication.NETWORK_INTENT_FILTER ) == true) {
-
                 int networkStateValue = intent.getIntExtra( MyApplication.networkIntentValue, 0 );
 
                 if (networkStateValue == MyApplication.HANDLER_NETWORK_OK) {
@@ -173,13 +168,11 @@ public class BaseActivity extends AppCompatActivity {
                     } );
                     networkAlertDialog = builder.create();
                     networkAlertDialog.show();
-
                     networkAlertDialog.setOnDismissListener( new DialogInterface.OnDismissListener() {
                         @Override
                         public void onDismiss(DialogInterface dialog) {
                             showNetworkProgressDialog( "", "서버와 연결중입니다." );
                             service.StartService();
-
                         }
                     } );
                 } else if (networkStateValue == MyApplication.HANDLER_NETWORK_CLOSE) {
@@ -199,9 +192,7 @@ public class BaseActivity extends AppCompatActivity {
                     networkAlertDialog.show();
 
                 }
-
             }
         }
     }
-
 }

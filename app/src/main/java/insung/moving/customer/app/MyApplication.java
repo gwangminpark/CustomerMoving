@@ -10,7 +10,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.util.Log;
 
 import insung.moving.customer.model.SidoArrayItem;
-import insung.moving.customer.temp.DATA;
 import insung.moving.customer.util.LogUtil;
 
 import java.util.ArrayList;
@@ -22,9 +21,9 @@ public class MyApplication extends Application {
 
     private static ArrayList<String> sidoItems;    // 시도 리스트
     private static ArrayList<String> sidoCodes;    // 시도 코드
-    private static ArrayList<String> heightItems; //층 리스트
-
     public static SidoArrayItem sidoArrayItem;
+    public static int nLon;
+    public static int nLat;
 
     public static final String[] sidoName = {
             "서울", "부산", "대구", "인천", "광주", "대전", "울산",
@@ -61,17 +60,12 @@ public class MyApplication extends Application {
         mInstance = this;
         IS_DEBUG_MODE = isDebuggable( this );
         sidoArrayItem = new SidoArrayItem();
-        heightItems = new ArrayList<>();
-
-        for (int i = 0; i < DATA.height.length; i++) {
-            heightItems.add( DATA.height[i] );
-        }
         sidoItems = new ArrayList<>();
         sidoCodes = new ArrayList<>();
 
-        for (int i = 0; i < DATA.sidoName.length; i++) {
-            sidoItems.add( DATA.sidoName[i] );
-            sidoCodes.add( DATA.sidoCode[i] );
+        for (int i = 0; i < this.sidoName.length; i++) {
+            sidoItems.add( this.sidoName[i] );
+            sidoCodes.add( this.sidoCode[i] );
         }
 
         sidoArrayItem.setSidoItems( sidoItems );

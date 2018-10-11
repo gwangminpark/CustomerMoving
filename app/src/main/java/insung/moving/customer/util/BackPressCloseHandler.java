@@ -1,6 +1,7 @@
 package insung.moving.customer.util;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
@@ -15,11 +16,10 @@ import insung.moving.customer.activity.SplashActivity;
 public class BackPressCloseHandler {
     private long backKeyPressedTime = 0;
     private Toast toast;
-
     private Activity activity;
 
-    public BackPressCloseHandler(Activity context) {
-        this.activity = context;
+    public BackPressCloseHandler(Activity activity) {
+        this.activity = activity;
     }
 
     public void onBackPressed() {
@@ -37,7 +37,7 @@ public class BackPressCloseHandler {
             android.os.Process.killProcess(android.os.Process.myPid());
             activity.moveTaskToBack(true);
             activity.finish();
-            ((SplashActivity)SplashActivity.context).cancle();
+            ((SplashActivity)activity).cancle();
             Log.i("핑쓰레드","2");
         }
     }

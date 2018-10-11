@@ -17,7 +17,6 @@ import insung.moving.customer.service.resultInterface.GetMapAddrInterface;
 import insung.moving.customer.service.resultInterface.GetVersionCustInterface;
 import insung.moving.customer.service.resultInterface.InsertDorderForCustCInterface;
 import insung.moving.customer.service.resultInterface.Pst_PingInterface;
-import insung.moving.customer.temp.PROTOCOL;
 import insung.moving.customer.util.Util;
 
 import java.io.DataInputStream;
@@ -64,7 +63,7 @@ public class SocketService extends Service implements Runnable {
     }
 
     private void dataReceive(RecvPacket recvPacket, BaseInterface baseInterface) {
-        if (recvPacket.ERROR != PROTOCOL.PE_OK) {
+        if (recvPacket.ERROR != Protocol.PE_OK) {
             if (baseInterface != null) {
                 try {
                     baseInterface.fail( recvPacket.COMMAND );
@@ -90,23 +89,23 @@ public class SocketService extends Service implements Runnable {
 
         switch (Packet.GetMessageType()) {
             // 지금은 프로토콜로 메세지를 지정해놨음
-            case PROTOCOL.GET_DORDER_FOR_CUST:
+            case Protocol.GET_DORDER_FOR_CUST:
                 getDorderForCustInterface = (GetDorderForCustInterface) baseInterface;
                 break;
 
-            case PROTOCOL.GET_MAP_ADDR:
+            case Protocol.GET_MAP_ADDR:
                 getMapAddrInterface = (GetMapAddrInterface) baseInterface;
                 break;
 
-            case PROTOCOL.INSERT_DORDER_FOR_CUST_C:
+            case Protocol.INSERT_DORDER_FOR_CUST_C:
                 insertDorderForCustCInterface = (InsertDorderForCustCInterface) baseInterface;
                 break;
 
-            case PROTOCOL.GET_VERSION_CUST:
+            case Protocol.GET_VERSION_CUST:
                 getVersionCustInterface = (GetVersionCustInterface) baseInterface;
                 break;
 
-            case PROTOCOL.PST_PING:
+            case Protocol.PST_PING:
                 pst_pingInterface = (Pst_PingInterface) baseInterface;
         }
         Send( Packet );
@@ -136,7 +135,7 @@ public class SocketService extends Service implements Runnable {
         public void handleMessage(Message msg) {
             if (msg.what == HANDLER_INTERNET_CLOSE) {
                 StartService( true );
-            } else if (msg.what == PROTOCOL.HANDLER_MESSAGE_LOGIN_RESTART) {
+            } else if (msg.what == Protocol.HANDLER_MESSAGE_LOGIN_RESTART) {
 
                 if (nReConnectCount >= 10) {
                     ++nReConnectCount;                //SocketConnect에서 예외발생이 10회이상일때 안보내주기 위해서 값을 추가한다.
@@ -175,19 +174,19 @@ public class SocketService extends Service implements Runnable {
 
                 // 추후 버전 체크 추가 시 여기 꼭 확인할 것
                 switch (recvPacket.SUB_TYPE) {
-                    case PROTOCOL.GET_DORDER_FOR_CUST:
+                    case Protocol.GET_DORDER_FOR_CUST:
                         dataReceive( recvPacket, getDorderForCustInterface );
                         break;
-                    case PROTOCOL.GET_MAP_ADDR:
+                    case Protocol.GET_MAP_ADDR:
                         dataReceive( recvPacket, getMapAddrInterface );
                         break;
-                    case PROTOCOL.INSERT_DORDER_FOR_CUST_C:
+                    case Protocol.INSERT_DORDER_FOR_CUST_C:
                         dataReceive( recvPacket, insertDorderForCustCInterface );
                         break;
-                    case PROTOCOL.GET_VERSION_CUST:
+                    case Protocol.GET_VERSION_CUST:
                         dataReceive( recvPacket, getVersionCustInterface );
                         break;
-                    case PROTOCOL.PST_PING:
+                    case Protocol.PST_PING:
                         dataReceive( recvPacket, pst_pingInterface );
                         break;
 

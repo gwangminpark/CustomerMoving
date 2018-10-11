@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import insung.moving.customer.app.MyApplication;
-import insung.moving.customer.temp.DATA;
 import insung.moving.customer.util.Util;
 
 
@@ -79,8 +78,8 @@ public class SendPacket implements Parcelable {
         } catch (Exception e) {
         }
 
-        LON = DATA.nLon;
-        LAT = DATA.nLat;
+        LON = MyApplication.nLon;
+        LAT = MyApplication.nLat;
 
         Util.StringToByte( pszData, 0, HEAD );
         Util.IntToByte( pszData, 4, Util.htonl( PACKET_SIZE ) );
@@ -97,8 +96,8 @@ public class SendPacket implements Parcelable {
         //COMMAND.length()를 이요해서 문자열길이를 패킷사이즈로 주게되면 바이트 길이 오류가 나게된다.
         PACKET_SIZE = imageString.length + 28;
 
-        LON = DATA.nLon;
-        LAT = DATA.nLat;
+        LON = MyApplication.nLon;
+        LAT = MyApplication.nLat;
 
         Util.StringToByte( pszData, 0, HEAD );
         Util.IntToByte( pszData, 4, Util.htonl( PACKET_SIZE ) );

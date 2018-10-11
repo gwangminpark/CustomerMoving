@@ -10,6 +10,7 @@ import android.webkit.WebViewClient;
 import insung.moving.customer.R;
 import insung.moving.customer.databinding.ActivityPrivacyBinding;
 import insung.moving.customer.databinding.NotittleToolbarBinding;
+import insung.moving.customer.model.DongArrayItem;
 
 /**
  * Created by user on 2018-08-22.

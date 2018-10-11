@@ -7,12 +7,13 @@ import java.util.ArrayList;
  */
 
 public class DongArrayItem {
-    ArrayList<String> DongItems;
-    ArrayList<String> DongCodes;
+    private ArrayList<String> DongItems;
+    private ArrayList<String> DongCodes;
 
     public void setDongItems(ArrayList<String> DongItems) {
         this.DongItems = DongItems;
     }
+
     public ArrayList<String> getDongItems() {
         return DongItems;
     }
@@ -20,6 +21,7 @@ public class DongArrayItem {
     public void setDongCodes(ArrayList<String> DongCodes) {
         this.DongCodes = DongCodes;
     }
+
     public ArrayList<String> getDongCodes() {
         return DongCodes;
     }

@@ -14,7 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import insung.moving.customer.adapter.recyclerview.BaseRecyclerViewAdapter;
+import insung.moving.customer.adapter.BaseRecyclerViewAdapter;
 import insung.moving.customer.adapter.*;
 import insung.moving.customer.R;
 import insung.moving.customer.app.MyApplication;
@@ -26,7 +26,7 @@ import insung.moving.customer.service.RecvPacket;
 import insung.moving.customer.service.SendPacket;
 import insung.moving.customer.service.SocketService;
 import insung.moving.customer.service.resultInterface.GetMapAddrInterface;
-import insung.moving.customer.temp.PROTOCOL;
+import insung.moving.customer.service.Protocol;
 
 import java.util.ArrayList;
 
@@ -40,16 +40,13 @@ public class StartAddressDialogActivity extends BaseActivity {
     private ArrayList<String> sidoItems;    // 군구 이름
     private ArrayList<String> sidoCodes;    // 군구 코드
 
-    GunguArrayItem gunguArrayItem; // 군구 리스트 저장 객체
+    private GunguArrayItem gunguArrayItem; // 군구 리스트 저장 객체
     private ArrayList<String> gunguItems;    // 군구 이름
     private ArrayList<String> gunguCodes;    // 군구 코드
 
-    DongArrayItem dongArrayItem; // 동 리스트 저장 객체
+    private DongArrayItem dongArrayItem; // 동 리스트 저장 객체
     private ArrayList<String> dongItems;    // 동 이름
     private ArrayList<String> dongCodes;    // 동 코드
-
-    private ArrayList<String> heightItems;    // 층 이름
-    private ArrayList<String> heightCodes;    // 층  코드
 
     private String CURRENT_TYPE = "1"; // 기본 데이터 시도로 저장
 
@@ -77,10 +74,6 @@ public class StartAddressDialogActivity extends BaseActivity {
 
         sidoItems = new ArrayList<>();
         sidoCodes = new ArrayList<>();
-
-
-        heightItems = new ArrayList<>();
-        heightCodes = new ArrayList<>();
 
         sidoItems = myApplication.sidoArrayItem.getSidoItems();
         sidoCodes = myApplication.sidoArrayItem.getSidoCodes();
@@ -437,8 +430,8 @@ public class StartAddressDialogActivity extends BaseActivity {
         //ROW_DELEMITER이 붙어서 addressCode가 넘어오므로 제거해줌
 
         try {
-            sPacket.AddType( PROTOCOL.PT_REQUEST, PROTOCOL.GET_MAP_ADDR );
-            sPacket.AddMessageType( PROTOCOL.GET_MAP_ADDR );
+            sPacket.AddType( Protocol.PT_REQUEST, Protocol.GET_MAP_ADDR );
+            sPacket.AddMessageType( Protocol.GET_MAP_ADDR );
             sPacket.AddString( addressType );
             sPacket.AddString( addressCode );
             sPacket.AddRowDelimiter();

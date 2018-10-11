@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-import insung.moving.customer.adapter.recyclerview.BaseRecyclerViewAdapter;
 import insung.moving.customer.R;
 import insung.moving.customer.databinding.AddressItemBinding;
 

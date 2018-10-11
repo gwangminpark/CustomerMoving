@@ -214,6 +214,7 @@ public class MovingTypeCheckActivity extends BaseActivity {
                     checkview4_4.setVisibility( View.GONE );
                     checkview4.setBackgroundResource( R.drawable.house_04 );
                     MainActivity.movingtype_check = 0;
+
                 }
 
             }
