@@ -8,10 +8,10 @@ repositories {
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "insung.moving.customer"
+        applicationId "insung.moving.customerV2"
         minSdkVersion 18
         targetSdkVersion 27
-        versionCode 12
+        versionCode 1
         versionName "100"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
