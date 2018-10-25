@@ -36,8 +36,10 @@ public class MyApplication extends Application {
             "4500000000", "4600000000", "4700000000", "4800000000", "5000000000"
     };
 
-    public static String SERVER_IP = "114.108.136.95";
+   public static String SERVER_IP = "114.108.136.95";
     public static int SERVER_PORT = 9500;
+/*    public static String SERVER_IP = "127.0.0.1";
+    public static int SERVER_PORT = 8000;*/
 
     final static public String DELIMITER = "\30";
     final static public String ROW_DELIMITER = "\31";
